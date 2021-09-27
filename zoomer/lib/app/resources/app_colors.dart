@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color primary = Color(0xFFFFFFFF);
   static const Color onPrimary = Color(0xFF362614);
-  static const Color accent = Color(0xFF112B4A);
+  static const Color accent = Color(0xFF234DD4);
   static const Color accentText = Color(0xFFD89972);
 
   static const Color onAccent = Color(0xFFFFFFFF);
@@ -20,11 +20,11 @@ class AppColors {
   static const Color onSurface = Color(0xFF362614);
 
   static const Color inputBackground = Color(0xFFFFFFFF);
-  static const Color inputBorder = Color(0x66070D2E);
+  static const Color inputBorder = Color(0xFFEAEAEA);
   static const Color focusedInputBorder = Color(0xFF112B4A);
   static const Color inputHint = Color(0x80070D2E);
   static const Color inputLabel = Color(0x80070D2E);
-  static const Color inputText = Color(0xFF070D2E);
+  static const Color inputText = Color(0xFF717171);
   static const Color accentGradientStart = Color(0xFF000000);
   static const Color accentGradientEnd = Color(0xFF112C4C);
   static const Color accentGradientStartDisabled = Color(0x33000000);
@@ -44,7 +44,7 @@ class AppColors {
   static const Color gray3 = Color(0xFF8FA0B4);
   static const Color gray4 = Color(0xFFF2F1F0);
   static const Color gray5 = Color(0xFFF4F8FC);
-  static const Color blue = Color(0xFFF2F8FF);
+  static const Color blue = Color(0xFF234DD4);
 
   static const Color green1 = Color(0xFF32BEA6);
 

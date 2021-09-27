@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:zoomer/app/presentation/screens/sign_in/bloc/sign_in_bloc.dart';
+import 'package:zoomer/app/presentation/screens/sign_in/sign_in_screen.dart';
 import 'package:zoomer/core/ui/widgets/close_keyboard_by_tap.dart';
 import 'package:zoomer/localization/app_localizations.dart';
 
@@ -39,7 +42,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) => CloseKeyboardByTap(
         MaterialApp(
             theme: AppThemes.appTheme,
-            locale: Locale('ru'),
+            locale: Locale('en'),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: <LocalizationsDelegate<dynamic>>[
               AppLocalizations.delegate,
@@ -48,11 +51,10 @@ class _AppState extends State<App> {
               GlobalWidgetsLocalizations.delegate,
             ],
             supportedLocales: [Locale('ru'), Locale('en'), Locale('de')],
-            // home: BlocProvider(
-            //           //   create: (BuildContext context) => SplashBloc(preferencesLocalGateway: injection())
-            //           //     ..add(SplashEvent.checkAuthorizationStatus()), //SplashBloc()..add(CheckAuthorizationStatus()),
-            //           //   child: SplashScreen(),
-            //           // ),
-            home: Container()),
-      );
+            home: BlocProvider(
+                        create: (BuildContext context) => SignInBloc(),
+                        child: SignInScreen(),
+                      ),
+            //home: Container()),
+      ),);
 }

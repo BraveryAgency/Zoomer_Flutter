@@ -35,40 +35,14 @@ class AppLocalizations {
     return true;
   }
 
-  String get loading => _localizedStrings['loading'] ?? '';
-
-  String get toList => _localizedStrings['toList'] ?? '';
-
-  String get signInToYourAccount => _localizedStrings['signInToYourAccount'] ?? '';
-
-  String get enter => _localizedStrings['enter'] ?? '';
-
   String get password => _localizedStrings['password'] ?? '';
 
-  String get phone => _localizedStrings['phone'] ?? '';
+  String get logIn => _localizedStrings['logIn'] ?? '';
+
+  String get email => _localizedStrings['email'] ?? '';
+
 
   String get rememberMe => _localizedStrings['rememberMe'] ?? '';
-
-  String get enterPhoneNumber => _localizedStrings['enterPhoneNumber'] ?? '';
-
-  String get enterPasswordNumber => _localizedStrings['enterPasswordNumber'] ?? '';
-
-  String get youHaveNotEnteredAnything => _localizedStrings['youHaveNotEnteredAnything'] ?? '';
-
-  String get confirmationPhoneNumber => _localizedStrings['confirmationPhoneNumber'] ?? '';
-
-  String get weSentCodeToPickedPhoneNumber => _localizedStrings['weSentCodeToPickedPhoneNumber'] ?? '';
-
-  String againCodeCanBeSentInSeconds(String amount) =>
-      _getFormattedString(_localizedStrings['againCodeCanBeSentInSeconds'] ?? '', [amount]);
-
-  String get sendCodeOneMoreTime => _localizedStrings['sendCodeOneMoreTime'] ?? '';
-
-  String get back => _localizedStrings['back'] ?? '';
-
-  String get wrongLoginOrPassword => _localizedStrings['wrongLoginOrPassword'] ?? '';
-
-  String get barriers => _localizedStrings['barriers'] ?? '';
 
   String get profile => _localizedStrings['profile'] ?? '';
 

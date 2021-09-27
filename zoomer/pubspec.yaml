@@ -157,5 +157,7 @@ dev_dependencies:
   flutter_native_splash: ^1.2.1
 
 flutter:
-
+  assets:
+    - assets/images/
+    - assets/i18n/
 
