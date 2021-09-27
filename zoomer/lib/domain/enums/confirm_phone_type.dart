@@ -1,0 +1,4 @@
+enum ConfirmPhoneType {
+  registration,
+  passwordRecovery,
+}
