@@ -8,22 +8,27 @@ import 'package:flutter/widgets.dart';
 class $AssetsI18nGen {
   const $AssetsI18nGen();
 
-  String get ru => 'assets/i18n/en.json';
+  String get en => 'assets/i18n/en.json';
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  String get camera => 'assets/images/camera.svg';
+  String get checked => 'assets/images/checked.svg';
+  String get close => 'assets/images/close.svg';
+  String get details => 'assets/images/details.svg';
+  String get exit => 'assets/images/exit.svg';
+  String get leftArrow => 'assets/images/leftArrow.svg';
+  String get location => 'assets/images/location.svg';
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
-
-
-
-}
-
-class $AssetsMapStylesGen {
-  const $AssetsMapStylesGen();
-
-  String get grey => 'assets/map_styles/grey.json';
+  String get mute => 'assets/images/mute.svg';
+  AssetGenImage get noBroadcast =>
+      const AssetGenImage('assets/images/noBroadcast.png');
+  String get person => 'assets/images/person.svg';
+  String get rightArrow => 'assets/images/rightArrow.svg';
+  String get switchCamera => 'assets/images/switchCamera.svg';
+  String get unchecked => 'assets/images/unchecked.svg';
 }
 
 class Assets {

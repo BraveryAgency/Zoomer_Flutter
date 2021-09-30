@@ -6,6 +6,6 @@ class SignInEvent with _$SignInEvent {
   factory SignInEvent.passwordChanged(String password) = PasswordChanged;
   factory SignInEvent.rememberMeClicked() = RememberMeClicked;
   factory SignInEvent.enterClicked() = SignInClicked;
-  factory SignInEvent.signInSuccess() = SignInSuccess;
+  factory SignInEvent.signInSuccess(LoginEntity login) = SignInSuccess;
   factory SignInEvent.signInFailure(Failure? error) = SignInFailure;
 }

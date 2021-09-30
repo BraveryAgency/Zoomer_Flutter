@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zoomer/app/navigation/app_navigator.dart';
+import 'package:zoomer/app/navigation/navigation_actions.dart';
 import 'package:zoomer/app/widgets/buttons/default_button.dart';
 import 'package:zoomer/app/widgets/checkboxes/app_checkbox.dart';
 import 'package:zoomer/app/widgets/inputs/default_input.dart';
@@ -38,6 +40,9 @@ class SignInScreen extends BaseBlocStatelessWidget<SignInBloc> {
 
       if (action is HideLoader) {
         Navigator.pop(context);
+      }
+      if (action is NavigateToUpcomingBroadcast){
+        AppNavigator.navigateToUpcomingBroadcast(context);
       }
       // if (action is NavigateToNavigation) {
       //   AppNavigator.navigateToNavigation(context);
@@ -83,6 +88,10 @@ class SignInScreen extends BaseBlocStatelessWidget<SignInBloc> {
     previousState.email != currentState.email,
     builder: (context, state) => DefaultInput(
       title: AppLocalizations.of(context).email,
+      text: state.email.value,
+      onChanged: (text){
+        getBloc(context).add(SignInEvent.emailChanged(text));
+      },
      // contentPadding: EdgeInsets.only(left: 14, right: 14, top: 18, bottom: 18),
     )
   );

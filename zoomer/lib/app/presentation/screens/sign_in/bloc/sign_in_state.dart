@@ -5,7 +5,7 @@ part of 'sign_in_bloc.dart';
 class SignInState with _$SignInState {
   factory SignInState({
     BlocAction? action,
-    @Default(DefaultForm.pure()) DefaultForm email,
+    @Default(EmailForm.pure()) EmailForm email,
     @Default(PasswordForm.pure()) PasswordForm password,
     @Default(false) bool rememberMeChecked,
     String? errorMessage,

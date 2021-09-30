@@ -29,19 +29,19 @@ class AppCheckbox extends StatelessWidget {
       );
 
   Widget _buildCheckbox() => checked
-      ? SvgPicture.asset(Assets.images.checked, width: 24, height: 24)
-
-      : Padding(
-          padding: const EdgeInsets.all(2),
-          child: Container(
-            height: 18,
-            width: 18,
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.inputBorder, width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-            ),
-          ),
-        );
+      ? SvgPicture.asset(Assets.images.checked, width: 18, height: 18)
+      : SvgPicture.asset(Assets.images.unchecked, width: 18, height: 18);
+  // Padding(
+  //         padding: const EdgeInsets.all(2),
+  //         child: Container(
+  //           height: 18,
+  //           width: 18,
+  //           decoration: BoxDecoration(
+  //             border: Border.all(color: AppColors.inputBorder, width: 1),
+  //             borderRadius: BorderRadius.all(Radius.circular(4)),
+  //           ),
+  //         ),
+  //       );
   Widget _buildTitle() => title != null
       ? Padding(
           padding: const EdgeInsets.only(left: 11),

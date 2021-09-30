@@ -41,6 +41,12 @@ class AppLocalizations {
 
   String get email => _localizedStrings['email'] ?? '';
 
+  String get upcomingBroadcast => _localizedStrings['upcomingBroadcast'] ?? '';
+
+  String get streamNow => _localizedStrings['streamNow'] ?? '';
+
+  String get noUpcomingBroadcastsFound => _localizedStrings['noUpcomingBroadcastsFound'] ?? '';
+
 
   String get rememberMe => _localizedStrings['rememberMe'] ?? '';
 

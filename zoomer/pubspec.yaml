@@ -145,6 +145,13 @@ dependencies:
   #https://pub.dev/packages/pausable_timer
   pausable_timer: ^1.0.0+1
 
+  #https://pub.dev/packages/firebase_messaging
+  firebase_messaging: ^10.0.7
+
+  firebase_core: ^1.2.0
+
+  overlay_support: ^1.2.1
+
 dev_dependencies:
   retrofit_generator: ^2.0.0
   hive_generator: ^1.1.0

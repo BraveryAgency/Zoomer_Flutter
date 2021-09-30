@@ -36,8 +36,10 @@ class _$SignInEventTearOff {
     return SignInClicked();
   }
 
-  SignInSuccess signInSuccess() {
-    return SignInSuccess();
+  SignInSuccess signInSuccess(LoginEntity login) {
+    return SignInSuccess(
+      login,
+    );
   }
 
   SignInFailure signInFailure(Failure? error) {
@@ -58,7 +60,7 @@ mixin _$SignInEvent {
     required TResult Function(String password) passwordChanged,
     required TResult Function() rememberMeClicked,
     required TResult Function() enterClicked,
-    required TResult Function() signInSuccess,
+    required TResult Function(LoginEntity login) signInSuccess,
     required TResult Function(Failure? error) signInFailure,
   }) =>
       throw _privateConstructorUsedError;
@@ -68,7 +70,7 @@ mixin _$SignInEvent {
     TResult Function(String password)? passwordChanged,
     TResult Function()? rememberMeClicked,
     TResult Function()? enterClicked,
-    TResult Function()? signInSuccess,
+    TResult Function(LoginEntity login)? signInSuccess,
     TResult Function(Failure? error)? signInFailure,
     required TResult orElse(),
   }) =>
@@ -180,7 +182,7 @@ class _$EmailChanged implements EmailChanged {
     required TResult Function(String password) passwordChanged,
     required TResult Function() rememberMeClicked,
     required TResult Function() enterClicked,
-    required TResult Function() signInSuccess,
+    required TResult Function(LoginEntity login) signInSuccess,
     required TResult Function(Failure? error) signInFailure,
   }) {
     return emailChanged(email);
@@ -193,7 +195,7 @@ class _$EmailChanged implements EmailChanged {
     TResult Function(String password)? passwordChanged,
     TResult Function()? rememberMeClicked,
     TResult Function()? enterClicked,
-    TResult Function()? signInSuccess,
+    TResult Function(LoginEntity login)? signInSuccess,
     TResult Function(Failure? error)? signInFailure,
     required TResult orElse(),
   }) {
@@ -313,7 +315,7 @@ class _$PasswordChanged implements PasswordChanged {
     required TResult Function(String password) passwordChanged,
     required TResult Function() rememberMeClicked,
     required TResult Function() enterClicked,
-    required TResult Function() signInSuccess,
+    required TResult Function(LoginEntity login) signInSuccess,
     required TResult Function(Failure? error) signInFailure,
   }) {
     return passwordChanged(password);
@@ -326,7 +328,7 @@ class _$PasswordChanged implements PasswordChanged {
     TResult Function(String password)? passwordChanged,
     TResult Function()? rememberMeClicked,
     TResult Function()? enterClicked,
-    TResult Function()? signInSuccess,
+    TResult Function(LoginEntity login)? signInSuccess,
     TResult Function(Failure? error)? signInFailure,
     required TResult orElse(),
   }) {
@@ -420,7 +422,7 @@ class _$RememberMeClicked implements RememberMeClicked {
     required TResult Function(String password) passwordChanged,
     required TResult Function() rememberMeClicked,
     required TResult Function() enterClicked,
-    required TResult Function() signInSuccess,
+    required TResult Function(LoginEntity login) signInSuccess,
     required TResult Function(Failure? error) signInFailure,
   }) {
     return rememberMeClicked();
@@ -433,7 +435,7 @@ class _$RememberMeClicked implements RememberMeClicked {
     TResult Function(String password)? passwordChanged,
     TResult Function()? rememberMeClicked,
     TResult Function()? enterClicked,
-    TResult Function()? signInSuccess,
+    TResult Function(LoginEntity login)? signInSuccess,
     TResult Function(Failure? error)? signInFailure,
     required TResult orElse(),
   }) {
@@ -521,7 +523,7 @@ class _$SignInClicked implements SignInClicked {
     required TResult Function(String password) passwordChanged,
     required TResult Function() rememberMeClicked,
     required TResult Function() enterClicked,
-    required TResult Function() signInSuccess,
+    required TResult Function(LoginEntity login) signInSuccess,
     required TResult Function(Failure? error) signInFailure,
   }) {
     return enterClicked();
@@ -534,7 +536,7 @@ class _$SignInClicked implements SignInClicked {
     TResult Function(String password)? passwordChanged,
     TResult Function()? rememberMeClicked,
     TResult Function()? enterClicked,
-    TResult Function()? signInSuccess,
+    TResult Function(LoginEntity login)? signInSuccess,
     TResult Function(Failure? error)? signInFailure,
     required TResult orElse(),
   }) {
@@ -584,6 +586,7 @@ abstract class $SignInSuccessCopyWith<$Res> {
   factory $SignInSuccessCopyWith(
           SignInSuccess value, $Res Function(SignInSuccess) then) =
       _$SignInSuccessCopyWithImpl<$Res>;
+  $Res call({LoginEntity login});
 }
 
 /// @nodoc
@@ -595,25 +598,49 @@ class _$SignInSuccessCopyWithImpl<$Res> extends _$SignInEventCopyWithImpl<$Res>
 
   @override
   SignInSuccess get _value => super._value as SignInSuccess;
+
+  @override
+  $Res call({
+    Object? login = freezed,
+  }) {
+    return _then(SignInSuccess(
+      login == freezed
+          ? _value.login
+          : login // ignore: cast_nullable_to_non_nullable
+              as LoginEntity,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$SignInSuccess implements SignInSuccess {
-  _$SignInSuccess();
+  _$SignInSuccess(this.login);
+
+  @override
+  final LoginEntity login;
 
   @override
   String toString() {
-    return 'SignInEvent.signInSuccess()';
+    return 'SignInEvent.signInSuccess(login: $login)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is SignInSuccess);
+    return identical(this, other) ||
+        (other is SignInSuccess &&
+            (identical(other.login, login) ||
+                const DeepCollectionEquality().equals(other.login, login)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(login);
+
+  @JsonKey(ignore: true)
+  @override
+  $SignInSuccessCopyWith<SignInSuccess> get copyWith =>
+      _$SignInSuccessCopyWithImpl<SignInSuccess>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -622,10 +649,10 @@ class _$SignInSuccess implements SignInSuccess {
     required TResult Function(String password) passwordChanged,
     required TResult Function() rememberMeClicked,
     required TResult Function() enterClicked,
-    required TResult Function() signInSuccess,
+    required TResult Function(LoginEntity login) signInSuccess,
     required TResult Function(Failure? error) signInFailure,
   }) {
-    return signInSuccess();
+    return signInSuccess(login);
   }
 
   @override
@@ -635,12 +662,12 @@ class _$SignInSuccess implements SignInSuccess {
     TResult Function(String password)? passwordChanged,
     TResult Function()? rememberMeClicked,
     TResult Function()? enterClicked,
-    TResult Function()? signInSuccess,
+    TResult Function(LoginEntity login)? signInSuccess,
     TResult Function(Failure? error)? signInFailure,
     required TResult orElse(),
   }) {
     if (signInSuccess != null) {
-      return signInSuccess();
+      return signInSuccess(login);
     }
     return orElse();
   }
@@ -677,7 +704,12 @@ class _$SignInSuccess implements SignInSuccess {
 }
 
 abstract class SignInSuccess implements SignInEvent {
-  factory SignInSuccess() = _$SignInSuccess;
+  factory SignInSuccess(LoginEntity login) = _$SignInSuccess;
+
+  LoginEntity get login => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SignInSuccessCopyWith<SignInSuccess> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -748,7 +780,7 @@ class _$SignInFailure implements SignInFailure {
     required TResult Function(String password) passwordChanged,
     required TResult Function() rememberMeClicked,
     required TResult Function() enterClicked,
-    required TResult Function() signInSuccess,
+    required TResult Function(LoginEntity login) signInSuccess,
     required TResult Function(Failure? error) signInFailure,
   }) {
     return signInFailure(error);
@@ -761,7 +793,7 @@ class _$SignInFailure implements SignInFailure {
     TResult Function(String password)? passwordChanged,
     TResult Function()? rememberMeClicked,
     TResult Function()? enterClicked,
-    TResult Function()? signInSuccess,
+    TResult Function(LoginEntity login)? signInSuccess,
     TResult Function(Failure? error)? signInFailure,
     required TResult orElse(),
   }) {
@@ -817,7 +849,7 @@ class _$SignInStateTearOff {
 
   _SignInState call(
       {BlocAction? action,
-      DefaultForm email = const DefaultForm.pure(),
+      EmailForm email = const EmailForm.pure(),
       PasswordForm password = const PasswordForm.pure(),
       bool rememberMeChecked = false,
       String? errorMessage}) {
@@ -837,7 +869,7 @@ const $SignInState = _$SignInStateTearOff();
 /// @nodoc
 mixin _$SignInState {
   BlocAction? get action => throw _privateConstructorUsedError;
-  DefaultForm get email => throw _privateConstructorUsedError;
+  EmailForm get email => throw _privateConstructorUsedError;
   PasswordForm get password => throw _privateConstructorUsedError;
   bool get rememberMeChecked => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
@@ -854,7 +886,7 @@ abstract class $SignInStateCopyWith<$Res> {
       _$SignInStateCopyWithImpl<$Res>;
   $Res call(
       {BlocAction? action,
-      DefaultForm email,
+      EmailForm email,
       PasswordForm password,
       bool rememberMeChecked,
       String? errorMessage});
@@ -884,7 +916,7 @@ class _$SignInStateCopyWithImpl<$Res> implements $SignInStateCopyWith<$Res> {
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as DefaultForm,
+              as EmailForm,
       password: password == freezed
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -910,7 +942,7 @@ abstract class _$SignInStateCopyWith<$Res>
   @override
   $Res call(
       {BlocAction? action,
-      DefaultForm email,
+      EmailForm email,
       PasswordForm password,
       bool rememberMeChecked,
       String? errorMessage});
@@ -942,7 +974,7 @@ class __$SignInStateCopyWithImpl<$Res> extends _$SignInStateCopyWithImpl<$Res>
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as DefaultForm,
+              as EmailForm,
       password: password == freezed
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -964,16 +996,16 @@ class __$SignInStateCopyWithImpl<$Res> extends _$SignInStateCopyWithImpl<$Res>
 class _$_SignInState implements _SignInState {
   _$_SignInState(
       {this.action,
-      this.email = const DefaultForm.pure(),
+      this.email = const EmailForm.pure(),
       this.password = const PasswordForm.pure(),
       this.rememberMeChecked = false,
       this.errorMessage});
 
   @override
   final BlocAction? action;
-  @JsonKey(defaultValue: const DefaultForm.pure())
+  @JsonKey(defaultValue: const EmailForm.pure())
   @override
-  final DefaultForm email;
+  final EmailForm email;
   @JsonKey(defaultValue: const PasswordForm.pure())
   @override
   final PasswordForm password;
@@ -1025,7 +1057,7 @@ class _$_SignInState implements _SignInState {
 abstract class _SignInState implements SignInState {
   factory _SignInState(
       {BlocAction? action,
-      DefaultForm email,
+      EmailForm email,
       PasswordForm password,
       bool rememberMeChecked,
       String? errorMessage}) = _$_SignInState;
@@ -1033,7 +1065,7 @@ abstract class _SignInState implements SignInState {
   @override
   BlocAction? get action => throw _privateConstructorUsedError;
   @override
-  DefaultForm get email => throw _privateConstructorUsedError;
+  EmailForm get email => throw _privateConstructorUsedError;
   @override
   PasswordForm get password => throw _privateConstructorUsedError;
   @override
