@@ -30,8 +30,10 @@ class DefaultButton extends StatelessWidget {
         child: SizedBox(
           height: 50,
           child: Container(
+
             alignment: Alignment.center,
             decoration: BoxDecoration(
+
               borderRadius: BorderRadius.circular(8),
               border: borderColor != null ? Border.all(color: borderColor!) : null,
               color: AppColors.accent
@@ -55,6 +57,7 @@ class DefaultButton extends StatelessWidget {
                           height: 19.2/16,
                           color: textColor ,
                         ),
+
                       ),
                     ],
                   )

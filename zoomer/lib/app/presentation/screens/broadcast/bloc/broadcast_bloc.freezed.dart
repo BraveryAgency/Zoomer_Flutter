@@ -756,12 +756,16 @@ class _$BroadcastStateTearOff {
       {BlocAction? action,
       BroadcastEntity? broadcast = null,
       List<ViewerEntity> viewers = const [],
-      String broadcastTimer = '00:00'}) {
+      String broadcastTimer = '00:00',
+      bool isMicrophoneEnabled = true,
+      bool isCameraEnabled = true}) {
     return _BroadcastState(
       action: action,
       broadcast: broadcast,
       viewers: viewers,
       broadcastTimer: broadcastTimer,
+      isMicrophoneEnabled: isMicrophoneEnabled,
+      isCameraEnabled: isCameraEnabled,
     );
   }
 }
@@ -775,6 +779,8 @@ mixin _$BroadcastState {
   BroadcastEntity? get broadcast => throw _privateConstructorUsedError;
   List<ViewerEntity> get viewers => throw _privateConstructorUsedError;
   String get broadcastTimer => throw _privateConstructorUsedError;
+  bool get isMicrophoneEnabled => throw _privateConstructorUsedError;
+  bool get isCameraEnabled => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BroadcastStateCopyWith<BroadcastState> get copyWith =>
@@ -790,7 +796,9 @@ abstract class $BroadcastStateCopyWith<$Res> {
       {BlocAction? action,
       BroadcastEntity? broadcast,
       List<ViewerEntity> viewers,
-      String broadcastTimer});
+      String broadcastTimer,
+      bool isMicrophoneEnabled,
+      bool isCameraEnabled});
 }
 
 /// @nodoc
@@ -808,6 +816,8 @@ class _$BroadcastStateCopyWithImpl<$Res>
     Object? broadcast = freezed,
     Object? viewers = freezed,
     Object? broadcastTimer = freezed,
+    Object? isMicrophoneEnabled = freezed,
+    Object? isCameraEnabled = freezed,
   }) {
     return _then(_value.copyWith(
       action: action == freezed
@@ -826,6 +836,14 @@ class _$BroadcastStateCopyWithImpl<$Res>
           ? _value.broadcastTimer
           : broadcastTimer // ignore: cast_nullable_to_non_nullable
               as String,
+      isMicrophoneEnabled: isMicrophoneEnabled == freezed
+          ? _value.isMicrophoneEnabled
+          : isMicrophoneEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isCameraEnabled: isCameraEnabled == freezed
+          ? _value.isCameraEnabled
+          : isCameraEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -841,7 +859,9 @@ abstract class _$BroadcastStateCopyWith<$Res>
       {BlocAction? action,
       BroadcastEntity? broadcast,
       List<ViewerEntity> viewers,
-      String broadcastTimer});
+      String broadcastTimer,
+      bool isMicrophoneEnabled,
+      bool isCameraEnabled});
 }
 
 /// @nodoc
@@ -861,6 +881,8 @@ class __$BroadcastStateCopyWithImpl<$Res>
     Object? broadcast = freezed,
     Object? viewers = freezed,
     Object? broadcastTimer = freezed,
+    Object? isMicrophoneEnabled = freezed,
+    Object? isCameraEnabled = freezed,
   }) {
     return _then(_BroadcastState(
       action: action == freezed
@@ -879,6 +901,14 @@ class __$BroadcastStateCopyWithImpl<$Res>
           ? _value.broadcastTimer
           : broadcastTimer // ignore: cast_nullable_to_non_nullable
               as String,
+      isMicrophoneEnabled: isMicrophoneEnabled == freezed
+          ? _value.isMicrophoneEnabled
+          : isMicrophoneEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isCameraEnabled: isCameraEnabled == freezed
+          ? _value.isCameraEnabled
+          : isCameraEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -890,7 +920,9 @@ class _$_BroadcastState implements _BroadcastState {
       {this.action,
       this.broadcast = null,
       this.viewers = const [],
-      this.broadcastTimer = '00:00'});
+      this.broadcastTimer = '00:00',
+      this.isMicrophoneEnabled = true,
+      this.isCameraEnabled = true});
 
   @override
   final BlocAction? action;
@@ -903,10 +935,16 @@ class _$_BroadcastState implements _BroadcastState {
   @JsonKey(defaultValue: '00:00')
   @override
   final String broadcastTimer;
+  @JsonKey(defaultValue: true)
+  @override
+  final bool isMicrophoneEnabled;
+  @JsonKey(defaultValue: true)
+  @override
+  final bool isCameraEnabled;
 
   @override
   String toString() {
-    return 'BroadcastState(action: $action, broadcast: $broadcast, viewers: $viewers, broadcastTimer: $broadcastTimer)';
+    return 'BroadcastState(action: $action, broadcast: $broadcast, viewers: $viewers, broadcastTimer: $broadcastTimer, isMicrophoneEnabled: $isMicrophoneEnabled, isCameraEnabled: $isCameraEnabled)';
   }
 
   @override
@@ -923,7 +961,13 @@ class _$_BroadcastState implements _BroadcastState {
                     .equals(other.viewers, viewers)) &&
             (identical(other.broadcastTimer, broadcastTimer) ||
                 const DeepCollectionEquality()
-                    .equals(other.broadcastTimer, broadcastTimer)));
+                    .equals(other.broadcastTimer, broadcastTimer)) &&
+            (identical(other.isMicrophoneEnabled, isMicrophoneEnabled) ||
+                const DeepCollectionEquality()
+                    .equals(other.isMicrophoneEnabled, isMicrophoneEnabled)) &&
+            (identical(other.isCameraEnabled, isCameraEnabled) ||
+                const DeepCollectionEquality()
+                    .equals(other.isCameraEnabled, isCameraEnabled)));
   }
 
   @override
@@ -932,7 +976,9 @@ class _$_BroadcastState implements _BroadcastState {
       const DeepCollectionEquality().hash(action) ^
       const DeepCollectionEquality().hash(broadcast) ^
       const DeepCollectionEquality().hash(viewers) ^
-      const DeepCollectionEquality().hash(broadcastTimer);
+      const DeepCollectionEquality().hash(broadcastTimer) ^
+      const DeepCollectionEquality().hash(isMicrophoneEnabled) ^
+      const DeepCollectionEquality().hash(isCameraEnabled);
 
   @JsonKey(ignore: true)
   @override
@@ -945,7 +991,9 @@ abstract class _BroadcastState implements BroadcastState {
       {BlocAction? action,
       BroadcastEntity? broadcast,
       List<ViewerEntity> viewers,
-      String broadcastTimer}) = _$_BroadcastState;
+      String broadcastTimer,
+      bool isMicrophoneEnabled,
+      bool isCameraEnabled}) = _$_BroadcastState;
 
   @override
   BlocAction? get action => throw _privateConstructorUsedError;
@@ -955,6 +1003,10 @@ abstract class _BroadcastState implements BroadcastState {
   List<ViewerEntity> get viewers => throw _privateConstructorUsedError;
   @override
   String get broadcastTimer => throw _privateConstructorUsedError;
+  @override
+  bool get isMicrophoneEnabled => throw _privateConstructorUsedError;
+  @override
+  bool get isCameraEnabled => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$BroadcastStateCopyWith<_BroadcastState> get copyWith =>

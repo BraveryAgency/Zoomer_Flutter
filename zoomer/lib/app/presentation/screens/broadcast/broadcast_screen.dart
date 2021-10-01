@@ -20,16 +20,16 @@ import 'bloc/broadcast_bloc.dart';
 class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
   @override
   Widget build(BuildContext context) => Scaffold(
-        //resizeToAvoidBottomInset: true,
         body: SafeArea(
-          //top: false,
-          child: Scaffold(appBar: _buildAppBar(context), body: _buildBody(context)),
+          child: Scaffold(
+              appBar: _buildAppBar(context), body: _buildBody(context)),
         ),
       );
 
   PageController _pageController = PageController();
 
-  Widget _buildBody(BuildContext context) => BlocListener<BroadcastBloc, BroadcastState>(
+  Widget _buildBody(BuildContext context) =>
+      BlocListener<BroadcastBloc, BroadcastState>(
         listenWhen: (previous, current) => previous.action != current.action,
         listener: (context, state) {
           BlocAction? action = state.action;
@@ -44,7 +44,7 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
           if (action is HideLoader) {
             Navigator.pop(context);
           }
-          if (action is NavigateToUpcomingBroadcast){
+          if (action is NavigateToUpcomingBroadcast) {
             AppNavigator.navigateToUpcomingBroadcast(context);
           }
           // if (action is NavigateToNavigation) {
@@ -76,9 +76,9 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
   PreferredSizeWidget _buildAppBar(context) => DefaultAppBar(
         firstIcon: SvgPicture.asset(Assets.images.exit, height: 35, width: 107),
         firstIconPadding: EdgeInsets.symmetric(vertical: 18),
-        onFirstButtonPressed:(){
+        onFirstButtonPressed: () {
           getBloc(context).add(BroadcastEvent.leaveClicked());
-        } ,
+        },
       );
 
   Widget _buildBroadcastArea(context) => Stack(
@@ -133,7 +133,8 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
       );
 
   Widget _buildBroadcastIcon() => BlocBuilder<BroadcastBloc, BroadcastState>(
-      buildWhen: (previous, current) => previous.broadcast?.icon != current.broadcast?.icon,
+      buildWhen: (previous, current) =>
+          previous.broadcast?.icon != current.broadcast?.icon,
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.only(left: 13, top: 7.5, bottom: 7.5),
@@ -157,18 +158,25 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
         );
       });
 
-  Widget _buildBroadcastBuilding() => BlocBuilder<BroadcastBloc, BroadcastState>(
-        buildWhen: (previous, current) => previous.broadcast?.building != current.broadcast?.building,
+  Widget _buildBroadcastBuilding() =>
+      BlocBuilder<BroadcastBloc, BroadcastState>(
+        buildWhen: (previous, current) =>
+            previous.broadcast?.building != current.broadcast?.building,
         builder: (context, state) {
           return Text(
             state.broadcast!.building,
-            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 15, height: 22 / 15),
+            style: TextStyle(
+                color: AppColors.black,
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
+                height: 22 / 15),
           );
         },
       );
 
   Widget _buildBroadcastTime() => BlocBuilder<BroadcastBloc, BroadcastState>(
-        buildWhen: (previous, current) => previous.broadcastTimer != current.broadcastTimer,
+        buildWhen: (previous, current) =>
+            previous.broadcastTimer != current.broadcastTimer,
         builder: (context, state) {
           if (state.broadcastTimer == null) return SizedBox();
           return Container(
@@ -203,26 +211,47 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
         ],
       );
 
-  Widget _buildMuteButton(context) => GestureDetector(
-      onTap: () {
-        getBloc(context).add(BroadcastEvent.muteClicked());
-      },
-      child: SvgPicture.asset(Assets.images.mute, height: 45, width: 45));
+  Widget _buildMuteButton(context) =>
+      BlocBuilder<BroadcastBloc, BroadcastState>(
+        builder: (context, state) {
+          return GestureDetector(
+              onTap: () {
+                getBloc(context).add(BroadcastEvent.muteClicked());
+              },
+              child: SvgPicture.asset(
+                  (state.isMicrophoneEnabled)
+                      ? Assets.images.microphoneOn
+                      : Assets.images.microphoneOff,
+                  height: 45,
+                  width: 45));
+        },
+      );
 
-  Widget _buildCameraButton(context) => GestureDetector(
-      onTap: () {
-        getBloc(context).add(BroadcastEvent.cameraClicked());
-      },
-      child: SvgPicture.asset(Assets.images.camera, height: 45, width: 45));
+  Widget _buildCameraButton(context) =>
+      BlocBuilder<BroadcastBloc, BroadcastState>(
+        builder: (context, state) {
+          return GestureDetector(
+              onTap: () {
+                getBloc(context).add(BroadcastEvent.cameraClicked());
+              },
+              child: SvgPicture.asset(
+                  (state.isCameraEnabled)
+                      ? Assets.images.cameraOn
+                      : Assets.images.cameraOff,
+                  height: 45,
+                  width: 45));
+        },
+      );
 
   Widget _buildSwitchCameraButton(context) => GestureDetector(
       onTap: () {
         getBloc(context).add(BroadcastEvent.cameraSwitchClicked());
       },
-      child: SvgPicture.asset(Assets.images.switchCamera, height: 45, width: 45));
+      child:
+          SvgPicture.asset(Assets.images.switchCamera, height: 45, width: 45));
 
-
-  Widget _buildUsersItems(context) => BlocBuilder<BroadcastBloc, BroadcastState>(
+  Widget _buildUsersItems(context) =>
+      BlocBuilder<BroadcastBloc, BroadcastState>(
         buildWhen: (previous, current) => previous.viewers != current.viewers,
         builder: (context, state) {
           if (state.viewers == null || state.viewers.isEmpty) return SizedBox();

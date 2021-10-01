@@ -129,13 +129,13 @@ class _ViewersListState extends State<ViewersList> {
       onTap: () {
         widget.onMuteClicked?.call();
       },
-      child: SvgPicture.asset(Assets.images.mute, height: 45, width: 45));
+      child: SvgPicture.asset(Assets.images.microphoneOn, height: 45, width: 45));
 
   Widget _buildCameraButton(context) => GestureDetector(
       onTap: () {
         widget.onCameraClicked?.call();
       },
-      child: SvgPicture.asset(Assets.images.camera, height: 45, width: 45));
+      child: SvgPicture.asset(Assets.images.cameraOn, height: 45, width: 45));
 
   Widget _buildPageIndicator() => CirclePageIndicator(
         selectedDotColor: AppColors.accent,

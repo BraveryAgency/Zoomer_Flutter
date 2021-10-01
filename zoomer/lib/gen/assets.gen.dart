@@ -14,20 +14,22 @@ class $AssetsI18nGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  String get camera => 'assets/images/camera.svg';
+  String get cameraOff => 'assets/images/camera_off.svg';
+  String get cameraOn => 'assets/images/camera_on.svg';
   String get checked => 'assets/images/checked.svg';
   String get close => 'assets/images/close.svg';
   String get details => 'assets/images/details.svg';
   String get exit => 'assets/images/exit.svg';
-  String get leftArrow => 'assets/images/leftArrow.svg';
+  String get leftArrow => 'assets/images/left_arrow.svg';
   String get location => 'assets/images/location.svg';
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
-  String get mute => 'assets/images/mute.svg';
+  String get microphoneOff => 'assets/images/microphone_off.svg';
+  String get microphoneOn => 'assets/images/microphone_on.svg';
   AssetGenImage get noBroadcast =>
-      const AssetGenImage('assets/images/noBroadcast.png');
+      const AssetGenImage('assets/images/no_broadcast.png');
   String get person => 'assets/images/person.svg';
-  String get rightArrow => 'assets/images/rightArrow.svg';
-  String get switchCamera => 'assets/images/switchCamera.svg';
+  String get rightArrow => 'assets/images/right_arrow.svg';
+  String get switchCamera => 'assets/images/switch_camera.svg';
   String get unchecked => 'assets/images/unchecked.svg';
 }
 

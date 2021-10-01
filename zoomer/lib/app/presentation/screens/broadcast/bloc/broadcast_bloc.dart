@@ -51,13 +51,19 @@ class BroadcastBloc extends Bloc<BroadcastEvent,BroadcastState> {
     List<ViewerEntity> newViewers = [
       ViewerEntity(
           image: 'https://www.film.ru/sites/default/files/filefield_paths/shutterstock_9669042a.jpg',
-          name: 'Kevin Braflowski'),
+          name: 'Kevin Braflowski',
+          isMicrophoneEnabled:true,
+          isCameraEnabled: true,),
       ViewerEntity(
           image: 'https://www.zastavki.com/pictures/originals/2015/Girls_Smiling_beautiful_girl__photo_George_Chernyad_ev_111193_.jpg',
-          name: 'Zara Keln'),
+          name: 'Zara Keln',
+        isMicrophoneEnabled:true,
+        isCameraEnabled: true,),
       ViewerEntity(
           image: 'https://memepedia.ru/wp-content/uploads/2020/03/soft-girl-5.png',
-          name: 'Britney Spike'),
+          name: 'Britney Spike',
+        isMicrophoneEnabled:true,
+        isCameraEnabled: true,),
     ];
     
     yield state.copyWith(broadcast: newBroadcast,viewers: newViewers);
@@ -71,9 +77,14 @@ class BroadcastBloc extends Bloc<BroadcastEvent,BroadcastState> {
 
   Stream<BroadcastState>_cameraSwitchClicked(CameraSwitchClicked value) async* {}
 
-  Stream<BroadcastState>_cameraClicked(CameraClicked value) async* {}
+  Stream<BroadcastState>_cameraClicked(CameraClicked value) async* {
+    yield state.copyWith(isCameraEnabled: !state.isCameraEnabled);
+  }
 
-  Stream<BroadcastState>_muteClicked(MuteClicked value) async* {}
+  Stream<BroadcastState>_muteClicked(MuteClicked value) async* {
+    yield state.copyWith(isMicrophoneEnabled: !state.isMicrophoneEnabled);
+
+  }
 
 
   Timer? _timer;
