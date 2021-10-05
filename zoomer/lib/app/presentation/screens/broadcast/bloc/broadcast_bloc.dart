@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
 import 'package:zoomer/core/bloc/bloc_action.dart';
+import 'package:zoomer/domain/entities/briadcast_image_entity.dart';
 import 'package:zoomer/domain/entities/broadcast_entity.dart';
 import 'package:zoomer/domain/entities/viewer_entity.dart';
 
@@ -14,9 +15,13 @@ part 'broadcast_state.dart';
 
 
 class BroadcastBloc extends Bloc<BroadcastEvent,BroadcastState> {
-  BroadcastBloc() : super(BroadcastState()) {
+  BroadcastBloc({
+    required this.broadcast,
+  }) : super(BroadcastState(broadcast: broadcast)) {
     this.add(BroadcastEvent.init());
   }
+
+  BroadcastEntity broadcast;
 
   @override
   Stream<BroadcastState> mapEventToState(BroadcastEvent event) async* {
@@ -32,22 +37,7 @@ class BroadcastBloc extends Bloc<BroadcastEvent,BroadcastState> {
 
 
   Stream<BroadcastState> _init(Init value) async* {
-    List<String> photos = [
-      'https://klike.net/uploads/posts/2020-01/1579858769_1.jpg',
-      'https://fotodomov.com/wp-content/uploads/2020/05/krovlya-iz-metallocherepicy1-635x478.jpg',
-      'https://dekorin.me/wp-content/uploads/2017/11/5-dvuhetajnii-krasivii-dom-1280x720.jpg'
-    ];
-    BroadcastEntity newBroadcast = BroadcastEntity(
-      id: 'asdasdasda',
-      location: 'Dubai',
-      building: 'Dubai Central Tower',
-      images: photos,
-      price: 15000,
-      description:
-      'Villas · 200.0m²-250.0m² · For sale · Swimming pool · Gym · Parking · SPA · Shopping mall · School',
-      icon: 'https://fotodomov.com/wp-content/uploads/2020/05/krovlya-iz-metallocherepicy1-635x478.jpg',
-    );
-    
+
     List<ViewerEntity> newViewers = [
       ViewerEntity(
           image: 'https://www.film.ru/sites/default/files/filefield_paths/shutterstock_9669042a.jpg',
@@ -66,13 +56,13 @@ class BroadcastBloc extends Bloc<BroadcastEvent,BroadcastState> {
         isCameraEnabled: true,),
     ];
     
-    yield state.copyWith(broadcast: newBroadcast,viewers: newViewers);
+    yield state.copyWith(viewers: newViewers);
 
      _startBroadcastTimer();
   }
 
   Stream<BroadcastState>_leaveClicked(LeaveClicked value) async* {
-    yield state.copyWith(action: NavigateToUpcomingBroadcast());
+    yield state.copyWith(action: NavigateBack());
   }
 
   Stream<BroadcastState>_cameraSwitchClicked(CameraSwitchClicked value) async* {}

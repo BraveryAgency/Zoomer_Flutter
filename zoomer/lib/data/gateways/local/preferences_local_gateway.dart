@@ -13,7 +13,7 @@ class PreferencesLocalGateway {
 
   Future<String?> getToken() async {
     String? token = await flutterSecureStorage.read(key: tokenKey);
-    // return 'Bearer DQ4_JLyGRI5w0-pubvDgknJhtxuoSpEi';
+     return 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpbiI6InRlc3RAbWFpbC5ydSIsImV4cCI6MTYzMzQ0ODE2NH0.I5uJfKxYBP0unlMZ_H336jF4i7dW9NzhsxWQ3bfGOfg';
 
     if (token == null) {
       return null;

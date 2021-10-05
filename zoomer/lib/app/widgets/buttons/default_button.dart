@@ -57,7 +57,6 @@ class DefaultButton extends StatelessWidget {
                           height: 19.2/16,
                           color: textColor ,
                         ),
-
                       ),
                     ],
                   )

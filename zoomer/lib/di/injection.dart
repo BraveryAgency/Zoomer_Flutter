@@ -7,7 +7,9 @@ import 'package:zoomer/core/network/dio_helper.dart';
 import 'package:zoomer/core/network/network_info.dart';
 import 'package:zoomer/data/gateways/local/preferences_local_gateway.dart';
 import 'package:zoomer/data/gateways/remote/authorization_remote_gateway.dart';
+import 'package:zoomer/data/gateways/remote/broadcast_remote_gateway.dart';
 import 'package:zoomer/data/repositories/authorization_repository.dart';
+import 'package:zoomer/data/repositories/broadcast_repository.dart';
 import 'package:zoomer/localization/app_localizations.dart';
 
 GetIt injection = GetIt.I;
@@ -26,9 +28,18 @@ Future setUpLocator() async {
     dio: injection(),
   ));
 
+  injection.registerLazySingleton<BroadcastRemoteGateway>(() => BroadcastRemoteGateway(
+    dio: injection(),
+  ));
+
   injection.registerLazySingleton<AuthorizationRepository>(() => AuthorizationRepository(
     injection(),
     authorizationRemoteGateway: injection(),
+  ));
+
+  injection.registerLazySingleton<BroadcastRepository>(() => BroadcastRepository(
+    injection(),
+    broadcastRemoteGateway: injection(),
   ));
 }
 

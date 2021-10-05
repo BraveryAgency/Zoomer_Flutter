@@ -8,6 +8,7 @@ import 'package:zoomer/app/presentation/screens/broadcast/broadcast_screen.dart'
 import 'package:zoomer/app/presentation/screens/broadcast/bloc/broadcast_bloc.dart';
 
 import 'package:zoomer/di/injection.dart';
+import 'package:zoomer/domain/entities/broadcast_entity.dart';
 
 class AppNavigator {
   static const _signInRoute = '/signIn';
@@ -35,18 +36,23 @@ class AppNavigator {
     MaterialPageRoute route = MaterialPageRoute(
       settings: RouteSettings(name: _upcomingBroadcastRoute),
       builder: (BuildContext context) => BlocProvider(
-        create: (context) => UpcomingBroadcastBloc(),
+        create: (context) => UpcomingBroadcastBloc(
+          preferencesLocalGateway: injection(),
+          broadcastRepository: injection(),
+        ),
         child: UpcomingBroadcastScreen(),
       ),
     );
     Navigator.push(context, route);
   }
 
-  static void navigateToBroadcast(BuildContext context) {
+  static void navigateToBroadcast(BuildContext context,{required BroadcastEntity broadcast}) {
     MaterialPageRoute route = MaterialPageRoute(
       settings: RouteSettings(name: _broadcastRoute),
       builder: (BuildContext context) => BlocProvider(
-        create: (context) => BroadcastBloc(),
+        create: (context) => BroadcastBloc(
+          broadcast: broadcast
+        ),
         child: BroadcastScreen(),
       ),
     );

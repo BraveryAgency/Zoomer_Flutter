@@ -1,5 +1,9 @@
 //import 'network/broadcast.dart';
 
+import 'package:zoomer/domain/entities/briadcast_image_entity.dart';
+
+import 'network/broadcast.dart';
+
 class BroadcastEntity {
   BroadcastEntity({
     required this.id,
@@ -14,17 +18,18 @@ class BroadcastEntity {
   String id;
   String location;
   String building;
-  List<String> images;
-  double price;
+  List<BroadcastImageEntity> images;
+  String price;
   String description;
   String icon;
 
-  // factory BroadcastEntity.fromResponse(Broadcast broadcast) => BroadcastEntity(
-  //     id: broadcast.id,
-  //     location: broadcast.location,
-  //     building: broadcast.building,
-  //     images: broadcast.images,
-  //     price: broadcast.price,
-  //     description: broadcast.description,
-  // );
+  factory BroadcastEntity.fromResponse(Broadcast broadcast) => BroadcastEntity(
+      id: broadcast.id,
+      location: broadcast.location,
+      building: broadcast.building,
+      images: broadcast.images!.map((element) => BroadcastImageEntity.fromResponse(element)).toList(),
+      price: broadcast.price,
+      description: broadcast.description,
+      icon: broadcast.icon,
+  );
 }

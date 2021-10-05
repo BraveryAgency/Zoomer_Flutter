@@ -44,8 +44,8 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
           if (action is HideLoader) {
             Navigator.pop(context);
           }
-          if (action is NavigateToUpcomingBroadcast) {
-            AppNavigator.navigateToUpcomingBroadcast(context);
+          if (action is NavigateBack) {
+            Navigator.pop(context);
           }
           // if (action is NavigateToNavigation) {
           //   AppNavigator.navigateToNavigation(context);

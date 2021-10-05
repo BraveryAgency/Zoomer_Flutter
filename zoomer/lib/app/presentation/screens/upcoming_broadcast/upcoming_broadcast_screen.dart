@@ -39,7 +39,7 @@ class UpcomingBroadcastScreen extends BaseBlocStatelessWidget<UpcomingBroadcastB
         listener: (context, state) {
           BlocAction? action = state.action;
           if (action is NavigateToBroadcast) {
-            AppNavigator.navigateToBroadcast(context);
+            AppNavigator.navigateToBroadcast(context,broadcast: state.broadcast!);
           }
           if (action is ShowMessage) {
             showMessage(context, action: action);

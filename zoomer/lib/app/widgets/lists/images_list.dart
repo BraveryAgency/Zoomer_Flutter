@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:zoomer/core/ui/scroll_behavior/disable_glow_effect_scroll_behavior.dart';
+import 'package:zoomer/domain/entities/briadcast_image_entity.dart';
 import 'package:zoomer/gen/assets.gen.dart';
 
 class ImagesList extends StatefulWidget {
@@ -14,7 +15,7 @@ class ImagesList extends StatefulWidget {
     required this.pageController,
   });
 
-  final List<String> images;
+  final List<BroadcastImageEntity> images;
   final ValueChanged<int>? pageChanged;
   final PageController pageController;
 
@@ -82,7 +83,7 @@ class _ImagesListState extends State<ImagesList> {
                 fit: StackFit.expand,
                 children: [
                   CachedNetworkImage(
-                    imageUrl: widget.images[index],
+                    imageUrl: widget.images[index].url,
                     fit: BoxFit.cover,
                   ),
                 ],
