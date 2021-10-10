@@ -619,6 +619,8 @@ abstract class $UpcomingBroadcastStateCopyWith<$Res> {
           $Res Function(UpcomingBroadcastState) then) =
       _$UpcomingBroadcastStateCopyWithImpl<$Res>;
   $Res call({BlocAction? action, BroadcastEntity? broadcast});
+
+  $BroadcastEntityCopyWith<$Res>? get broadcast;
 }
 
 /// @nodoc
@@ -646,6 +648,17 @@ class _$UpcomingBroadcastStateCopyWithImpl<$Res>
               as BroadcastEntity?,
     ));
   }
+
+  @override
+  $BroadcastEntityCopyWith<$Res>? get broadcast {
+    if (_value.broadcast == null) {
+      return null;
+    }
+
+    return $BroadcastEntityCopyWith<$Res>(_value.broadcast!, (value) {
+      return _then(_value.copyWith(broadcast: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -656,6 +669,9 @@ abstract class _$UpcomingBroadcastStateCopyWith<$Res>
       __$UpcomingBroadcastStateCopyWithImpl<$Res>;
   @override
   $Res call({BlocAction? action, BroadcastEntity? broadcast});
+
+  @override
+  $BroadcastEntityCopyWith<$Res>? get broadcast;
 }
 
 /// @nodoc

@@ -11,6 +11,7 @@ import 'package:zoomer/core/ui/scroll_behavior/disable_glow_effect_scroll_behavi
 import 'package:zoomer/core/ui/widgets/base_bloc_stateless_widget.dart';
 import 'package:zoomer/core/ui/widgets/dialogs.dart';
 import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
+import 'package:zoomer/core/validation/validation_models.dart';
 import 'package:zoomer/gen/assets.gen.dart';
 import 'package:zoomer/localization/app_localizations.dart';
 
@@ -19,112 +20,132 @@ import 'bloc/sign_in_bloc.dart';
 class SignInScreen extends BaseBlocStatelessWidget<SignInBloc> {
   @override
   Widget build(BuildContext context) => Scaffold(
-    resizeToAvoidBottomInset: true,
-    body: SafeArea(
-      top: false,
-      child: _buildBody(context),
-    ),
-  );
+        resizeToAvoidBottomInset: true,
+        body: SafeArea(
+          top: false,
+          child: _buildBody(context),
+        ),
+      );
 
   Widget _buildBody(BuildContext context) => BlocListener<SignInBloc, SignInState>(
-    listenWhen: (previous, current) => previous.action != current.action,
-    listener: (context, state) {
-      BlocAction? action = state.action;
+        listenWhen: (previous, current) => previous.action != current.action,
+        listener: (context, state) {
+          BlocAction? action = state.action;
 
-      if (action is ShowMessage) {
-        showMessage(context, action: action);
-      }
-      if (action is ShowLoader) {
-        LoaderDialog.show(context: context);
-      }
+          if (action is ShowMessage) {
+            showMessage(context, action: action);
+          }
+          if (action is ShowLoader) {
+            LoaderDialog.show(context: context);
+          }
 
-      if (action is HideLoader) {
-        Navigator.pop(context);
-      }
-      if (action is NavigateToUpcomingBroadcast){
-        AppNavigator.navigateToUpcomingBroadcast(context);
-      }
-      // if (action is NavigateToNavigation) {
-      //   AppNavigator.navigateToNavigation(context);
-      // }
-      // if (action is NavigateToConfirmPhone) {
-      //   AppNavigator.navigateToConfirmPhone(
-      //     context,
-      //     confirmPhoneType: action.confirmPhoneType,
-      //     phone: action.phone,
-      //   );
-      // }
-    },
-    child: ScrollConfiguration(
-        behavior: const DisableGrowEffectScrollBehavior(),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 140),
-              _buildLogo(),
-              const SizedBox(height: 60),
-              _buildEmailInput(),
-              const SizedBox(height: 16),
-              _buildPasswordInput(),
-              const SizedBox(height: 30),
-              _buildRememberMeCheckBox(),
-              const SizedBox(height: 30),
-              _buildEnterButton(context),
-              const SizedBox(height: 15),
-            ],
+          if (action is HideLoader) {
+            Navigator.pop(context);
+          }
+          if (action is NavigateToUpcomingBroadcast) {
+            AppNavigator.navigateToUpcomingBroadcast(context);
+          }
+          // if (action is NavigateToNavigation) {
+          //   AppNavigator.navigateToNavigation(context);
+          // }
+          // if (action is NavigateToConfirmPhone) {
+          //   AppNavigator.navigateToConfirmPhone(
+          //     context,
+          //     confirmPhoneType: action.confirmPhoneType,
+          //     phone: action.phone,
+          //   );
+          // }
+        },
+        child: ScrollConfiguration(
+          behavior: const DisableGrowEffectScrollBehavior(),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 140),
+                _buildLogo(),
+                const SizedBox(height: 60),
+                _buildEmailInput(),
+                const SizedBox(height: 16),
+                _buildPasswordInput(),
+                const SizedBox(height: 30),
+                _buildRememberMeCheckBox(),
+                const SizedBox(height: 30),
+                _buildEnterButton(context),
+                const SizedBox(height: 15),
+              ],
+            ),
           ),
         ),
-      ),
-  );
+      );
 
   Widget _buildLogo() => Assets.images.logo.image(height: 37, width: 158);
 
-
-
   Widget _buildEmailInput() => BlocBuilder<SignInBloc, SignInState>(
-    buildWhen: (previousState, currentState) =>
-    previousState.email != currentState.email,
-    builder: (context, state) => DefaultInput(
-      title: AppLocalizations.of(context).email,
-      text: state.email.value,
-      onChanged: (text){
-        getBloc(context).add(SignInEvent.emailChanged(text));
-      },
-     // contentPadding: EdgeInsets.only(left: 14, right: 14, top: 18, bottom: 18),
-    )
-  );
+      buildWhen: (previousState, currentState) => previousState.email != currentState.email,
+      builder: (context, state) {
+        String? error;
+        switch (state.email.error) {
+          case EmailValidationError.empty:
+            error = AppLocalizations.of(context).fillField;
+            break;
+          case EmailValidationError.invalid:
+            error = AppLocalizations.of(context).incorrectData;
+            break;
+          default:
+        }
+        return DefaultInput(
+          title: AppLocalizations.of(context).email,
+          text: state.email.value,
+          error: error,
+          onChanged: (text) {
+            getBloc(context).add(SignInEvent.emailChanged(text));
+          },
+          // contentPadding: EdgeInsets.only(left: 14, right: 14, top: 18, bottom: 18),
+        );
+      });
 
   Widget _buildPasswordInput() => BlocBuilder<SignInBloc, SignInState>(
-    buildWhen: (previousState, currentState) =>
-    previousState.password != currentState.password || previousState.errorMessage != currentState.errorMessage,
-    builder: (context, state) => PasswordInput(
-        password: state.password.value,
-        title: AppLocalizations.of(context).password,
-        haveError: state.errorMessage != null,
-        onChanged: (password) {
-          getBloc(context).add(SignInEvent.passwordChanged(password));
-        }),
-  );
+      buildWhen: (previousState, currentState) =>
+          previousState.password != currentState.password || previousState.errorMessage != currentState.errorMessage,
+      builder: (context, state) {
+        String? error;
+        switch (state.password.error) {
+          case PasswordValidationError.empty:
+            error = AppLocalizations.of(context).fillField;
+            break;
+          case PasswordValidationError.invalid:
+            error = AppLocalizations.of(context).incorrectData;
+            break;
+          default:
+        }
+        return PasswordInput(
+            password: state.password.value,
+            title: AppLocalizations.of(context).password,
+            error: error,
+            onChanged: (password) {
+              getBloc(context).add(SignInEvent.passwordChanged(password));
+            });
+      });
 
   Widget _buildEnterButton(BuildContext context) => DefaultButton(
-    text: AppLocalizations.of(context).logIn,
-    onPressed: () {
-      getBloc(context).add(SignInEvent.enterClicked());
-    },
-  );
+        text: AppLocalizations.of(context).logIn,
+        onPressed: () {
+          getBloc(context).add(SignInEvent.enterClicked());
+        },
+      );
 
   Widget _buildRememberMeCheckBox() => BlocBuilder<SignInBloc, SignInState>(
-    buildWhen: (previousState, currentState) => previousState.rememberMeChecked != currentState.rememberMeChecked,
-    builder: (context, state) => AppCheckbox(
-      checked: state.rememberMeChecked,
-      title: AppLocalizations.of(context).rememberMe,
-      onPressed: () {
-        getBloc(context).add(SignInEvent.rememberMeClicked());
-      },
-    ),
-  );
+        buildWhen: (previousState, currentState) => previousState.rememberMeChecked != currentState.rememberMeChecked,
+        builder: (context, state) => AppCheckbox(
+          checked: state.rememberMeChecked,
+          title: AppLocalizations.of(context).rememberMe,
+          onPressed: () {
+            getBloc(context).add(SignInEvent.rememberMeClicked());
+          },
+        ),
+      );
 
   // Widget _buildErrorMessage() => BlocBuilder<SignInBloc, SignInState>(
   //   buildWhen: (previousState, currentState) => previousState.errorMessage != currentState.errorMessage,

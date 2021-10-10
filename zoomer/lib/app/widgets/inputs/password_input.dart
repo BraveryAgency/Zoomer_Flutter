@@ -1,6 +1,4 @@
-  import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:zoomer/gen/assets.gen.dart';
+import 'package:flutter/material.dart';
 import 'package:zoomer/localization/app_localizations.dart';
 
 import 'default_input.dart';
@@ -9,15 +7,15 @@ class PasswordInput extends StatefulWidget {
   const PasswordInput({
     this.password,
     this.title,
+    this.error,
     this.hint,
-    this.haveError = false,
     this.onChanged,
   });
 
   final String? password;
   final String? title;
+  final String? error;
   final String? hint;
-  final bool haveError;
   final ValueChanged<String>? onChanged;
 
   @override
@@ -38,9 +36,9 @@ class _PasswordInputState extends State<PasswordInput> {
   @override
   Widget build(BuildContext context) => DefaultInput(
         text: _password,
+        error: widget.error,
         maxLength: 40,
         title: widget.title ?? AppLocalizations.of(context).password,
-        haveError: widget.haveError,
         maxLines: 1,
         keyboardType: TextInputType.visiblePassword,
         obscureText: _obscureText,

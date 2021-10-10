@@ -66,7 +66,7 @@ class _UpcomingBroadcastScreenState extends BaseBlocState<UpcomingBroadcastScree
         body: SafeArea(
           //top: false,
           child: Scaffold(
-              backgroundColor: AppColors.onBackground1, appBar: _buildAppBar(context), body: _buildBody(context)),
+              backgroundColor: AppColors.background1, appBar: _buildAppBar(context), body: _buildBody(context)),
         ),
       );
 

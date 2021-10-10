@@ -4,15 +4,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zoomer/di/injection.dart';
 
 import 'app/app.dart';
 import 'app/resources/app_styles.dart';
+import 'di/injection.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification!.body}');
 }
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

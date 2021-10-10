@@ -1,34 +1,27 @@
 //import 'network/broadcast.dart';
 
 import 'package:flutter_webrtc/webrtc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zoomer/domain/entities/briadcast_image_entity.dart';
 
 import 'network/broadcast.dart';
 
-class BroadcastEntity {
-  BroadcastEntity({
-    required this.id,
-    required this.location,
-    required this.building,
-    required this.images,
-    required this.price,
-    required this.description,
-    required this.icon,
-    required this.sessionId,
-    required this.streamName,
-    this.renderer,
-  });
+part 'broadcast_entity.freezed.dart';
 
-  String id;
-  String location;
-  String building;
-  List<BroadcastImageEntity> images;
-  String price;
-  String description;
-  String icon;
-  String sessionId;
-  String streamName;
-  RTCVideoRenderer? renderer;
+@freezed
+class BroadcastEntity with _$BroadcastEntity {
+  factory BroadcastEntity({
+    required String id,
+    required String location,
+    required String building,
+    required List<BroadcastImageEntity> images,
+    required String price,
+    required String description,
+    required String icon,
+    required String sessionId,
+    required String streamName,
+    RTCVideoRenderer? renderer,
+  }) = _BroadcastEntity;
 
   factory BroadcastEntity.fromResponse(Broadcast broadcast) => BroadcastEntity(
         id: broadcast.id,

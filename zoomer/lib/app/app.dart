@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:zoomer/app/presentation/screens/sign_in/bloc/sign_in_bloc.dart';
-import 'package:zoomer/app/presentation/screens/sign_in/sign_in_screen.dart';
+import 'package:zoomer/app/presentation/screens/splash/bloc/splash_bloc.dart';
+import 'package:zoomer/app/presentation/screens/splash/splash_screen.dart';
 import 'package:zoomer/app/widgets/toasts/notification_toast.dart';
 import 'package:zoomer/core/ui/widgets/close_keyboard_by_tap.dart';
 import 'package:zoomer/di/injection.dart';
@@ -22,7 +20,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   late KeyboardVisibilityNotification _keyboardListener;
 
   late FirebaseMessaging messaging;
@@ -40,24 +37,26 @@ class _AppState extends State<App> {
       }
     });
     messaging = FirebaseMessaging.instance;
-    messaging.getToken().then((value){
+    messaging.getToken().then((value) {
       print(value);
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print("message recieved");
-      if (event.notification!=null && event.data.isNotEmpty)showOverlayNotification(
-            (context) {
-          return SafeArea(
-              child: Material(
-                  color: Colors.transparent,
-                  child: NotificationToast(
-                    title: event.notification!.title!,
-                    message: event.notification!.body!,
-                    date: event.data['date'],
-                    icon: event.data['icon'],)));
-        },
-        duration: Duration(seconds: 2),
-      );
+      if (event.notification != null && event.data.isNotEmpty)
+        showOverlayNotification(
+          (context) {
+            return SafeArea(
+                child: Material(
+                    color: Colors.transparent,
+                    child: NotificationToast(
+                      title: event.notification!.title!,
+                      message: event.notification!.body!,
+                      date: event.data['date'],
+                      icon: event.data['icon'],
+                    )));
+          },
+          duration: Duration(seconds: 2),
+        );
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print('Message clicked!');
@@ -74,24 +73,24 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) => CloseKeyboardByTap(
         OverlaySupport(
           child: MaterialApp(
-              theme: AppThemes.appTheme,
-              locale: Locale('en'),
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-                AppLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              supportedLocales: [Locale('ru'), Locale('en'), Locale('de')],
-              home: BlocProvider(
-                          create: (BuildContext context) => SignInBloc(
-                            preferencesLocalGateway: injection(),
-                            authorizationRepository: injection(),
-                          ),
-                          child: SignInScreen(),
-                        ),
-              //home: Container()),
-      ),
-        ),);
+            theme: AppThemes.appTheme,
+            locale: Locale('en'),
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+              AppLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: [Locale('ru'), Locale('en'), Locale('de')],
+            home: BlocProvider(
+              create: (BuildContext context) => SplashBloc(
+                preferencesLocalGateway: injection(),
+              ),
+              child: SplashScreen(),
+            ),
+            //home: Container()),
+          ),
+        ),
+      );
 }

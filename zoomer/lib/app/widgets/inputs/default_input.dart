@@ -6,8 +6,8 @@ class DefaultInput extends StatefulWidget {
   DefaultInput({
     this.title,
     this.text,
+    this.error,
     this.hint,
-    this.haveError = false,
     this.onChanged,
     this.keyboardType,
     this.obscureText = false,
@@ -26,8 +26,8 @@ class DefaultInput extends StatefulWidget {
 
   final String? title;
   final String? text;
+  final String? error;
   final String? hint;
-  final bool haveError;
   final ValueChanged<String>? onChanged;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -53,10 +53,8 @@ class _DefaultInputState extends State<DefaultInput> {
 
   //late VoidCallback _focusListener;
 
-
   @override
   void initState() {
-
 //    _focusListener = () {
 //      setState(() {});
 //    };
@@ -118,14 +116,12 @@ class _DefaultInputState extends State<DefaultInput> {
         ],
       );
 
-
-
   Widget _buildInput() => Container(
         padding: EdgeInsets.symmetric(vertical: 9, horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: widget.haveError
+            color: widget.error != null
                 ? AppColors.error
                 : _focus.hasFocus
                     ? AppColors.focusedInputBorder
@@ -142,7 +138,7 @@ class _DefaultInputState extends State<DefaultInput> {
           inputFormatters: widget.inputFormatters,
           decoration: InputDecoration(
             hintText: widget.hint,
-            // errorText: widget.error,
+            errorText: widget.error,
             labelText: widget.title,
             isDense: true,
             floatingLabelBehavior: FloatingLabelBehavior.auto,

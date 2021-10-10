@@ -24,8 +24,12 @@ class _$BroadcastEventTearOff {
     return LeaveClicked();
   }
 
-  MuteClicked muteClicked() {
-    return MuteClicked();
+  MicroClicked microClicked() {
+    return MicroClicked();
+  }
+
+  ExpandClicked expandClicked() {
+    return ExpandClicked();
   }
 
   CameraClicked cameraClicked() {
@@ -60,6 +64,13 @@ class _$BroadcastEventTearOff {
       participant,
     );
   }
+
+  ParticipantMicroClicked participantMicroClicked(
+      RemoteParticipantEntity participant) {
+    return ParticipantMicroClicked(
+      participant,
+    );
+  }
 }
 
 /// @nodoc
@@ -71,7 +82,8 @@ mixin _$BroadcastEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -79,19 +91,24 @@ mixin _$BroadcastEvent {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -99,7 +116,8 @@ mixin _$BroadcastEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -107,19 +125,23 @@ mixin _$BroadcastEvent {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -181,7 +203,8 @@ class _$Init implements Init {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -189,6 +212,8 @@ class _$Init implements Init {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
     return init();
   }
@@ -198,13 +223,16 @@ class _$Init implements Init {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -218,7 +246,8 @@ class _$Init implements Init {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -226,6 +255,8 @@ class _$Init implements Init {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
     return init(this);
   }
@@ -235,13 +266,15 @@ class _$Init implements Init {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -297,7 +330,8 @@ class _$LeaveClicked implements LeaveClicked {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -305,6 +339,8 @@ class _$LeaveClicked implements LeaveClicked {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
     return leaveClicked();
   }
@@ -314,13 +350,16 @@ class _$LeaveClicked implements LeaveClicked {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
     if (leaveClicked != null) {
@@ -334,7 +373,8 @@ class _$LeaveClicked implements LeaveClicked {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -342,6 +382,8 @@ class _$LeaveClicked implements LeaveClicked {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
     return leaveClicked(this);
   }
@@ -351,13 +393,15 @@ class _$LeaveClicked implements LeaveClicked {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
     if (leaveClicked != null) {
@@ -372,36 +416,37 @@ abstract class LeaveClicked implements BroadcastEvent {
 }
 
 /// @nodoc
-abstract class $MuteClickedCopyWith<$Res> {
-  factory $MuteClickedCopyWith(
-          MuteClicked value, $Res Function(MuteClicked) then) =
-      _$MuteClickedCopyWithImpl<$Res>;
+abstract class $MicroClickedCopyWith<$Res> {
+  factory $MicroClickedCopyWith(
+          MicroClicked value, $Res Function(MicroClicked) then) =
+      _$MicroClickedCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$MuteClickedCopyWithImpl<$Res> extends _$BroadcastEventCopyWithImpl<$Res>
-    implements $MuteClickedCopyWith<$Res> {
-  _$MuteClickedCopyWithImpl(
-      MuteClicked _value, $Res Function(MuteClicked) _then)
-      : super(_value, (v) => _then(v as MuteClicked));
+class _$MicroClickedCopyWithImpl<$Res>
+    extends _$BroadcastEventCopyWithImpl<$Res>
+    implements $MicroClickedCopyWith<$Res> {
+  _$MicroClickedCopyWithImpl(
+      MicroClicked _value, $Res Function(MicroClicked) _then)
+      : super(_value, (v) => _then(v as MicroClicked));
 
   @override
-  MuteClicked get _value => super._value as MuteClicked;
+  MicroClicked get _value => super._value as MicroClicked;
 }
 
 /// @nodoc
 
-class _$MuteClicked implements MuteClicked {
-  _$MuteClicked();
+class _$MicroClicked implements MicroClicked {
+  _$MicroClicked();
 
   @override
   String toString() {
-    return 'BroadcastEvent.muteClicked()';
+    return 'BroadcastEvent.microClicked()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is MuteClicked);
+    return identical(this, other) || (other is MicroClicked);
   }
 
   @override
@@ -412,7 +457,8 @@ class _$MuteClicked implements MuteClicked {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -420,8 +466,10 @@ class _$MuteClicked implements MuteClicked {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
-    return muteClicked();
+    return microClicked();
   }
 
   @override
@@ -429,17 +477,20 @@ class _$MuteClicked implements MuteClicked {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
-    if (muteClicked != null) {
-      return muteClicked();
+    if (microClicked != null) {
+      return microClicked();
     }
     return orElse();
   }
@@ -449,7 +500,8 @@ class _$MuteClicked implements MuteClicked {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -457,8 +509,10 @@ class _$MuteClicked implements MuteClicked {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
-    return muteClicked(this);
+    return microClicked(this);
   }
 
   @override
@@ -466,24 +520,153 @@ class _$MuteClicked implements MuteClicked {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
-    if (muteClicked != null) {
-      return muteClicked(this);
+    if (microClicked != null) {
+      return microClicked(this);
     }
     return orElse();
   }
 }
 
-abstract class MuteClicked implements BroadcastEvent {
-  factory MuteClicked() = _$MuteClicked;
+abstract class MicroClicked implements BroadcastEvent {
+  factory MicroClicked() = _$MicroClicked;
+}
+
+/// @nodoc
+abstract class $ExpandClickedCopyWith<$Res> {
+  factory $ExpandClickedCopyWith(
+          ExpandClicked value, $Res Function(ExpandClicked) then) =
+      _$ExpandClickedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$ExpandClickedCopyWithImpl<$Res>
+    extends _$BroadcastEventCopyWithImpl<$Res>
+    implements $ExpandClickedCopyWith<$Res> {
+  _$ExpandClickedCopyWithImpl(
+      ExpandClicked _value, $Res Function(ExpandClicked) _then)
+      : super(_value, (v) => _then(v as ExpandClicked));
+
+  @override
+  ExpandClicked get _value => super._value as ExpandClicked;
+}
+
+/// @nodoc
+
+class _$ExpandClicked implements ExpandClicked {
+  _$ExpandClicked();
+
+  @override
+  String toString() {
+    return 'BroadcastEvent.expandClicked()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is ExpandClicked);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() leaveClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
+    required TResult Function() cameraClicked,
+    required TResult Function() cameraSwitchClicked,
+    required TResult Function(Duration countSeconds) countSecondsChanged,
+    required TResult Function(RemoteParticipant participant) participantJoined,
+    required TResult Function(RemoteParticipant participant) participantRemoved,
+    required TResult Function(RemoteParticipant participant)
+        participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
+  }) {
+    return expandClicked();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? leaveClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
+    TResult Function()? cameraClicked,
+    TResult Function()? cameraSwitchClicked,
+    TResult Function(Duration countSeconds)? countSecondsChanged,
+    TResult Function(RemoteParticipant participant)? participantJoined,
+    TResult Function(RemoteParticipant participant)? participantRemoved,
+    TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
+    required TResult orElse(),
+  }) {
+    if (expandClicked != null) {
+      return expandClicked();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Init value) init,
+    required TResult Function(LeaveClicked value) leaveClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
+    required TResult Function(CameraClicked value) cameraClicked,
+    required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
+    required TResult Function(CountSecondsChanged value) countSecondsChanged,
+    required TResult Function(ParticipantJoined value) participantJoined,
+    required TResult Function(ParticipantRemoved value) participantRemoved,
+    required TResult Function(ParticipantStreamUpdate value)
+        participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
+  }) {
+    return expandClicked(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Init value)? init,
+    TResult Function(LeaveClicked value)? leaveClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
+    TResult Function(CameraClicked value)? cameraClicked,
+    TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
+    TResult Function(CountSecondsChanged value)? countSecondsChanged,
+    TResult Function(ParticipantJoined value)? participantJoined,
+    TResult Function(ParticipantRemoved value)? participantRemoved,
+    TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
+    required TResult orElse(),
+  }) {
+    if (expandClicked != null) {
+      return expandClicked(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ExpandClicked implements BroadcastEvent {
+  factory ExpandClicked() = _$ExpandClicked;
 }
 
 /// @nodoc
@@ -528,7 +711,8 @@ class _$CameraClicked implements CameraClicked {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -536,6 +720,8 @@ class _$CameraClicked implements CameraClicked {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
     return cameraClicked();
   }
@@ -545,13 +731,16 @@ class _$CameraClicked implements CameraClicked {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
     if (cameraClicked != null) {
@@ -565,7 +754,8 @@ class _$CameraClicked implements CameraClicked {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -573,6 +763,8 @@ class _$CameraClicked implements CameraClicked {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
     return cameraClicked(this);
   }
@@ -582,13 +774,15 @@ class _$CameraClicked implements CameraClicked {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
     if (cameraClicked != null) {
@@ -644,7 +838,8 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -652,6 +847,8 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
     return cameraSwitchClicked();
   }
@@ -661,13 +858,16 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
     if (cameraSwitchClicked != null) {
@@ -681,7 +881,8 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -689,6 +890,8 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
     return cameraSwitchClicked(this);
   }
@@ -698,13 +901,15 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
     if (cameraSwitchClicked != null) {
@@ -786,7 +991,8 @@ class _$CountSecondsChanged implements CountSecondsChanged {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -794,6 +1000,8 @@ class _$CountSecondsChanged implements CountSecondsChanged {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
     return countSecondsChanged(countSeconds);
   }
@@ -803,13 +1011,16 @@ class _$CountSecondsChanged implements CountSecondsChanged {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
     if (countSecondsChanged != null) {
@@ -823,7 +1034,8 @@ class _$CountSecondsChanged implements CountSecondsChanged {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -831,6 +1043,8 @@ class _$CountSecondsChanged implements CountSecondsChanged {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
     return countSecondsChanged(this);
   }
@@ -840,13 +1054,15 @@ class _$CountSecondsChanged implements CountSecondsChanged {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
     if (countSecondsChanged != null) {
@@ -933,7 +1149,8 @@ class _$ParticipantJoined implements ParticipantJoined {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -941,6 +1158,8 @@ class _$ParticipantJoined implements ParticipantJoined {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
     return participantJoined(participant);
   }
@@ -950,13 +1169,16 @@ class _$ParticipantJoined implements ParticipantJoined {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
     if (participantJoined != null) {
@@ -970,7 +1192,8 @@ class _$ParticipantJoined implements ParticipantJoined {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -978,6 +1201,8 @@ class _$ParticipantJoined implements ParticipantJoined {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
     return participantJoined(this);
   }
@@ -987,13 +1212,15 @@ class _$ParticipantJoined implements ParticipantJoined {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
     if (participantJoined != null) {
@@ -1081,7 +1308,8 @@ class _$ParticipantRemoved implements ParticipantRemoved {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -1089,6 +1317,8 @@ class _$ParticipantRemoved implements ParticipantRemoved {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
     return participantRemoved(participant);
   }
@@ -1098,13 +1328,16 @@ class _$ParticipantRemoved implements ParticipantRemoved {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
     if (participantRemoved != null) {
@@ -1118,7 +1351,8 @@ class _$ParticipantRemoved implements ParticipantRemoved {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -1126,6 +1360,8 @@ class _$ParticipantRemoved implements ParticipantRemoved {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
     return participantRemoved(this);
   }
@@ -1135,13 +1371,15 @@ class _$ParticipantRemoved implements ParticipantRemoved {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
     if (participantRemoved != null) {
@@ -1230,7 +1468,8 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
   TResult when<TResult extends Object?>({
     required TResult Function() init,
     required TResult Function() leaveClicked,
-    required TResult Function() muteClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
     required TResult Function() cameraClicked,
     required TResult Function() cameraSwitchClicked,
     required TResult Function(Duration countSeconds) countSecondsChanged,
@@ -1238,6 +1477,8 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
     required TResult Function(RemoteParticipant participant) participantRemoved,
     required TResult Function(RemoteParticipant participant)
         participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
   }) {
     return participantStreamUpdate(participant);
   }
@@ -1247,13 +1488,16 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
     TResult Function()? leaveClicked,
-    TResult Function()? muteClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
     TResult Function()? cameraClicked,
     TResult Function()? cameraSwitchClicked,
     TResult Function(Duration countSeconds)? countSecondsChanged,
     TResult Function(RemoteParticipant participant)? participantJoined,
     TResult Function(RemoteParticipant participant)? participantRemoved,
     TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
     required TResult orElse(),
   }) {
     if (participantStreamUpdate != null) {
@@ -1267,7 +1511,8 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
     required TResult Function(LeaveClicked value) leaveClicked,
-    required TResult Function(MuteClicked value) muteClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
     required TResult Function(CameraClicked value) cameraClicked,
     required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
     required TResult Function(CountSecondsChanged value) countSecondsChanged,
@@ -1275,6 +1520,8 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
     required TResult Function(ParticipantRemoved value) participantRemoved,
     required TResult Function(ParticipantStreamUpdate value)
         participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
   }) {
     return participantStreamUpdate(this);
   }
@@ -1284,13 +1531,15 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
     TResult Function(LeaveClicked value)? leaveClicked,
-    TResult Function(MuteClicked value)? muteClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
     TResult Function(CameraClicked value)? cameraClicked,
     TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
     TResult Function(CountSecondsChanged value)? countSecondsChanged,
     TResult Function(ParticipantJoined value)? participantJoined,
     TResult Function(ParticipantRemoved value)? participantRemoved,
     TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
     required TResult orElse(),
   }) {
     if (participantStreamUpdate != null) {
@@ -1311,12 +1560,172 @@ abstract class ParticipantStreamUpdate implements BroadcastEvent {
 }
 
 /// @nodoc
+abstract class $ParticipantMicroClickedCopyWith<$Res> {
+  factory $ParticipantMicroClickedCopyWith(ParticipantMicroClicked value,
+          $Res Function(ParticipantMicroClicked) then) =
+      _$ParticipantMicroClickedCopyWithImpl<$Res>;
+  $Res call({RemoteParticipantEntity participant});
+}
+
+/// @nodoc
+class _$ParticipantMicroClickedCopyWithImpl<$Res>
+    extends _$BroadcastEventCopyWithImpl<$Res>
+    implements $ParticipantMicroClickedCopyWith<$Res> {
+  _$ParticipantMicroClickedCopyWithImpl(ParticipantMicroClicked _value,
+      $Res Function(ParticipantMicroClicked) _then)
+      : super(_value, (v) => _then(v as ParticipantMicroClicked));
+
+  @override
+  ParticipantMicroClicked get _value => super._value as ParticipantMicroClicked;
+
+  @override
+  $Res call({
+    Object? participant = freezed,
+  }) {
+    return _then(ParticipantMicroClicked(
+      participant == freezed
+          ? _value.participant
+          : participant // ignore: cast_nullable_to_non_nullable
+              as RemoteParticipantEntity,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ParticipantMicroClicked implements ParticipantMicroClicked {
+  _$ParticipantMicroClicked(this.participant);
+
+  @override
+  final RemoteParticipantEntity participant;
+
+  @override
+  String toString() {
+    return 'BroadcastEvent.participantMicroClicked(participant: $participant)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ParticipantMicroClicked &&
+            (identical(other.participant, participant) ||
+                const DeepCollectionEquality()
+                    .equals(other.participant, participant)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(participant);
+
+  @JsonKey(ignore: true)
+  @override
+  $ParticipantMicroClickedCopyWith<ParticipantMicroClicked> get copyWith =>
+      _$ParticipantMicroClickedCopyWithImpl<ParticipantMicroClicked>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() leaveClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
+    required TResult Function() cameraClicked,
+    required TResult Function() cameraSwitchClicked,
+    required TResult Function(Duration countSeconds) countSecondsChanged,
+    required TResult Function(RemoteParticipant participant) participantJoined,
+    required TResult Function(RemoteParticipant participant) participantRemoved,
+    required TResult Function(RemoteParticipant participant)
+        participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
+  }) {
+    return participantMicroClicked(participant);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? leaveClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
+    TResult Function()? cameraClicked,
+    TResult Function()? cameraSwitchClicked,
+    TResult Function(Duration countSeconds)? countSecondsChanged,
+    TResult Function(RemoteParticipant participant)? participantJoined,
+    TResult Function(RemoteParticipant participant)? participantRemoved,
+    TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
+    required TResult orElse(),
+  }) {
+    if (participantMicroClicked != null) {
+      return participantMicroClicked(participant);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Init value) init,
+    required TResult Function(LeaveClicked value) leaveClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
+    required TResult Function(CameraClicked value) cameraClicked,
+    required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
+    required TResult Function(CountSecondsChanged value) countSecondsChanged,
+    required TResult Function(ParticipantJoined value) participantJoined,
+    required TResult Function(ParticipantRemoved value) participantRemoved,
+    required TResult Function(ParticipantStreamUpdate value)
+        participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
+  }) {
+    return participantMicroClicked(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Init value)? init,
+    TResult Function(LeaveClicked value)? leaveClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
+    TResult Function(CameraClicked value)? cameraClicked,
+    TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
+    TResult Function(CountSecondsChanged value)? countSecondsChanged,
+    TResult Function(ParticipantJoined value)? participantJoined,
+    TResult Function(ParticipantRemoved value)? participantRemoved,
+    TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
+    required TResult orElse(),
+  }) {
+    if (participantMicroClicked != null) {
+      return participantMicroClicked(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ParticipantMicroClicked implements BroadcastEvent {
+  factory ParticipantMicroClicked(RemoteParticipantEntity participant) =
+      _$ParticipantMicroClicked;
+
+  RemoteParticipantEntity get participant => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ParticipantMicroClickedCopyWith<ParticipantMicroClicked> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 class _$BroadcastStateTearOff {
   const _$BroadcastStateTearOff();
 
   _BroadcastState call(
       {BlocAction? action,
-      BroadcastEntity? broadcast = null,
+      required BroadcastEntity broadcast,
       List<ViewerEntity> viewers = const [],
       String broadcastTimer = '00:00',
       bool isMicrophoneEnabled = true,
@@ -1342,7 +1751,7 @@ const $BroadcastState = _$BroadcastStateTearOff();
 /// @nodoc
 mixin _$BroadcastState {
   BlocAction? get action => throw _privateConstructorUsedError;
-  BroadcastEntity? get broadcast => throw _privateConstructorUsedError;
+  BroadcastEntity get broadcast => throw _privateConstructorUsedError;
   List<ViewerEntity> get viewers => throw _privateConstructorUsedError;
   String get broadcastTimer => throw _privateConstructorUsedError;
   bool get isMicrophoneEnabled => throw _privateConstructorUsedError;
@@ -1363,13 +1772,15 @@ abstract class $BroadcastStateCopyWith<$Res> {
       _$BroadcastStateCopyWithImpl<$Res>;
   $Res call(
       {BlocAction? action,
-      BroadcastEntity? broadcast,
+      BroadcastEntity broadcast,
       List<ViewerEntity> viewers,
       String broadcastTimer,
       bool isMicrophoneEnabled,
       bool isCameraEnabled,
       bool isExpanded,
       List<RemoteParticipantEntity> participants});
+
+  $BroadcastEntityCopyWith<$Res> get broadcast;
 }
 
 /// @nodoc
@@ -1400,7 +1811,7 @@ class _$BroadcastStateCopyWithImpl<$Res>
       broadcast: broadcast == freezed
           ? _value.broadcast
           : broadcast // ignore: cast_nullable_to_non_nullable
-              as BroadcastEntity?,
+              as BroadcastEntity,
       viewers: viewers == freezed
           ? _value.viewers
           : viewers // ignore: cast_nullable_to_non_nullable
@@ -1427,6 +1838,13 @@ class _$BroadcastStateCopyWithImpl<$Res>
               as List<RemoteParticipantEntity>,
     ));
   }
+
+  @override
+  $BroadcastEntityCopyWith<$Res> get broadcast {
+    return $BroadcastEntityCopyWith<$Res>(_value.broadcast, (value) {
+      return _then(_value.copyWith(broadcast: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -1438,13 +1856,16 @@ abstract class _$BroadcastStateCopyWith<$Res>
   @override
   $Res call(
       {BlocAction? action,
-      BroadcastEntity? broadcast,
+      BroadcastEntity broadcast,
       List<ViewerEntity> viewers,
       String broadcastTimer,
       bool isMicrophoneEnabled,
       bool isCameraEnabled,
       bool isExpanded,
       List<RemoteParticipantEntity> participants});
+
+  @override
+  $BroadcastEntityCopyWith<$Res> get broadcast;
 }
 
 /// @nodoc
@@ -1477,7 +1898,7 @@ class __$BroadcastStateCopyWithImpl<$Res>
       broadcast: broadcast == freezed
           ? _value.broadcast
           : broadcast // ignore: cast_nullable_to_non_nullable
-              as BroadcastEntity?,
+              as BroadcastEntity,
       viewers: viewers == freezed
           ? _value.viewers
           : viewers // ignore: cast_nullable_to_non_nullable
@@ -1511,7 +1932,7 @@ class __$BroadcastStateCopyWithImpl<$Res>
 class _$_BroadcastState implements _BroadcastState {
   _$_BroadcastState(
       {this.action,
-      this.broadcast = null,
+      required this.broadcast,
       this.viewers = const [],
       this.broadcastTimer = '00:00',
       this.isMicrophoneEnabled = true,
@@ -1521,9 +1942,8 @@ class _$_BroadcastState implements _BroadcastState {
 
   @override
   final BlocAction? action;
-  @JsonKey(defaultValue: null)
   @override
-  final BroadcastEntity? broadcast;
+  final BroadcastEntity broadcast;
   @JsonKey(defaultValue: const [])
   @override
   final List<ViewerEntity> viewers;
@@ -1598,7 +2018,7 @@ class _$_BroadcastState implements _BroadcastState {
 abstract class _BroadcastState implements BroadcastState {
   factory _BroadcastState(
       {BlocAction? action,
-      BroadcastEntity? broadcast,
+      required BroadcastEntity broadcast,
       List<ViewerEntity> viewers,
       String broadcastTimer,
       bool isMicrophoneEnabled,
@@ -1609,7 +2029,7 @@ abstract class _BroadcastState implements BroadcastState {
   @override
   BlocAction? get action => throw _privateConstructorUsedError;
   @override
-  BroadcastEntity? get broadcast => throw _privateConstructorUsedError;
+  BroadcastEntity get broadcast => throw _privateConstructorUsedError;
   @override
   List<ViewerEntity> get viewers => throw _privateConstructorUsedError;
   @override

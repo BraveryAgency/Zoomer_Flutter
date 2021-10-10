@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class DioHelper {
-  static const baseUrl = 'http://651933-cd46896.tmweb.ru:8000/api/v1';
+  static const baseUrl = 'http://theeye.live:8000/server/api/v1/';
   // static const baseUrl = 'https://24dev.tregor.ru/api/v2';
   static const filesPath = '/files/';
   static const timeout = 30000;

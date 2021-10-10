@@ -5,12 +5,12 @@ class AppColors {
   static const Color onPrimary = Color(0xFF362614);
   static const Color accent = Color(0xFF234DD4);
   static const Color accentText = Color(0xFFD89972);
-
+  static const Color surface = Color(0xFFFFFFFF);
   static const Color onAccent = Color(0xFFFFFFFF);
   static const Color background = Color(0xFFFFFFFF);
-  static const Color onBackground1 = Color(0xFFF4F4F4);
-  static const Color onBackground2 = Color(0xFFEFF5F5);
-  static const Color onBackground3 = Color(0xFFE5E5E5);
+  static const Color background1 = Color(0xFFF4F4F4);
+  static const Color background2 = Color(0xFFEFF5F5);
+  static const Color background3 = Color(0xFFE5E5E5);
   static const Color onSurface = Color(0xFF362614);
 
   static const Color inputBackground = Color(0xFFFFFFFF);

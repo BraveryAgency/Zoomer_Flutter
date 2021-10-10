@@ -47,7 +47,6 @@ class AppLocalizations {
 
   String get noUpcomingBroadcastsFound => _localizedStrings['noUpcomingBroadcastsFound'] ?? '';
 
-
   String get rememberMe => _localizedStrings['rememberMe'] ?? '';
 
   String get profile => _localizedStrings['profile'] ?? '';
@@ -142,6 +141,8 @@ class AppLocalizations {
   String get contactYourManagementCompany => _localizedStrings['contactYourManagementCompany'] ?? '';
   String get limitOfAttemptsExceededPleaseTryIn => _localizedStrings['limitOfAttemptsExceededPleaseTryIn'] ?? '';
   String get invalidConfirmationCode => _localizedStrings['invalidConfirmationCode'] ?? '';
+  String get fillField => _localizedStrings['fillField'] ?? '';
+  String get incorrectData => _localizedStrings['incorrectData'] ?? '';
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

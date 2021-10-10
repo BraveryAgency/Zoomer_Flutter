@@ -26,17 +26,29 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
   late Signaling _signaling;
 
   @override
+  Future<void> close() async {
+    state.broadcast.renderer?.dispose();
+    _signaling.close();
+    state.participants.forEach((participant) {
+      participant.renderer.dispose();
+    });
+    await super.close();
+  }
+
+  @override
   Stream<BroadcastState> mapEventToState(BroadcastEvent event) async* {
     yield* event.when(
       init: _init,
       leaveClicked: _leaveClicked,
       cameraSwitchClicked: _cameraSwitchClicked,
       cameraClicked: _cameraClicked,
-      muteClicked: _muteClicked,
+      microClicked: _microClicked,
+      expandClicked: _expandClicked,
       countSecondsChanged: _countSecondsChanged,
       participantJoined: _participantJoined,
       participantRemoved: _participantRemoved,
       participantStreamUpdate: _participantStreamUpdate,
+      participantMicroClicked: _participantMicroClicked,
     );
   }
 
@@ -47,6 +59,10 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
       userName: broadcast.streamName,
       iceServer: 'stun.l.google.com:19302',
     );
+    RTCVideoRenderer localRenderer = RTCVideoRenderer();
+    localRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
+    await localRenderer.initialize();
+
     await _signaling.connect(sessionId: broadcast.sessionId);
 
     _signaling.onParticipantsJoined = (RemoteParticipant remoteParticipant) async {
@@ -58,7 +74,12 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
     _signaling.onParticipantsStreamUpdate = (RemoteParticipant remoteParticipant) {
       this.add(BroadcastEvent.participantStreamUpdate(remoteParticipant));
     };
+    _signaling.onLocalStream = (MediaStream stream) {
+      localRenderer.srcObject = stream;
+    };
 
+    broadcast = broadcast.copyWith(renderer: localRenderer);
+    yield state.copyWith(broadcast: broadcast);
     _startBroadcastTimer();
   }
 
@@ -66,21 +87,29 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
     yield state.copyWith(action: NavigateBack());
   }
 
-  Stream<BroadcastState> _cameraSwitchClicked() async* {}
+  Stream<BroadcastState> _cameraSwitchClicked() async* {
+    _signaling.switchCamera();
+  }
 
   Stream<BroadcastState> _cameraClicked() async* {
+    _signaling.setCameraEnabled(!state.isCameraEnabled);
     yield state.copyWith(isCameraEnabled: !state.isCameraEnabled);
   }
 
-  Stream<BroadcastState> _muteClicked() async* {
+  Stream<BroadcastState> _microClicked() async* {
+    _signaling.setMicroEnabled(!state.isMicrophoneEnabled);
     yield state.copyWith(isMicrophoneEnabled: !state.isMicrophoneEnabled);
+  }
+
+  Stream<BroadcastState> _expandClicked() async* {
+    yield state.copyWith(isExpanded: !state.isExpanded);
   }
 
   Timer? _timer;
 
   Duration _currentCountSeconds = Duration(seconds: 1);
 
-  _startBroadcastTimer() {
+  void _startBroadcastTimer() {
     _timer?.cancel();
     _currentCountSeconds = Duration.zero;
     this.add(CountSecondsChanged(_currentCountSeconds));
@@ -116,6 +145,7 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
 
   Stream<BroadcastState> _participantJoined(RemoteParticipant participant) async* {
     RTCVideoRenderer videoRenderer = RTCVideoRenderer();
+    videoRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
     await videoRenderer.initialize();
     List<RemoteParticipantEntity> participants = List.from(state.participants);
     participants.add(RemoteParticipantEntity(participant: participant, renderer: videoRenderer));
@@ -130,12 +160,31 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
 
   Stream<BroadcastState> _participantStreamUpdate(RemoteParticipant participant) async* {
     List<RemoteParticipantEntity> participants = List.from(state.participants);
-    for (int index = 0; index < participants.length; index++) {
-      if (participants[index].participant.id == participant.id) {
-        participants[index].participant = participant;
-        participants[index].renderer.srcObject = participant.mediaStream;
-      }
+    RemoteParticipantEntity? foundParticipant =
+        participants.firstWhereOrNull((element) => element.participant.id == participant.id);
+    if (foundParticipant != null) {
+      foundParticipant.participant = participant;
+      foundParticipant.renderer.srcObject = participant.mediaStream;
+    } else {
+      RTCVideoRenderer videoRenderer = RTCVideoRenderer();
+      videoRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
+      await videoRenderer.initialize();
+      videoRenderer.srcObject = participant.mediaStream;
+      participants.add(RemoteParticipantEntity(participant: participant, renderer: videoRenderer));
     }
+
     yield state.copyWith(participants: participants);
+  }
+
+  Stream<BroadcastState> _participantMicroClicked(RemoteParticipantEntity participant) async* {
+    List<RemoteParticipantEntity> participants = List.from(state.participants);
+    RemoteParticipantEntity? foundParticipant = participants.firstWhereOrNull(
+      (element) => element.participant.id == participant.participant.id,
+    );
+
+    if (foundParticipant != null) {
+      foundParticipant.microEnabled = !foundParticipant.microEnabled;
+      yield state.copyWith(participants: participants);
+    }
   }
 }

@@ -7,13 +7,12 @@ class PreferencesLocalGateway {
 
   static const tokenKey = 'token';
 
-  static const localeKey = 'locale';
+  static const rememberMeStatusKey = 'rememberMeStatusKey';
 
   FlutterSecureStorage flutterSecureStorage;
 
   Future<String?> getToken() async {
     String? token = await flutterSecureStorage.read(key: tokenKey);
-     return 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpbiI6InRlc3RAbWFpbC5ydSIsImV4cCI6MTYzMzQ0ODE2NH0.I5uJfKxYBP0unlMZ_H336jF4i7dW9NzhsxWQ3bfGOfg';
 
     if (token == null) {
       return null;
@@ -22,20 +21,21 @@ class PreferencesLocalGateway {
     }
   }
 
-  Future setToken(String? apiToken) {
+  Future<void> setToken(String? apiToken) {
     return flutterSecureStorage.write(key: tokenKey, value: apiToken);
   }
 
-  Future<String?> getLocale() async {
-    String? locale = await flutterSecureStorage.read(key: localeKey);
-    if (locale == null) {
-      return null;
-    } else {
-      return locale;
-    }
+  Future<void> setRememberMeStatus(bool? status) {
+    return flutterSecureStorage.write(key: rememberMeStatusKey, value: status.toString());
   }
 
-  Future setLocale(String? locale) {
-    return flutterSecureStorage.write(key: localeKey, value: locale);
+  Future<bool> getRememberMeStatus() async {
+    String? status = await flutterSecureStorage.read(key: rememberMeStatusKey);
+
+    if (status == 'true') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

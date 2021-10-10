@@ -62,6 +62,12 @@ class RemoteParticipant {
   MediaStream? mediaStream;
   RTCPeerConnection? peerConnection;
   String? metadata;
+
+  String? get userName {
+    if (metadata == null) return null;
+
+    return jsonDecode(metadata!)['clientData'];
+  }
 }
 
 typedef void SignalingStateCallback(SignalingState state);
@@ -152,8 +158,16 @@ class Signaling {
     _localStream?.getVideoTracks()[0].switchCamera();
   }
 
-  void muteMic() {
-    _localStream?.getVideoTracks()[0].setMicrophoneMute(true);
+  void setMicroEnabled(bool enabled) {
+    _localStream?.getVideoTracks()[0].setMicrophoneMute(!enabled);
+  }
+
+  void setCameraEnabled(bool enabled) {
+    if (enabled) {
+      _localPeerConnection?.addStream(_localStream);
+    } else {
+      _localPeerConnection?.removeStream(_localStream);
+    }
   }
 
   Future<void> createWebRtcSession({required String sessionId}) {
