@@ -14,6 +14,8 @@ class $AssetsI18nGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  String get arrowDownButton => 'assets/images/arrow_down_button.svg';
+  String get arrowUpButton => 'assets/images/arrow_up_button.svg';
   String get cameraOff => 'assets/images/camera_off.svg';
   String get cameraOn => 'assets/images/camera_on.svg';
   String get checked => 'assets/images/checked.svg';

@@ -69,21 +69,25 @@ typedef void StreamStateCallback(MediaStream stream);
 typedef void OtherEventCallback(dynamic event);
 
 class Signaling {
-  Signaling(this._url, this._secret, this._userName, this._iceServer)
-      : _iceServers = {
+  Signaling({
+    required this.url,
+    required this.secret,
+    required this.userName,
+    required this.iceServer,
+  }) : _iceServers = {
           'iceServers': [
             {
-              'url': 'stun:$_iceServer',
+              'url': 'stun:$iceServer',
               //'username': _turnUsername,
               //'credential': _turnCredential
             },
           ]
         }; // Signaling
 
-  String _url;
-  String _secret;
-  String _userName;
-  String _iceServer;
+  String url;
+  String secret;
+  String userName;
+  String iceServer;
   WebSocket? _socket;
   String token = '';
   String session = '';
@@ -152,14 +156,14 @@ class Signaling {
     _localStream?.getVideoTracks()[0].setMicrophoneMute(true);
   }
 
-  Future<dynamic> createWebRtcSession({required String sessionId}) {
+  Future<void> createWebRtcSession({required String sessionId}) {
     final Map<String, dynamic> bodyMap = <String, dynamic>{'customSessionId': sessionId};
     final Map<String, dynamic> headersMap = <String, dynamic>{
-      'Authorization': 'Basic ${base64Encode(utf8.encode('OPENVIDUAPP:$_secret'))}'
+      'Authorization': 'Basic ${base64Encode(utf8.encode('OPENVIDUAPP:$secret'))}'
     };
     return ApiClient()
         .request<Map<String, dynamic>>(Config(
-            uri: Uri.parse('https://$_url/api/sessions'),
+            uri: Uri.parse('https://$url/api/sessions'),
             headers: headersMap,
             body: RequestBody.json(bodyMap),
             method: RequestMethod.post,
@@ -172,7 +176,6 @@ class Signaling {
       //__FIX_IT_IF_ERROR_409
       session = sessionId;
       print('createWebRtcSession error: $error');
-      return sessionId;
     });
   }
 
@@ -182,11 +185,11 @@ class Signaling {
   }) {
     final Map<String, dynamic> bodyMap = <String, dynamic>{'session': sessionId, 'role': role, 'data': ''};
     final Map<String, dynamic> headersMap = <String, dynamic>{
-      'Authorization': 'Basic ${base64Encode(utf8.encode('OPENVIDUAPP:$_secret'))}'
+      'Authorization': 'Basic ${base64Encode(utf8.encode('OPENVIDUAPP:$secret'))}'
     };
     return ApiClient()
         .request<Map<String, dynamic>>(Config(
-            uri: Uri.parse('https://$_url/api/tokens'),
+            uri: Uri.parse('https://$url/api/tokens'),
             headers: headersMap,
             body: RequestBody.json(bodyMap),
             method: RequestMethod.post,
@@ -198,9 +201,13 @@ class Signaling {
     });
   }
 
-  Future<void> connect() async {
+  Future<void> connect({required String sessionId}) async {
     try {
-      _socket = await WebSocket.connect('wss://$_url/openvidu');
+      await createWebRtcSession(sessionId: sessionId);
+      print('◤◢◤◢◤◢◤◢◤◢◤ sessionId: $sessionId  ◤◢◤◢◤◢◤◢◤◢◤ ');
+
+      await createWebRtcToken(sessionId: sessionId);
+      _socket = await WebSocket.connect('wss://$url/openvidu');
 
       if (this.onStateChange != null) {
         this.onStateChange?.call(SignalingState.ConnectionOpen);
@@ -218,7 +225,7 @@ class Signaling {
 
       _createLocalPeerConnection().then((_) {
         _idJoinRoom = _sendJson(JsonConstants.joinRoom, {
-          JsonConstants.metadata: '{\"clientData\": \"$_userName\"}',
+          JsonConstants.metadata: '{\"clientData\": \"$userName\"}',
           'secret': '',
           'platform': Platform.isAndroid ? 'Android' : 'iOS',
           // 'dataChannels': 'false',

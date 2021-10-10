@@ -8,7 +8,7 @@ part of 'broadcast.dart';
 
 Broadcast _$BroadcastFromJson(Map<String, dynamic> json) {
   return Broadcast(
-    id: json['id'] as String,
+    id: json['_id'] as String,
     location: json['location'] as String,
     building: json['building'] as String,
     images: (json['listImages'] as List<dynamic>)
@@ -18,13 +18,13 @@ Broadcast _$BroadcastFromJson(Map<String, dynamic> json) {
     date: json['date'] as String,
     description: json['description'] as String,
     icon: json['icons'] as String,
-    streamToken: json['streamToken'] as String,
+    sessionId: json['sessionId'] as String,
     streamName: json['streamName'] as String,
   );
 }
 
 Map<String, dynamic> _$BroadcastToJson(Broadcast instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'location': instance.location,
       'building': instance.building,
       'listImages': instance.images,
@@ -32,6 +32,6 @@ Map<String, dynamic> _$BroadcastToJson(Broadcast instance) => <String, dynamic>{
       'date': instance.date,
       'description': instance.description,
       'icons': instance.icon,
-      'streamToken': instance.streamToken,
+      'sessionId': instance.sessionId,
       'streamName': instance.streamName,
     };

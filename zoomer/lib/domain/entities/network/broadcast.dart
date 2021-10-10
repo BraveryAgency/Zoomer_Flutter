@@ -2,7 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'broadcast_image.dart';
 
-
 part 'broadcast.g.dart';
 
 @JsonSerializable()
@@ -16,10 +15,11 @@ class Broadcast {
     required this.date,
     required this.description,
     required this.icon,
-    required this.streamToken,
+    required this.sessionId,
     required this.streamName,
   });
 
+  @JsonKey(name: "_id")
   String id;
   String location;
   String building;
@@ -30,7 +30,7 @@ class Broadcast {
   String description;
   @JsonKey(name: "icons")
   String icon;
-  String streamToken;
+  String sessionId;
   String streamName;
 
   factory Broadcast.fromJson(Map<String, dynamic> json) => _$BroadcastFromJson(json);

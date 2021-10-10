@@ -57,22 +57,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
 
   Stream<SignInState> _enterClicked(SignInClicked value) async* {
-    yield state.copyWith(action: NavigateToUpcomingBroadcast());
-    // if (fieldsAreValid) {
-    //   //if (_timeToTryAgain == null || DateTime.now().isAfter(_timeToTryAgain!)) {
-    //     yield* _signIn();
-    //   } else {
-    //   //  int minutesLeftToTryAgain = _timeToTryAgain!.difference(DateTime.now()).inMinutes + 1;
-    //     yield state.copyWith(
-    //     //   action: ShowMessage(
-    //     //     messageType: MessageType.customMessage,
-    //     //     title: localizations.error,
-    //     //     message: localizations.limitOfAttemptsExceededPleaseTryIn +
-    //     //         ' $minutesLeftToTryAgain ' +
-    //     //         _declensionMinutes(minutesLeftToTryAgain),
-    //     //   ),
-    //      );
-    //     }
+    // yield state.copyWith(action: NavigateToUpcomingBroadcast());
+    if (fieldsAreValid) {
+        yield* _signIn();
+      } else {
+
   }
 
 

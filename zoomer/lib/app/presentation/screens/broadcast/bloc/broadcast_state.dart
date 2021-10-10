@@ -9,5 +9,7 @@ class BroadcastState with _$BroadcastState {
     @Default('00:00') String broadcastTimer,
     @Default(true) bool isMicrophoneEnabled,
     @Default(true) bool isCameraEnabled,
+    @Default(false) bool isExpanded,
+    @Default([]) List<RemoteParticipantEntity> participants,
   }) = _BroadcastState;
 }

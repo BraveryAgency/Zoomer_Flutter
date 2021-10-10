@@ -8,13 +8,10 @@ import 'package:zoomer/app/navigation/navigation_actions.dart';
 import 'package:zoomer/app/resources/app_colors.dart';
 import 'package:zoomer/app/widgets/app_bars/default_appbar.dart';
 import 'package:zoomer/app/widgets/buttons/default_button.dart';
-import 'package:zoomer/app/widgets/checkboxes/app_checkbox.dart';
-import 'package:zoomer/app/widgets/inputs/default_input.dart';
-import 'package:zoomer/app/widgets/inputs/password_input.dart';
 import 'package:zoomer/app/widgets/lists/images_list.dart';
 import 'package:zoomer/core/bloc/bloc_action.dart';
 import 'package:zoomer/core/ui/scroll_behavior/disable_glow_effect_scroll_behavior.dart';
-import 'package:zoomer/core/ui/widgets/base_bloc_stateless_widget.dart';
+import 'package:zoomer/core/ui/widgets/base_bloc_state.dart';
 import 'package:zoomer/core/ui/widgets/dialogs.dart';
 import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
 import 'package:zoomer/gen/assets.gen.dart';
@@ -22,13 +19,54 @@ import 'package:zoomer/localization/app_localizations.dart';
 
 import 'bloc/upcoming_broadcast_bloc.dart';
 
-class UpcomingBroadcastScreen extends BaseBlocStatelessWidget<UpcomingBroadcastBloc> {
+class UpcomingBroadcastScreen extends StatefulWidget {
+  @override
+  _UpcomingBroadcastScreenState createState() => _UpcomingBroadcastScreenState();
+}
+
+class _UpcomingBroadcastScreenState extends BaseBlocState<UpcomingBroadcastScreen, UpcomingBroadcastBloc>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // These are the callbacks
+    switch (state) {
+      case AppLifecycleState.resumed:
+        getBloc(context).add(UpcomingBroadcastEvent.screenOpened());
+        // widget is resumed
+        break;
+      case AppLifecycleState.inactive:
+        // widget is inactive
+        break;
+      case AppLifecycleState.paused:
+        // widget is paused
+        break;
+      case AppLifecycleState.detached:
+        // widget is detached
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         //resizeToAvoidBottomInset: true,
         body: SafeArea(
           //top: false,
-          child: Scaffold(backgroundColor: AppColors.onBackground1, appBar: _buildAppBar(context), body: _buildBody(context)),
+          child: Scaffold(
+              backgroundColor: AppColors.onBackground1, appBar: _buildAppBar(context), body: _buildBody(context)),
         ),
       );
 
@@ -39,7 +77,7 @@ class UpcomingBroadcastScreen extends BaseBlocStatelessWidget<UpcomingBroadcastB
         listener: (context, state) {
           BlocAction? action = state.action;
           if (action is NavigateToBroadcast) {
-            AppNavigator.navigateToBroadcast(context,broadcast: state.broadcast!);
+            AppNavigator.navigateToBroadcast(context, broadcast: state.broadcast!);
           }
           if (action is ShowMessage) {
             showMessage(context, action: action);
@@ -90,7 +128,7 @@ class UpcomingBroadcastScreen extends BaseBlocStatelessWidget<UpcomingBroadcastB
       // onSecondButtonPressed:(){
       //   getBloc(context).add(UpcomingBroadcastEvent.detailsClicked());
       // },
-  );
+      );
 
   Widget _buildTitle(context) => Center(
         child: Text(
@@ -115,8 +153,8 @@ class UpcomingBroadcastScreen extends BaseBlocStatelessWidget<UpcomingBroadcastB
                 style:
                     TextStyle(color: AppColors.inputText, fontSize: 15, height: 21 / 15, fontWeight: FontWeight.w400),
               ),
-              SizedBox(height:50),
-              Assets.images.noBroadcast.image(height: 369,width: 279),
+              SizedBox(height: 50),
+              Assets.images.noBroadcast.image(height: 369, width: 279),
             ],
           );
         return Container(

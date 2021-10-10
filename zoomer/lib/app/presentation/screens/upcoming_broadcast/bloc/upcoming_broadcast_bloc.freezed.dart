@@ -20,6 +20,10 @@ class _$UpcomingBroadcastEventTearOff {
     return Init();
   }
 
+  ScreenOpened screenOpened() {
+    return ScreenOpened();
+  }
+
   ProfileClicked profileClicked() {
     return ProfileClicked();
   }
@@ -41,6 +45,7 @@ mixin _$UpcomingBroadcastEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
@@ -49,6 +54,7 @@ mixin _$UpcomingBroadcastEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
@@ -58,6 +64,7 @@ mixin _$UpcomingBroadcastEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
@@ -66,6 +73,7 @@ mixin _$UpcomingBroadcastEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
@@ -130,6 +138,7 @@ class _$Init implements Init {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
@@ -141,6 +150,7 @@ class _$Init implements Init {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
@@ -156,6 +166,7 @@ class _$Init implements Init {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
@@ -167,6 +178,7 @@ class _$Init implements Init {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
@@ -181,6 +193,104 @@ class _$Init implements Init {
 
 abstract class Init implements UpcomingBroadcastEvent {
   factory Init() = _$Init;
+}
+
+/// @nodoc
+abstract class $ScreenOpenedCopyWith<$Res> {
+  factory $ScreenOpenedCopyWith(
+          ScreenOpened value, $Res Function(ScreenOpened) then) =
+      _$ScreenOpenedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$ScreenOpenedCopyWithImpl<$Res>
+    extends _$UpcomingBroadcastEventCopyWithImpl<$Res>
+    implements $ScreenOpenedCopyWith<$Res> {
+  _$ScreenOpenedCopyWithImpl(
+      ScreenOpened _value, $Res Function(ScreenOpened) _then)
+      : super(_value, (v) => _then(v as ScreenOpened));
+
+  @override
+  ScreenOpened get _value => super._value as ScreenOpened;
+}
+
+/// @nodoc
+
+class _$ScreenOpened implements ScreenOpened {
+  _$ScreenOpened();
+
+  @override
+  String toString() {
+    return 'UpcomingBroadcastEvent.screenOpened()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is ScreenOpened);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() screenOpened,
+    required TResult Function() profileClicked,
+    required TResult Function() detailsClicked,
+    required TResult Function() streamNowClicked,
+  }) {
+    return screenOpened();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? screenOpened,
+    TResult Function()? profileClicked,
+    TResult Function()? detailsClicked,
+    TResult Function()? streamNowClicked,
+    required TResult orElse(),
+  }) {
+    if (screenOpened != null) {
+      return screenOpened();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
+    required TResult Function(ProfileClicked value) profileClicked,
+    required TResult Function(DetailsClicked value) detailsClicked,
+    required TResult Function(StreamNowClicked value) streamNowClicked,
+  }) {
+    return screenOpened(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
+    TResult Function(ProfileClicked value)? profileClicked,
+    TResult Function(DetailsClicked value)? detailsClicked,
+    TResult Function(StreamNowClicked value)? streamNowClicked,
+    required TResult orElse(),
+  }) {
+    if (screenOpened != null) {
+      return screenOpened(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ScreenOpened implements UpcomingBroadcastEvent {
+  factory ScreenOpened() = _$ScreenOpened;
 }
 
 /// @nodoc
@@ -224,6 +334,7 @@ class _$ProfileClicked implements ProfileClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
@@ -235,6 +346,7 @@ class _$ProfileClicked implements ProfileClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
@@ -250,6 +362,7 @@ class _$ProfileClicked implements ProfileClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
@@ -261,6 +374,7 @@ class _$ProfileClicked implements ProfileClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
@@ -318,6 +432,7 @@ class _$DetailsClicked implements DetailsClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
@@ -329,6 +444,7 @@ class _$DetailsClicked implements DetailsClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
@@ -344,6 +460,7 @@ class _$DetailsClicked implements DetailsClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
@@ -355,6 +472,7 @@ class _$DetailsClicked implements DetailsClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
@@ -412,6 +530,7 @@ class _$StreamNowClicked implements StreamNowClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
@@ -423,6 +542,7 @@ class _$StreamNowClicked implements StreamNowClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
@@ -438,6 +558,7 @@ class _$StreamNowClicked implements StreamNowClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
@@ -449,6 +570,7 @@ class _$StreamNowClicked implements StreamNowClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,

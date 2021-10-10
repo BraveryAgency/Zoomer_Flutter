@@ -8,4 +8,7 @@ class BroadcastEvent with _$BroadcastEvent {
   factory BroadcastEvent.cameraClicked() = CameraClicked;
   factory BroadcastEvent.cameraSwitchClicked() = CameraSwitchClicked;
   factory BroadcastEvent.countSecondsChanged(Duration countSeconds) = CountSecondsChanged;
+  factory BroadcastEvent.participantJoined(RemoteParticipant participant) = ParticipantJoined;
+  factory BroadcastEvent.participantRemoved(RemoteParticipant participant) = ParticipantRemoved;
+  factory BroadcastEvent.participantStreamUpdate(RemoteParticipant participant) = ParticipantStreamUpdate;
 }

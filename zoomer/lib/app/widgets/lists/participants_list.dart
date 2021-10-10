@@ -2,33 +2,33 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_webrtc/rtc_video_view.dart';
 import 'package:zoomer/app/resources/app_colors.dart';
 import 'package:zoomer/app/widgets/circle_page_indicator.dart';
-
 import 'package:zoomer/core/ui/scroll_behavior/disable_glow_effect_scroll_behavior.dart';
-import 'package:zoomer/domain/entities/viewer_entity.dart';
+import 'package:zoomer/domain/entities/remote_participant_entity.dart';
 import 'package:zoomer/gen/assets.gen.dart';
 
-class ViewersList extends StatefulWidget {
-  const ViewersList({
-    required this.viewers,
+class ParticipantsList extends StatefulWidget {
+  const ParticipantsList({
+    required this.participants,
     this.pageChanged,
     required this.pageController,
     this.onMuteClicked,
     this.onCameraClicked,
   });
 
-  final List<ViewerEntity> viewers;
+  final List<RemoteParticipantEntity> participants;
   final ValueChanged<int>? pageChanged;
   final PageController pageController;
   final VoidCallback? onMuteClicked;
   final VoidCallback? onCameraClicked;
 
   @override
-  _ViewersListState createState() => _ViewersListState();
+  _ParticipantsListState createState() => _ParticipantsListState();
 }
 
-class _ViewersListState extends State<ViewersList> {
+class _ParticipantsListState extends State<ParticipantsList> {
   late int _currentPage;
   late PageController _controller;
   late ValueNotifier<int> _pageNotifier;
@@ -56,67 +56,65 @@ class _ViewersListState extends State<ViewersList> {
         children: [
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: AppColors.primary,
-                border: Border.all(color: AppColors.primary),
-                boxShadow: [BoxShadow(
+              borderRadius: BorderRadius.circular(8),
+              color: AppColors.primary,
+              border: Border.all(color: AppColors.primary),
+              boxShadow: [
+                BoxShadow(
                   color: AppColors.black.withOpacity(0.07),
-                  offset: Offset(0,8),
+                  offset: Offset(0, 8),
                   blurRadius: 30,
-                ),],
+                ),
+              ],
             ),
             child: SizedBox(
-              height: 234,
+              height: 240,
               width: MediaQuery.of(context).size.width - 44,
-              child: _buildViewers(),
+              child: _buildParticipants(),
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 35),
           _buildPageIndicator(),
         ],
       );
 
-  Widget _buildViewers() => ScrollConfiguration(
+  Widget _buildParticipants() => ScrollConfiguration(
         behavior: const DisableGrowEffectScrollBehavior(),
         child: PageView.builder(
-          itemCount: widget.viewers.length,
+          itemCount: widget.participants.length,
           onPageChanged: (int page) {
             _currentPage = page;
             _pageNotifier.value = _currentPage;
           },
           controller: _controller,
-          itemBuilder: (context, index) => Container(
-            color: AppColors.primary,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  height: 160,
-                  width: double.infinity,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      widget.viewers[index].image,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    const SizedBox(width: 10),
-                    _buildName(name: widget.viewers[index].name),
-                    Spacer(),
-                    _buildMuteButton(context),
-                    const SizedBox(width: 16),
-                    _buildCameraButton(context),
-                    const SizedBox(width: 10),
-                  ],
-                )
-              ],
+          itemBuilder: (context, index) => _buildParticipant(widget.participants[index]),
+        ),
+      );
+
+  Widget _buildParticipant(RemoteParticipantEntity remoteParticipant) => Container(
+        color: AppColors.primary,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              height: 160,
+              width: double.infinity,
+              child: ClipRRect(borderRadius: BorderRadius.circular(8), child: RTCVideoView(remoteParticipant.renderer)),
             ),
-          ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const SizedBox(width: 10),
+                _buildName(name: remoteParticipant.participant.streamId ?? ''),
+                Spacer(),
+                _buildMuteButton(context),
+                const SizedBox(width: 16),
+                _buildCameraButton(context),
+                const SizedBox(width: 10),
+              ],
+            )
+          ],
         ),
       );
 
@@ -145,6 +143,6 @@ class _ViewersListState extends State<ViewersList> {
         selectedSize: 8,
         selectedWidth: 20,
         currentPageNotifier: _pageNotifier,
-        itemCount: widget.viewers.length,
+        itemCount: widget.participants.length,
       );
 }

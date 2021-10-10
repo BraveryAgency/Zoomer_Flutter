@@ -3,13 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:zoomer/app/navigation/app_navigator.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
 import 'package:zoomer/app/resources/app_colors.dart';
 import 'package:zoomer/app/widgets/app_bars/default_appbar.dart';
-import 'package:zoomer/app/widgets/lists/viewers_list.dart';
+import 'package:zoomer/app/widgets/lists/participants_list.dart';
 import 'package:zoomer/core/bloc/bloc_action.dart';
-import 'package:zoomer/core/ui/scroll_behavior/disable_glow_effect_scroll_behavior.dart';
 import 'package:zoomer/core/ui/widgets/base_bloc_stateless_widget.dart';
 import 'package:zoomer/core/ui/widgets/dialogs.dart';
 import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
@@ -18,18 +16,19 @@ import 'package:zoomer/gen/assets.gen.dart';
 import 'bloc/broadcast_bloc.dart';
 
 class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
+  final PageController _pageController = PageController();
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
           child: Scaffold(
-              appBar: _buildAppBar(context), body: _buildBody(context)),
+            appBar: _buildAppBar(context),
+            body: _buildBody(context),
+          ),
         ),
       );
 
-  PageController _pageController = PageController();
-
-  Widget _buildBody(BuildContext context) =>
-      BlocListener<BroadcastBloc, BroadcastState>(
+  Widget _buildBody(BuildContext context) => BlocListener<BroadcastBloc, BroadcastState>(
         listenWhen: (previous, current) => previous.action != current.action,
         listener: (context, state) {
           BlocAction? action = state.action;
@@ -47,29 +46,35 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
           if (action is NavigateBack) {
             Navigator.pop(context);
           }
-          // if (action is NavigateToNavigation) {
-          //   AppNavigator.navigateToNavigation(context);
-          // }
-          // if (action is NavigateToConfirmPhone) {
-          //   AppNavigator.navigateToConfirmPhone(
-          //     context,
-          //     confirmPhoneType: action.confirmPhoneType,
-          //     phone: action.phone,
-          //   );
-          // }
         },
-        child: ScrollConfiguration(
-          behavior: const DisableGrowEffectScrollBehavior(),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildBroadcastArea(context),
-                const SizedBox(height: 50),
-                _buildUsersItems(context),
-                const SizedBox(height: 70),
-              ],
-            ),
+        child: BlocBuilder<BroadcastBloc, BroadcastState>(
+          buildWhen: (previous, current) => previous.isExpanded != current.isExpanded,
+          builder: (context, state) => Stack(
+            children: [
+              Column(
+                children: [
+                  _buildBroadcastArea(context),
+                  if (!state.isExpanded) _buildRemoteParticipantsSection(context),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 20, bottom: state.isExpanded ? 32 : 250),
+                  child: _buildExpandButton(),
+                ),
+              ),
+            ],
           ),
+        ),
+      );
+
+  Widget _buildExpandButton() => BlocBuilder<BroadcastBloc, BroadcastState>(
+        buildWhen: (previous, current) => previous.isExpanded != current.isExpanded,
+        builder: (context, state) => SvgPicture.asset(
+          state.isExpanded ? Assets.images.arrowDownButton : Assets.images.arrowUpButton,
+          width: 45,
+          height: 45,
         ),
       );
 
@@ -111,6 +116,7 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
       );
 
   Widget _buildBroadcastHeader() => BlocBuilder<BroadcastBloc, BroadcastState>(
+        buildWhen: (previous, current) => previous.broadcast != current.broadcast,
         builder: (context, state) {
           if (state.broadcast == null) return SizedBox();
           return Container(
@@ -133,8 +139,7 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
       );
 
   Widget _buildBroadcastIcon() => BlocBuilder<BroadcastBloc, BroadcastState>(
-      buildWhen: (previous, current) =>
-          previous.broadcast?.icon != current.broadcast?.icon,
+      buildWhen: (previous, current) => previous.broadcast?.icon != current.broadcast?.icon,
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.only(left: 13, top: 7.5, bottom: 7.5),
@@ -158,25 +163,18 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
         );
       });
 
-  Widget _buildBroadcastBuilding() =>
-      BlocBuilder<BroadcastBloc, BroadcastState>(
-        buildWhen: (previous, current) =>
-            previous.broadcast?.building != current.broadcast?.building,
+  Widget _buildBroadcastBuilding() => BlocBuilder<BroadcastBloc, BroadcastState>(
+        buildWhen: (previous, current) => previous.broadcast?.building != current.broadcast?.building,
         builder: (context, state) {
           return Text(
             state.broadcast!.building,
-            style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w400,
-                fontSize: 15,
-                height: 22 / 15),
+            style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w400, fontSize: 15, height: 22 / 15),
           );
         },
       );
 
   Widget _buildBroadcastTime() => BlocBuilder<BroadcastBloc, BroadcastState>(
-        buildWhen: (previous, current) =>
-            previous.broadcastTimer != current.broadcastTimer,
+        buildWhen: (previous, current) => previous.broadcastTimer != current.broadcastTimer,
         builder: (context, state) {
           if (state.broadcastTimer == null) return SizedBox();
           return Container(
@@ -211,35 +209,33 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
         ],
       );
 
-  Widget _buildMuteButton(context) =>
-      BlocBuilder<BroadcastBloc, BroadcastState>(
+  Widget _buildMuteButton(context) => BlocBuilder<BroadcastBloc, BroadcastState>(
         builder: (context, state) {
           return GestureDetector(
-              onTap: () {
-                getBloc(context).add(BroadcastEvent.muteClicked());
-              },
-              child: SvgPicture.asset(
-                  (state.isMicrophoneEnabled)
-                      ? Assets.images.microphoneOn
-                      : Assets.images.microphoneOff,
-                  height: 45,
-                  width: 45));
+            onTap: () {
+              getBloc(context).add(BroadcastEvent.muteClicked());
+            },
+            child: SvgPicture.asset(
+              (state.isMicrophoneEnabled) ? Assets.images.microphoneOn : Assets.images.microphoneOff,
+              height: 45,
+              width: 45,
+            ),
+          );
         },
       );
 
-  Widget _buildCameraButton(context) =>
-      BlocBuilder<BroadcastBloc, BroadcastState>(
+  Widget _buildCameraButton(context) => BlocBuilder<BroadcastBloc, BroadcastState>(
         builder: (context, state) {
           return GestureDetector(
-              onTap: () {
-                getBloc(context).add(BroadcastEvent.cameraClicked());
-              },
-              child: SvgPicture.asset(
-                  (state.isCameraEnabled)
-                      ? Assets.images.cameraOn
-                      : Assets.images.cameraOff,
-                  height: 45,
-                  width: 45));
+            onTap: () {
+              getBloc(context).add(BroadcastEvent.cameraClicked());
+            },
+            child: SvgPicture.asset(
+              (state.isCameraEnabled) ? Assets.images.cameraOn : Assets.images.cameraOff,
+              height: 45,
+              width: 45,
+            ),
+          );
         },
       );
 
@@ -247,15 +243,16 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
       onTap: () {
         getBloc(context).add(BroadcastEvent.cameraSwitchClicked());
       },
-      child:
-          SvgPicture.asset(Assets.images.switchCamera, height: 45, width: 45));
+      child: SvgPicture.asset(Assets.images.switchCamera, height: 45, width: 45));
 
-  Widget _buildUsersItems(context) =>
-      BlocBuilder<BroadcastBloc, BroadcastState>(
-        buildWhen: (previous, current) => previous.viewers != current.viewers,
-        builder: (context, state) {
-          if (state.viewers == null || state.viewers.isEmpty) return SizedBox();
-          return ViewersList(viewers: state.viewers, pageController: _pageController);
-        },
+  Widget _buildRemoteParticipantsSection(BuildContext context) => BlocBuilder<BroadcastBloc, BroadcastState>(
+        buildWhen: (previous, current) => previous.participants != current.participants,
+        builder: (context, state) => Padding(
+          padding: const EdgeInsets.only(top: 20, bottom: 30),
+          child: ParticipantsList(
+            participants: state.participants,
+            pageController: _pageController,
+          ),
+        ),
       );
 }
