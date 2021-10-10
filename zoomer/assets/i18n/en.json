@@ -1,0 +1,9 @@
+{
+  "email": "Email",
+  "password": "Password",
+  "rememberMe": "Remember me",
+  "logIn": "Log in",
+  "upcomingBroadcast": "Upcoming broadcast",
+  "streamNow" : "Stream now",
+  "noUpcomingBroadcastsFound" : "No upcoming broadcasts found"
+}
