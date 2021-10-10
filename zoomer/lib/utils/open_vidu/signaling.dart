@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_webrtc/webrtc.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'api_client.dart';
 import 'request_config.dart';
@@ -22,31 +21,31 @@ enum SignalingState {
 }
 
 class JsonConstants {
-  static const String _value = 'value';
-  static const String _params = 'params';
-  static const String _method = 'method';
-  static const String _id = 'id';
-  static const String _result = 'result';
-  static const String _iceCandidate = 'iceCandidate';
-  static const String _participantJoined = "participantJoined";
-  static const String _participantEvicted = "participantEvicted";
-  static const String _participantUnpublished = "participantUnpublished";
-  static const String _streamPropertyChanged = "streamPropertyChanged";
-  static const String _sendMessage = "sendMessage";
-  static const String _participantPublished = "participantPublished";
-  static const String _participantLeft = "participantLeft";
-  static const String _sessionId = "sessionId";
-  static const String _sdpAnswer = "sdpAnswer";
-  static const String _joinRoom = "joinRoom";
-  static const String _metadata = "metadata";
-  static const String _publishVideo = "publishVideo";
-  static const String _onIceCandidate = 'onIceCandidate';
-  static const String _receiveVideoFrom = 'receiveVideoFrom';
-  static const String _endpointName = 'endpointName';
-  static const String _senderConnectionId = 'senderConnectionId';
-  static const String _connectionId = 'connectionId';
-  static const String _leaveRoom = 'leaveRoom';
-  static const String _streams = 'streams';
+  static const String value = 'value';
+  static const String params = 'params';
+  static const String method = 'method';
+  static const String id = 'id';
+  static const String result = 'result';
+  static const String iceCandidate = 'iceCandidate';
+  static const String participantJoined = "participantJoined";
+  static const String participantEvicted = "participantEvicted";
+  static const String participantUnpublished = "participantUnpublished";
+  static const String streamPropertyChanged = "streamPropertyChanged";
+  static const String sendMessage = "sendMessage";
+  static const String participantPublished = "participantPublished";
+  static const String participantLeft = "participantLeft";
+  static const String sessionId = "sessionId";
+  static const String sdpAnswer = "sdpAnswer";
+  static const String joinRoom = "joinRoom";
+  static const String metadata = "metadata";
+  static const String publishVideo = "publishVideo";
+  static const String onIceCandidate = 'onIceCandidate';
+  static const String receiveVideoFrom = 'receiveVideoFrom';
+  static const String endpointName = 'endpointName';
+  static const String senderConnectionId = 'senderConnectionId';
+  static const String connectionId = 'connectionId';
+  static const String leaveRoom = 'leaveRoom';
+  static const String streams = 'streams';
 }
 
 class RemoteParticipant {
@@ -70,51 +69,55 @@ typedef void StreamStateCallback(MediaStream stream);
 typedef void OtherEventCallback(dynamic event);
 
 class Signaling {
-  Signaling({
-    required this.session,
-  });
+  Signaling(this._url, this._secret, this._userName, this._iceServer)
+      : _iceServers = {
+          'iceServers': [
+            {
+              'url': 'stun:$_iceServer',
+              //'username': _turnUsername,
+              //'credential': _turnCredential
+            },
+          ]
+        }; // Signaling
 
+  String _url;
+  String _secret;
+  String _userName;
+  String _iceServer;
   WebSocket? _socket;
-  String _url = '24service.productfit.ru';
-  String _secret = 'kah1EeYoo9th';
   String token = '';
   String session = '';
-  String _userId = '';
+  String? _userId;
+  String _endpointName = '';
 
-  Map<String, dynamic> get _iceServers => {
-        'iceServers': [
-          {
-            'url': 'turn:$_iceServer',
-            'username': _turnUsername,
-            'credential': _turnCredential,
-          },
-        ]
-      }; //
-  String _iceServer = '';
-  String _turnUsername = '';
-  String _turnCredential = '';
-
-  Map<String?, RemoteParticipant> _participants = <String?, RemoteParticipant>{};
+  Map<String, dynamic> _iceServers = <String, dynamic>{};
+  Map<String, RemoteParticipant> _participants = <String, RemoteParticipant>{};
   Map<String, String> _participantEndpoints = <String, String>{};
   Map<int, String> _idsReceiveVideo = <int, String>{};
 
   int _internalId = 1;
+  int? _idPublishVideo;
+  int? _idJoinRoom;
 
   Timer? _timer;
 
-  BehaviorSubject<MediaStream?> _onAddRemoteStreamSubject = BehaviorSubject.seeded(null);
-  BehaviorSubject<MediaStream?> _onRemoveRemoteStreamSubject = BehaviorSubject.seeded(null);
+  MediaStream? _localStream;
+  RTCPeerConnection? _localPeerConnection;
+  bool _localPeerConnectionHasRemoteDescription = false;
+
   SignalingStateCallback? onStateChange;
   StreamStateCallback? onLocalStream;
-  Stream<MediaStream?> get onAddRemoteStream => _onAddRemoteStreamSubject.stream;
-  Stream<MediaStream?> get onRemoveRemoteStream => _onRemoveRemoteStreamSubject.stream;
+  StreamStateCallback? onAddRemoteStream;
+  StreamStateCallback? onRemoveRemoteStream;
 
-  OtherEventCallback? onParticipantsRemove;
-  OtherEventCallback? onParticipantsJoined;
-  OtherEventCallback? onParticipantsStreamUpdate;
-  OtherEventCallback? onMessageReceive;
-  OtherEventCallback? onUserId;
-  OtherEventCallback? onSelfEvict;
+  void Function(RemoteParticipant participant)? onParticipantsRemove;
+  void Function(RemoteParticipant participant)? onParticipantsJoined;
+  void Function(RemoteParticipant participant)? onParticipantsStreamUpdate;
+
+  List<Map<String, dynamic>> _iceCandidatesParams = <Map<String, dynamic>>[];
+  List _remoteAlreadyInRoomValues = [];
+
+  bool _haveRemoteAlreadyInRoom = false;
 
   final Map<String, dynamic> _constraints = {
     'mandatory': {
@@ -128,16 +131,25 @@ class Signaling {
     _internalId++;
   }
 
-  void dispose() {
-    _onAddRemoteStreamSubject.close();
-    _onRemoveRemoteStreamSubject.close();
+  void close() {
+    _localStream?.dispose();
+    _localStream = null;
     _timer?.cancel();
-    _sendJson(JsonConstants._leaveRoom, null);
-    _participants.forEach((String? id, RemoteParticipant remoteParticipant) {
+    _sendJson(JsonConstants.leaveRoom, null);
+    _localPeerConnection?.close();
+    _participants.forEach((String id, RemoteParticipant remoteParticipant) {
       remoteParticipant.peerConnection?.close();
     });
     _participants.clear();
     _socket?.close();
+  }
+
+  void switchCamera() {
+    _localStream?.getVideoTracks()[0].switchCamera();
+  }
+
+  void muteMic() {
+    _localStream?.getVideoTracks()[0].setMicrophoneMute(true);
   }
 
   Future<dynamic> createWebRtcSession({required String sessionId}) {
@@ -153,16 +165,22 @@ class Signaling {
             method: RequestMethod.post,
             responseType: ResponseBody.json()))
         .then((Map<String, dynamic> jsonResponse) {
+      print('◤◢◤◢◤◢◤◢◤◢◤ Create WebRTC session POST response: $jsonResponse ◤◢◤◢◤◢◤◢◤◢◤');
       session = jsonResponse['id'];
       return session;
     }).catchError((error) {
+      //__FIX_IT_IF_ERROR_409
       session = sessionId;
+      print('createWebRtcSession error: $error');
       return sessionId;
     });
   }
 
-  Future<dynamic> getToken({String role = 'SUBSCRIBER'}) {
-    final Map<String, dynamic> bodyMap = <String, dynamic>{'session': session, 'role': role, 'data': ''};
+  Future<dynamic> createWebRtcToken({
+    required String sessionId,
+    String role = 'PUBLISHER',
+  }) {
+    final Map<String, dynamic> bodyMap = <String, dynamic>{'session': sessionId, 'role': role, 'data': ''};
     final Map<String, dynamic> headersMap = <String, dynamic>{
       'Authorization': 'Basic ${base64Encode(utf8.encode('OPENVIDUAPP:$_secret'))}'
     };
@@ -182,9 +200,7 @@ class Signaling {
 
   Future<void> connect() async {
     try {
-      await getToken();
       _socket = await WebSocket.connect('wss://$_url/openvidu');
-      // _socket = await WebSocket.connect('wss://admin3:Dserv2020@77.37.154.46:5542/h264/ch1/sub/av_stream/openvidu');
 
       if (this.onStateChange != null) {
         this.onStateChange?.call(SignalingState.ConnectionOpen);
@@ -200,15 +216,18 @@ class Signaling {
         }
       });
 
-      _sendJson(JsonConstants._joinRoom, {
-        JsonConstants._metadata: '',
-        'secret': '',
-        'platform': Platform.isAndroid ? 'Android' : 'iOS',
-        // 'dataChannels': 'false',
-        'session': session,
-        'token': token,
-        'recorder': false,
+      _createLocalPeerConnection().then((_) {
+        _idJoinRoom = _sendJson(JsonConstants.joinRoom, {
+          JsonConstants.metadata: '{\"clientData\": \"$_userName\"}',
+          'secret': '',
+          'platform': Platform.isAndroid ? 'Android' : 'iOS',
+          // 'dataChannels': 'false',
+          'session': session,
+          'token': token,
+        });
+        _createLocalOffer();
       });
+
       _startPingTimer();
     } catch (e) {
       print('◤◢!◤◢◤!◢◤◢!◤◢◤ connect error: $e ◤◢!◤◢◤!◢◤◢!◤◢◤');
@@ -219,41 +238,43 @@ class Signaling {
   }
 
   Future<void> onMessage(message) async {
-    print('OpenViduLogs onMessage \n$message');
     Map<String, dynamic> mapData = message;
-    // print('◤◢◤◢◤◢◤◢◤◢◤ onMessage_json_from_socket ---> | $message | ◤◢◤◢◤◢◤◢◤◢◤');
-    if (mapData.containsKey(JsonConstants._result)) {
-      handleResult(mapData[JsonConstants._result], mapData[JsonConstants._id]);
+    print('◤◢◤◢◤◢◤◢◤◢◤ onMessage_json_from_socket ---> | $message | ◤◢◤◢◤◢◤◢◤◢◤');
+    if (mapData.containsKey(JsonConstants.result)) {
+      if (mapData['id'] == _idPublishVideo) {
+        _endpointName = mapData[JsonConstants.result]['id'];
+        print('◤◢◤◢◤◢(_1_)◤◢◤◢◤ ');
+      } else if (mapData['id'] == _idJoinRoom) {
+        _createLocalOffer(); //??????????????????????
+        print('◤◢◤◢◤◢(_2_)◤◢◤◢◤ ');
+      }
+      handleResult(mapData[JsonConstants.result], mapData[JsonConstants.id]);
+      print('◤◢◤◢◤◢(_3 - handleResult_)◤◢◤◢◤ ');
     } else {
       handleMethod(mapData);
+      print('◤◢◤◢◤◢(_3 - handleMethod)◤◢◤◢◤ ');
     }
   }
 
   void handleResult(Map<String, dynamic> data, int id) {
-    if (data.containsKey(JsonConstants._sdpAnswer)) {
+    if (data.containsKey(JsonConstants.sdpAnswer)) {
       _saveAnswer(data, id);
-    } else if (data.containsKey(JsonConstants._sessionId)) {
-      if (data.containsKey(JsonConstants._value)) {
+    } else if (data.containsKey(JsonConstants.sessionId)) {
+      if (data.containsKey(JsonConstants.value)) {
         // Join room reply
-        _turnUsername = data['turnUsername'];
-        _turnCredential = data['turnCredential'];
-        _iceServer = data['coturnIp'] + ':3478';
-        List<dynamic> values = data[JsonConstants._value];
+        List<dynamic> values = data[JsonConstants.value];
         _userId = data['id'];
-        if (this.onUserId != null) {
-          this.onUserId?.call(data['id']);
+        for (Map<String, dynamic> iceCandidate in _iceCandidatesParams) {
+          iceCandidate[JsonConstants.endpointName] = data['endpointName'] ?? data['id'];
+          iceCandidate[JsonConstants.id] = data['id'] ?? data['endpointName'];
+          _sendJson(JsonConstants.onIceCandidate, iceCandidate);
         }
-        // for (Map<String, dynamic> iceCandidate in _iceCandidatesParams) {
-        //   iceCandidate[JsonConstants._endpointName] = data['endpointName'] ?? data['id'];
-        //   iceCandidate[JsonConstants._id] = data['id'] ?? data['endpointName'];
-        //   _sendJson(JsonConstants._onIceCandidate, iceCandidate);
-        // }
         if (values.length > 0) {
           _addParticipantsAlreadyInRoom(values);
         }
       }
-    } else if (data.containsKey(JsonConstants._value)) {
-      // print('|◤◢◤◢◤pong|');
+    } else if (data.containsKey(JsonConstants.value)) {
+      print('|◤◢◤◢◤pong|');
     } else {
       print('Unrecognized: $data');
     }
@@ -261,30 +282,30 @@ class Signaling {
 
   void handleMethod(Map<String, dynamic> data) {
     print('◤◢◤◢◤◢◤◢◤◢◤ HANDLE_METHOD ◤◢◤◢◤◢◤◢◤◢◤ : $data');
-    if (data.containsKey(JsonConstants._params)) {
-      Map<String, dynamic> params = data[JsonConstants._params];
-      String method = data[JsonConstants._method];
+    if (data.containsKey(JsonConstants.params)) {
+      Map<String, dynamic> params = data[JsonConstants.params];
+      String method = data[JsonConstants.method];
       switch (method) {
-        case JsonConstants._iceCandidate:
+        case JsonConstants.iceCandidate:
           _iceCandidateMethod(params);
           print('◤◢◤◢◤◢◤◢◤◢◤ iceCandidate: $params ◤◢◤◢◤◢◤◢◤◢◤');
           break;
-        case JsonConstants._participantJoined:
+        case JsonConstants.participantJoined:
           _participantJoinedMethod(params);
           print('◤◢◤◢◤◢◤◢◤◢◤ participantJoined: $params ◤◢◤◢◤◢◤◢◤◢◤');
           break;
-        case JsonConstants._sendMessage:
+        case JsonConstants.sendMessage:
           _messageReceive(params);
           print('◤◢◤◢◤◢◤◢◤◢◤ sendMessage: $params ◤◢◤◢◤◢◤◢◤◢◤');
           break;
-        case JsonConstants._participantPublished:
+        case JsonConstants.participantPublished:
           _participantPublishedMethod(params);
           print('◤◢◤◢◤◢◤◢◤◢◤ participantPublished: $params ◤◢◤◢◤◢◤◢◤◢◤');
           break;
-        case JsonConstants._participantLeft:
+        case JsonConstants.participantLeft:
           print('◤◢◤◢◤◢◤◢◤◢◤ participantLeft: $params ◤◢◤◢◤◢◤◢◤◢◤');
           break;
-        case JsonConstants._participantEvicted:
+        case JsonConstants.participantEvicted:
           _participantLeftMethod(params);
           print('◤◢◤◢◤◢◤◢◤◢◤ participantEvicted: $params ◤◢◤◢◤◢◤◢◤◢◤');
           break;
@@ -298,31 +319,30 @@ class Signaling {
   }
 
   Future<void> _addParticipantsAlreadyInRoom(List<dynamic> values) async {
-    var value = values[0];
-    // for (Map<String, dynamic> value in values) {
-    String _remoteParticipantId = value[JsonConstants._id];
-    RemoteParticipant remoteParticipant =
-        RemoteParticipant(id: _remoteParticipantId, metadata: value[JsonConstants._metadata]);
-    if (value.containsKey(JsonConstants._streams)) {
-      List<dynamic> streamsList = value[JsonConstants._streams];
-      Map<String, dynamic> stream = streamsList?.first;
-      if (stream != null && stream.containsKey(JsonConstants._id)) {
-        remoteParticipant.streamId = stream[JsonConstants._id];
+    for (Map<String, dynamic> value in values) {
+      String _remoteParticipantId = value[JsonConstants.id];
+      RemoteParticipant remoteParticipant =
+          RemoteParticipant(id: _remoteParticipantId, metadata: value[JsonConstants.metadata]);
+      if (value.containsKey(JsonConstants.streams)) {
+        List<dynamic> streamsList = value[JsonConstants.streams];
+        Map<String, dynamic> stream = streamsList?.first;
+        if (stream != null && stream.containsKey(JsonConstants.id)) {
+          remoteParticipant.streamId = stream[JsonConstants.id];
+        }
+      }
+      _participants[_remoteParticipantId] = remoteParticipant;
+      _createRemotePeerConnection(remoteParticipant).then((RTCPeerConnection remotePeerConnection) async {
+        _receiveVideoFromParticipant(remoteParticipant);
+      });
+      if (this.onStateChange != null) {
+        this.onStateChange?.call(SignalingState.CallStateConnected);
       }
     }
-    _participants[_remoteParticipantId] = remoteParticipant;
-    _createRemotePeerConnection(remoteParticipant).then((RTCPeerConnection remotePeerConnection) async {
-      _receiveVideoFromParticipant(remoteParticipant);
-    });
-    if (this.onStateChange != null) {
-      this.onStateChange?.call(SignalingState.CallStateConnected);
-    }
-    // }
   }
 
   void _participantJoinedMethod(Map<String, dynamic> params) {
     RemoteParticipant remoteParticipant =
-        RemoteParticipant(id: params[JsonConstants._id], metadata: params[JsonConstants._metadata]);
+        RemoteParticipant(id: params[JsonConstants.id], metadata: params[JsonConstants.metadata]);
     _participants[remoteParticipant.id] = remoteParticipant;
     this.onParticipantsJoined?.call(remoteParticipant);
     _createRemotePeerConnection(remoteParticipant);
@@ -332,15 +352,12 @@ class Signaling {
   }
 
   void _messageReceive(Map<String, dynamic> params) {
-    // print('_message $params');
-    if (this.onMessageReceive != null) {
-      this.onMessageReceive?.call(params);
-    }
+    print('_message $params');
   }
 
   void sendMessage(List to, String signalType, dynamic data) {
     Map _msg = {'to': to, 'data': data, 'type': signalType};
-    _sendJson(JsonConstants._sendMessage, {'message': jsonEncode(_msg)});
+    _sendJson(JsonConstants.sendMessage, {'message': jsonEncode(_msg)});
   }
 
   Future<void> _receiveVideoFromParticipant(RemoteParticipant remoteParticipant) async {
@@ -349,8 +366,8 @@ class Signaling {
     }
     try {
       RTCSessionDescription sessionDescription = await remoteParticipant.peerConnection!.createOffer(_constraints);
-      remoteParticipant.peerConnection?.setLocalDescription(sessionDescription);
-      int id = _sendJson(JsonConstants._receiveVideoFrom,
+      remoteParticipant.peerConnection!.setLocalDescription(sessionDescription);
+      int id = _sendJson(JsonConstants.receiveVideoFrom,
           {'sender': remoteParticipant.streamId ?? remoteParticipant.id, 'sdpOffer': sessionDescription.sdp});
       _idsReceiveVideo[id] = remoteParticipant.id;
     } catch (e) {
@@ -361,27 +378,27 @@ class Signaling {
   void _participantLeftMethod(Map<String, dynamic> params) {
     String participantId = params['connectionId'];
     if (participantId == _userId) {
-      this.onSelfEvict?.call(_userId);
     } else if (_participants.containsKey(participantId)) {
-      this.onParticipantsRemove?.call(_participants[participantId]);
-      _participants[participantId]?.peerConnection?.close();
+      this.onParticipantsRemove?.call(_participants[participantId]!);
+      _participants[participantId]!.peerConnection?.close();
       _participants.remove(participantId);
       if (_participants.length == 0) {
-        if (this.onStateChange != null) {
-          this.onStateChange?.call(SignalingState.CallStateWaiting);
-        }
+        this.onStateChange?.call(SignalingState.CallStateWaiting);
       }
     }
   }
 
   void _iceCandidateMethod(Map<String, dynamic> params) {
-    _saveIceCandidate(params, params[JsonConstants._endpointName], params[JsonConstants._senderConnectionId]);
+    bool isLocal = params[JsonConstants.senderConnectionId] == _userId;
+    _saveIceCandidate(params, params[JsonConstants.endpointName], params[JsonConstants.senderConnectionId], isLocal);
   }
 
-  void _saveIceCandidate(Map<String, dynamic> params, String endpointName, String senderConnectionId) {
+  void _saveIceCandidate(Map<String, dynamic> params, String endpointName, String senderConnectionId, bool isLocal) {
     CustomRTCIceCandidate iceCandidate =
         CustomRTCIceCandidate(params['candidate'], params['sdpMid'], params['sdpMLineIndex'], endpointName);
-    if (_participants.containsKey(senderConnectionId)) {
+    if (isLocal && _localPeerConnection != null) {
+      _localPeerConnection?.addCandidate?.call(iceCandidate);
+    } else if (_participants.containsKey(senderConnectionId)) {
       _participants[senderConnectionId]?.peerConnection?.addCandidate(iceCandidate);
       _participantEndpoints[senderConnectionId] = endpointName;
     }
@@ -389,7 +406,10 @@ class Signaling {
 
   void _saveAnswer(Map<String, dynamic> data, int id) {
     RTCSessionDescription sessionDescription = RTCSessionDescription(data['sdpAnswer'], 'answer');
-    if (_idsReceiveVideo.containsKey(id)) {
+    if (!_localPeerConnectionHasRemoteDescription) {
+      _localPeerConnection?.setRemoteDescription(sessionDescription);
+      _localPeerConnectionHasRemoteDescription = true;
+    } else if (_idsReceiveVideo.containsKey(id)) {
       _participants[_idsReceiveVideo[id]]?.peerConnection?.setRemoteDescription(sessionDescription);
     }
   }
@@ -397,7 +417,7 @@ class Signaling {
   void _startPingTimer() {
     _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       _sendJson('ping', {'interval': '3000'});
-      // print('|ping◤◢◤◢◤|');
+      print('|ping◤◢◤◢◤|');
     });
   }
 
@@ -415,11 +435,46 @@ class Signaling {
       }
     };
     MediaStream stream = await navigator.getUserMedia(mediaConstraints);
+    if (isLocalStream) {
+      this.onLocalStream?.call(stream);
+    }
     return stream;
+  }
+
+  Future<void> _createLocalPeerConnection() async {
+    _localStream = await createStream(isLocalStream: true);
+    _localPeerConnection = await createPeerConnection(_iceServers, _constraints);
+    _localPeerConnection!.onSignalingState = ((state) {
+      if (state == RTCSignalingState.RTCSignalingStateStable) {}
+    });
+    _localPeerConnection!.onIceGatheringState = ((state) {
+      if (state == RTCIceGatheringState.RTCIceGatheringStateComplete) {
+        if (_haveRemoteAlreadyInRoom) {
+          _addParticipantsAlreadyInRoom(_remoteAlreadyInRoomValues);
+          _remoteAlreadyInRoomValues.clear();
+          _haveRemoteAlreadyInRoom = false;
+        }
+      }
+    });
+    _localPeerConnection!.onIceCandidate = (candidate) {
+      Map<String, dynamic> iceCandidateParams = {
+        'sdpMid': candidate.sdpMid,
+        'sdpMLineIndex': candidate.sdpMlineIndex,
+        'candidate': candidate.candidate,
+      };
+      if (_userId != null) {
+        iceCandidateParams[JsonConstants.endpointName] = _endpointName ?? _userId;
+        _sendJson(JsonConstants.onIceCandidate, iceCandidateParams);
+      } else {
+        _iceCandidatesParams.add(iceCandidateParams);
+      }
+    };
+    _localPeerConnection!.addStream(_localStream);
   }
 
   Future<RTCPeerConnection> _createRemotePeerConnection(RemoteParticipant remoteParticipant) async {
     RTCPeerConnection remotePeerConnection = await createPeerConnection(_iceServers, _constraints);
+
     remotePeerConnection.onIceCandidate = (candidate) {
       Map<String, dynamic> iceCandidateParams = {
         'sdpMid': candidate.sdpMid,
@@ -428,19 +483,22 @@ class Signaling {
             remoteParticipant.streamId ?? _participantEndpoints[remoteParticipant.id] ?? remoteParticipant.id,
         'candidate': candidate.candidate,
       };
-      _sendJson(JsonConstants._onIceCandidate, iceCandidateParams);
+      _sendJson(JsonConstants.onIceCandidate, iceCandidateParams);
     };
 
     remotePeerConnection.onAddStream = ((stream) {
       remoteParticipant.mediaStream = stream;
-      if (this.onParticipantsStreamUpdate != null) {
-        this.onParticipantsStreamUpdate?.call(remoteParticipant);
-      }
-      _onAddRemoteStreamSubject.add(stream);
+      this.onParticipantsStreamUpdate?.call(remoteParticipant);
+      this.onAddRemoteStream?.call(stream);
     });
 
     remotePeerConnection.onSignalingState = ((state) {
       print('remotePeerConnection.onSignalingState: $state');
+      /*
+      if (state == RTCSignalingState.RTCSignalingStateStable) {
+        //
+      }
+      */
     });
 
     remotePeerConnection.onIceGatheringState = ((state) {
@@ -449,10 +507,8 @@ class Signaling {
 
     remotePeerConnection.onRemoveStream = (stream) {
       remoteParticipant.mediaStream = stream;
-      if (this.onParticipantsStreamUpdate != null) {
-        this.onParticipantsStreamUpdate?.call(remoteParticipant);
-      }
-      _onRemoveRemoteStreamSubject.add(stream);
+      this.onParticipantsStreamUpdate?.call(remoteParticipant);
+      this.onRemoveRemoteStream?.call(stream);
     };
 
     remotePeerConnection.onDataChannel = (channel) {
@@ -463,15 +519,36 @@ class Signaling {
     return remotePeerConnection;
   }
 
+  Future<void> _createLocalOffer() async {
+    try {
+      RTCSessionDescription s = await _localPeerConnection!.createOffer(_constraints);
+      await _localPeerConnection!.setLocalDescription(s);
+      _idPublishVideo = _sendJson(JsonConstants.publishVideo, {
+        'audioOnly': 'false',
+        'hasAudio': 'true',
+        'doLoopback': 'false',
+        'hasVideo': 'true',
+        'audioActive': 'true',
+        'videoActive': 'true',
+        'typeOfVideo': 'CAMERA',
+        'frameRate': '30',
+        'videoDimensions': '{\"width\": 320, \"height\": 240}',
+        'sdpOffer': s.sdp
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future<void> _participantPublishedMethod(Map<String, dynamic> params) async {
-    String _remoteParticipantId = params[JsonConstants._id];
+    String _remoteParticipantId = params[JsonConstants.id];
     if (_participants.containsKey(_remoteParticipantId)) {
       RemoteParticipant remoteParticipantPublished = _participants[_remoteParticipantId]!;
-      if (params.containsKey(JsonConstants._streams)) {
-        List<dynamic> streamsList = params[JsonConstants._streams];
+      if (params.containsKey(JsonConstants.streams)) {
+        List<dynamic> streamsList = params[JsonConstants.streams];
         Map<String, dynamic> stream = streamsList?.first;
-        if (stream != null && stream.containsKey(JsonConstants._id)) {
-          remoteParticipantPublished.streamId = stream[JsonConstants._id];
+        if (stream != null && stream.containsKey(JsonConstants.id)) {
+          remoteParticipantPublished.streamId = stream[JsonConstants.id];
         }
       }
       if (remoteParticipantPublished.peerConnection != null) {
@@ -485,18 +562,17 @@ class Signaling {
   }
 
   int _sendJson(String method, Map<String, dynamic>? params) {
-    print('OpenViduLogs sendJson \nmethod:$method\nparams:$params');
     Map<String, dynamic> dict = <String, dynamic>{};
-    dict[JsonConstants._method] = method;
-    dict[JsonConstants._id] = _internalId;
+    dict[JsonConstants.method] = method;
+    dict[JsonConstants.id] = _internalId;
     dict['jsonrpc'] = '2.0';
     if ((params?.length ?? 0) > 0) {
-      dict[JsonConstants._params] = params;
+      dict[JsonConstants.params] = params;
     }
     updateInternalId();
     String jsonString = json.encode(dict);
     _socket?.add(jsonString);
-    // print('◤◢◤◢◤◢◤◢◤◢◤ send_json_to_socket ---> | $jsonString | ◤◢◤◢◤◢◤◢◤◢◤');
+    print('◤◢◤◢◤◢◤◢◤◢◤ send_json_to_socket ---> | $jsonString | ◤◢◤◢◤◢◤◢◤◢◤');
     return _internalId - 1;
   }
 }
