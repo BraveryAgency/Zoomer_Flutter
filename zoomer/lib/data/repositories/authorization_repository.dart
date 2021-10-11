@@ -4,6 +4,7 @@ import 'package:zoomer/core/network/network_info.dart';
 import 'package:zoomer/core/repositories/base_repository.dart';
 import 'package:zoomer/data/gateways/remote/authorization_remote_gateway.dart';
 import 'package:zoomer/domain/entities/login_entity.dart';
+import 'package:zoomer/domain/entities/network/request/device_token_body.dart';
 import 'package:zoomer/domain/entities/network/request/login_body.dart';
 
 class AuthorizationRepository extends BaseRepository {
@@ -14,7 +15,6 @@ class AuthorizationRepository extends BaseRepository {
 
   AuthorizationRemoteGateway authorizationRemoteGateway;
 
-  @override
   Future<Either<LoginEntity, Failure>> login({
     required String email,
     required String password,
@@ -29,6 +29,26 @@ class AuthorizationRepository extends BaseRepository {
       return result.fold(
         (response) => Left(LoginEntity.fromResponse(response)),
         (error) => Right(error),
+      );
+    } on Exception catch (e) {
+      return Right(Failure.undefined(error: e));
+    }
+  }
+
+  Future<Either<bool, Failure>> sendDeviceToken({
+    required String token,
+    required String deviceToken,
+  }) async {
+    try {
+      var result = await sendRequest(authorizationRemoteGateway.sendDeviceToken(
+        token: token,
+        body: DeviceTokenBody(
+          deviceToken: deviceToken,
+        ),
+      ));
+      return result.fold(
+            (response) => Left(response),
+            (error) => Right(error),
       );
     } on Exception catch (e) {
       return Right(Failure.undefined(error: e));

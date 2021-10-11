@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,10 @@ import 'package:zoomer/app/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:zoomer/app/presentation/screens/splash/splash_screen.dart';
 import 'package:zoomer/app/widgets/toasts/notification_toast.dart';
 import 'package:zoomer/core/ui/widgets/close_keyboard_by_tap.dart';
+import 'package:zoomer/data/gateways/local/preferences_local_gateway.dart';
+import 'package:zoomer/data/gateways/remote/authorization_remote_gateway.dart';
 import 'package:zoomer/di/injection.dart';
+import 'package:zoomer/domain/entities/network/request/device_token_body.dart';
 import 'package:zoomer/localization/app_localizations.dart';
 
 import 'resources/app_themes.dart';
@@ -20,6 +25,11 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
+  PreferencesLocalGateway preferencesLocalGateway = injection();
+
+  AuthorizationRemoteGateway authorizationRemoteGateway = injection();
+
   late KeyboardVisibilityNotification _keyboardListener;
 
   late FirebaseMessaging messaging;
@@ -37,9 +47,17 @@ class _AppState extends State<App> {
       }
     });
     messaging = FirebaseMessaging.instance;
-    messaging.getToken().then((value) {
+    messaging.getToken().then((value) async {
+      String? token = await preferencesLocalGateway.getToken();
+      if (token != null) {
+        var newTokenResponse = await authorizationRemoteGateway.sendDeviceToken(
+          token: token,
+          body: DeviceTokenBody(
+              deviceToken:  value ?? '' ,
+          ),
+        );
       print(value);
-    });
+    }});
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print("message recieved");
       if (event.notification != null && event.data.isNotEmpty)
