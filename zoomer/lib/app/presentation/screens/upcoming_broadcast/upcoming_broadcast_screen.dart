@@ -14,6 +14,7 @@ import 'package:zoomer/core/ui/scroll_behavior/disable_glow_effect_scroll_behavi
 import 'package:zoomer/core/ui/widgets/base_bloc_state.dart';
 import 'package:zoomer/core/ui/widgets/dialogs.dart';
 import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
+import 'package:zoomer/domain/entities/broadcast_entity.dart';
 import 'package:zoomer/gen/assets.gen.dart';
 import 'package:zoomer/localization/app_localizations.dart';
 
@@ -74,10 +75,10 @@ class _UpcomingBroadcastScreenState extends BaseBlocState<UpcomingBroadcastScree
 
   Widget _buildBody(BuildContext context) => BlocListener<UpcomingBroadcastBloc, UpcomingBroadcastState>(
         listenWhen: (previous, current) => previous.action != current.action,
-        listener: (context, state) {
+        listener: (context, state) async {
           BlocAction? action = state.action;
           if (action is NavigateToBroadcast) {
-            AppNavigator.navigateToBroadcast(context, broadcast: state.broadcast!);
+            _navigateToBroadcast(context, state.broadcast!);
           }
           if (action is ShowMessage) {
             showMessage(context, action: action);
@@ -186,20 +187,22 @@ class _UpcomingBroadcastScreenState extends BaseBlocState<UpcomingBroadcastScree
         buildWhen: (previous, current) => previous.broadcast?.images != current.broadcast?.images,
         builder: (context, state) {
           return Container(
-              height: 220,
-              padding: EdgeInsets.all(10),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: ImagesList(images: state.broadcast!.images, pageController: _pageController)));
+            height: 220,
+            padding: EdgeInsets.all(10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: ImagesList(images: state.broadcast!.images, pageController: _pageController),
+            ),
+          );
         },
       );
 
   Widget _buildBroadcastTime() => BlocBuilder<UpcomingBroadcastBloc, UpcomingBroadcastState>(
-        //buildWhen: (previous, current) => previous.broadcast?.time != current.broadcast?.time,
+        buildWhen: (previous, current) => previous.broadcast?.date != current.broadcast?.date,
         builder: (context, state) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 27),
           child: Text(
-            'The broadcast will begin on 01 July, 2021 at 12AM',
+            state.broadcast?.date ?? '',
             style: TextStyle(
               color: AppColors.green,
               fontWeight: FontWeight.w400,
@@ -290,4 +293,9 @@ class _UpcomingBroadcastScreenState extends BaseBlocState<UpcomingBroadcastScree
               },
             )
           : SizedBox());
+
+  Future<void> _navigateToBroadcast(BuildContext context, BroadcastEntity broadcast) async {
+    await AppNavigator.navigateToBroadcast(context, broadcast: broadcast);
+    getBloc(context).add(UpcomingBroadcastEvent.screenOpened());
+  }
 }

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zoomer/app/presentation/screens/broadcast/bloc/broadcast_bloc.dart';
+import 'package:zoomer/app/presentation/screens/broadcast/broadcast_screen.dart';
 import 'package:zoomer/app/presentation/screens/sign_in/bloc/sign_in_bloc.dart';
 import 'package:zoomer/app/presentation/screens/sign_in/sign_in_screen.dart';
-import 'package:zoomer/app/presentation/screens/upcoming_broadcast/upcoming_broadcast_screen.dart';
 import 'package:zoomer/app/presentation/screens/upcoming_broadcast/bloc/upcoming_broadcast_bloc.dart';
-import 'package:zoomer/app/presentation/screens/broadcast/broadcast_screen.dart';
-import 'package:zoomer/app/presentation/screens/broadcast/bloc/broadcast_bloc.dart';
-
+import 'package:zoomer/app/presentation/screens/upcoming_broadcast/upcoming_broadcast_screen.dart';
 import 'package:zoomer/di/injection.dart';
 import 'package:zoomer/domain/entities/broadcast_entity.dart';
 
@@ -19,8 +18,9 @@ class AppNavigator {
     MaterialPageRoute route = MaterialPageRoute(
       settings: RouteSettings(name: _signInRoute),
       builder: (BuildContext context) => BlocProvider(
-        create: (context) => SignInBloc(authorizationRepository: injection(), preferencesLocalGateway: injection(),
-          
+        create: (context) => SignInBloc(
+          authorizationRepository: injection(),
+          preferencesLocalGateway: injection(),
         ),
         child: SignInScreen(),
       ),
@@ -46,17 +46,14 @@ class AppNavigator {
     Navigator.push(context, route);
   }
 
-  static void navigateToBroadcast(BuildContext context,{required BroadcastEntity broadcast}) {
+  static Future<void> navigateToBroadcast(BuildContext context, {required BroadcastEntity broadcast}) async {
     MaterialPageRoute route = MaterialPageRoute(
       settings: RouteSettings(name: _broadcastRoute),
       builder: (BuildContext context) => BlocProvider(
-        create: (context) => BroadcastBloc(
-          broadcast: broadcast
-        ),
+        create: (context) => BroadcastBloc(broadcast: broadcast),
         child: BroadcastScreen(),
       ),
     );
-    Navigator.push(context, route);
+    await Navigator.push(context, route);
   }
-
 }

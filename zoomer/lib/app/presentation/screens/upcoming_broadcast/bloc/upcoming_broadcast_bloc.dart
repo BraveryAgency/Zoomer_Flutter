@@ -54,11 +54,11 @@ class UpcomingBroadcastBloc extends Bloc<UpcomingBroadcastEvent, UpcomingBroadca
 
     String token = (await preferencesLocalGateway.getToken()) ?? '';
     bool haveError = false;
-    Either<BroadcastEntity, Failure> getMessagesResult = await broadcastRepository.getBroadcast(
+    Either<BroadcastEntity, Failure> getBroadcastResult = await broadcastRepository.getBroadcast(
       token: token,
     );
 
-    yield* getMessagesResult.fold(
+    yield* getBroadcastResult.fold(
       (data) => _handleGetBroadcast(data),
       (error) {
         haveError = true;

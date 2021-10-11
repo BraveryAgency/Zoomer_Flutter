@@ -93,8 +93,10 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
   }
 
   Stream<BroadcastState> _cameraClicked() async* {
-    _signaling.setCameraEnabled(!state.isCameraEnabled);
-    yield state.copyWith(isCameraEnabled: !state.isCameraEnabled);
+    if (broadcast.renderer != null) {
+      _signaling.setCameraEnabled(!state.isCameraEnabled);
+      yield state.copyWith(isCameraEnabled: !state.isCameraEnabled);
+    }
   }
 
   Stream<BroadcastState> _microClicked() async* {

@@ -26,6 +26,7 @@ class _$BroadcastEntityTearOff {
       required String icon,
       required String sessionId,
       required String streamName,
+      required String date,
       RTCVideoRenderer? renderer}) {
     return _BroadcastEntity(
       id: id,
@@ -37,6 +38,7 @@ class _$BroadcastEntityTearOff {
       icon: icon,
       sessionId: sessionId,
       streamName: streamName,
+      date: date,
       renderer: renderer,
     );
   }
@@ -56,6 +58,7 @@ mixin _$BroadcastEntity {
   String get icon => throw _privateConstructorUsedError;
   String get sessionId => throw _privateConstructorUsedError;
   String get streamName => throw _privateConstructorUsedError;
+  String get date => throw _privateConstructorUsedError;
   RTCVideoRenderer? get renderer => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -78,6 +81,7 @@ abstract class $BroadcastEntityCopyWith<$Res> {
       String icon,
       String sessionId,
       String streamName,
+      String date,
       RTCVideoRenderer? renderer});
 }
 
@@ -101,6 +105,7 @@ class _$BroadcastEntityCopyWithImpl<$Res>
     Object? icon = freezed,
     Object? sessionId = freezed,
     Object? streamName = freezed,
+    Object? date = freezed,
     Object? renderer = freezed,
   }) {
     return _then(_value.copyWith(
@@ -140,6 +145,10 @@ class _$BroadcastEntityCopyWithImpl<$Res>
           ? _value.streamName
           : streamName // ignore: cast_nullable_to_non_nullable
               as String,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
       renderer: renderer == freezed
           ? _value.renderer
           : renderer // ignore: cast_nullable_to_non_nullable
@@ -165,6 +174,7 @@ abstract class _$BroadcastEntityCopyWith<$Res>
       String icon,
       String sessionId,
       String streamName,
+      String date,
       RTCVideoRenderer? renderer});
 }
 
@@ -190,6 +200,7 @@ class __$BroadcastEntityCopyWithImpl<$Res>
     Object? icon = freezed,
     Object? sessionId = freezed,
     Object? streamName = freezed,
+    Object? date = freezed,
     Object? renderer = freezed,
   }) {
     return _then(_BroadcastEntity(
@@ -229,6 +240,10 @@ class __$BroadcastEntityCopyWithImpl<$Res>
           ? _value.streamName
           : streamName // ignore: cast_nullable_to_non_nullable
               as String,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
       renderer: renderer == freezed
           ? _value.renderer
           : renderer // ignore: cast_nullable_to_non_nullable
@@ -250,6 +265,7 @@ class _$_BroadcastEntity implements _BroadcastEntity {
       required this.icon,
       required this.sessionId,
       required this.streamName,
+      required this.date,
       this.renderer});
 
   @override
@@ -271,11 +287,13 @@ class _$_BroadcastEntity implements _BroadcastEntity {
   @override
   final String streamName;
   @override
+  final String date;
+  @override
   final RTCVideoRenderer? renderer;
 
   @override
   String toString() {
-    return 'BroadcastEntity(id: $id, location: $location, building: $building, images: $images, price: $price, description: $description, icon: $icon, sessionId: $sessionId, streamName: $streamName, renderer: $renderer)';
+    return 'BroadcastEntity(id: $id, location: $location, building: $building, images: $images, price: $price, description: $description, icon: $icon, sessionId: $sessionId, streamName: $streamName, date: $date, renderer: $renderer)';
   }
 
   @override
@@ -305,6 +323,8 @@ class _$_BroadcastEntity implements _BroadcastEntity {
             (identical(other.streamName, streamName) ||
                 const DeepCollectionEquality()
                     .equals(other.streamName, streamName)) &&
+            (identical(other.date, date) ||
+                const DeepCollectionEquality().equals(other.date, date)) &&
             (identical(other.renderer, renderer) ||
                 const DeepCollectionEquality()
                     .equals(other.renderer, renderer)));
@@ -322,6 +342,7 @@ class _$_BroadcastEntity implements _BroadcastEntity {
       const DeepCollectionEquality().hash(icon) ^
       const DeepCollectionEquality().hash(sessionId) ^
       const DeepCollectionEquality().hash(streamName) ^
+      const DeepCollectionEquality().hash(date) ^
       const DeepCollectionEquality().hash(renderer);
 
   @JsonKey(ignore: true)
@@ -341,6 +362,7 @@ abstract class _BroadcastEntity implements BroadcastEntity {
       required String icon,
       required String sessionId,
       required String streamName,
+      required String date,
       RTCVideoRenderer? renderer}) = _$_BroadcastEntity;
 
   @override
@@ -361,6 +383,8 @@ abstract class _BroadcastEntity implements BroadcastEntity {
   String get sessionId => throw _privateConstructorUsedError;
   @override
   String get streamName => throw _privateConstructorUsedError;
+  @override
+  String get date => throw _privateConstructorUsedError;
   @override
   RTCVideoRenderer? get renderer => throw _privateConstructorUsedError;
   @override

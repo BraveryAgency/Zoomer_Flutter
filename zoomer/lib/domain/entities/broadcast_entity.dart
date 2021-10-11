@@ -20,6 +20,7 @@ class BroadcastEntity with _$BroadcastEntity {
     required String icon,
     required String sessionId,
     required String streamName,
+    required String date,
     RTCVideoRenderer? renderer,
   }) = _BroadcastEntity;
 
@@ -33,5 +34,6 @@ class BroadcastEntity with _$BroadcastEntity {
         icon: broadcast.icon,
         sessionId: broadcast.sessionId,
         streamName: broadcast.streamName,
+        date: broadcast.date,
       );
 }

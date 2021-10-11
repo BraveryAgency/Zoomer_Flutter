@@ -163,11 +163,7 @@ class Signaling {
   }
 
   void setCameraEnabled(bool enabled) {
-    if (enabled) {
-      _localPeerConnection?.addStream(_localStream);
-    } else {
-      _localPeerConnection?.removeStream(_localStream);
-    }
+    _localStream?.getVideoTracks()[0].enabled = enabled;
   }
 
   Future<void> createWebRtcSession({required String sessionId}) {
