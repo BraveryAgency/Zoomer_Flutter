@@ -43,6 +43,10 @@ class _AppState extends State<App> {
         }
       }
     });
+    _setupNotifications();
+  }
+
+  void _setupNotifications() {
     messaging = FirebaseMessaging.instance;
     messaging.onTokenRefresh.listen((String firebaseToken) async {
       String? token = await preferencesLocalGateway.getToken();
