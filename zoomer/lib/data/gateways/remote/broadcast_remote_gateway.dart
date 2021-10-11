@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:zoomer/domain/entities/network/broadcast.dart';
-import 'package:zoomer/domain/entities/network/request/login_body.dart';
-import 'package:zoomer/domain/entities/network/response/login_response.dart';
+import 'package:zoomer/domain/entities/network/request/close_broadcast_body.dart';
 
 part 'broadcast_remote_gateway.g.dart';
 
@@ -18,4 +17,9 @@ abstract class BroadcastRemoteGateway {
     @Header('Authorization') required String token,
   });
 
+  @POST('/openvidu/close')
+  Future<HttpResponse<Broadcast>> closeBroadcast({
+    @Header('Authorization') required String token,
+    @Body() required CloseBroadcastBody body,
+  });
 }

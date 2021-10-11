@@ -6,6 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
 import 'package:zoomer/core/bloc/bloc_action.dart';
+import 'package:zoomer/data/gateways/local/preferences_local_gateway.dart';
+import 'package:zoomer/data/repositories/broadcast_repository.dart';
 import 'package:zoomer/domain/entities/broadcast_entity.dart';
 import 'package:zoomer/domain/entities/remote_participant_entity.dart';
 import 'package:zoomer/domain/entities/viewer_entity.dart';
@@ -18,10 +20,14 @@ part 'broadcast_state.dart';
 class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
   BroadcastBloc({
     required this.broadcast,
+    required this.broadcastRepository,
+    required this.preferencesLocalGateway,
   }) : super(BroadcastState(broadcast: broadcast)) {
     this.add(BroadcastEvent.init());
   }
 
+  BroadcastRepository broadcastRepository;
+  PreferencesLocalGateway preferencesLocalGateway;
   BroadcastEntity broadcast;
   late Signaling _signaling;
 
@@ -85,6 +91,15 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
   }
 
   Stream<BroadcastState> _leaveClicked() async* {
+    yield* _closeBroadcast();
+  }
+
+  Stream<BroadcastState> _closeBroadcast() async* {
+    yield state.copyWith(action: ShowLoader());
+    String token = (await preferencesLocalGateway.getToken()) ?? '';
+    var closeBroadcast = await broadcastRepository.closeBroadcast(token: token, broadcastId: broadcast.id);
+
+    yield state.copyWith(action: HideLoader());
     yield state.copyWith(action: NavigateBack());
   }
 

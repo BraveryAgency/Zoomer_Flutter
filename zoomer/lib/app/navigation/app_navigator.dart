@@ -50,7 +50,11 @@ class AppNavigator {
     MaterialPageRoute route = MaterialPageRoute(
       settings: RouteSettings(name: _broadcastRoute),
       builder: (BuildContext context) => BlocProvider(
-        create: (context) => BroadcastBloc(broadcast: broadcast),
+        create: (context) => BroadcastBloc(
+          broadcast: broadcast,
+          preferencesLocalGateway: injection(),
+          broadcastRepository: injection(),
+        ),
         child: BroadcastScreen(),
       ),
     );

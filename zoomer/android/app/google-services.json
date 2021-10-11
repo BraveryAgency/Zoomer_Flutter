@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "901564405559",
-    "project_id": "zoomer-2f345",
-    "storage_bucket": "zoomer-2f345.appspot.com"
+    "project_number": "1021524163770",
+    "project_id": "zoomer-c7eb3",
+    "storage_bucket": "zoomer-c7eb3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:901564405559:android:7d3434e7afacb6af0dacb2",
+        "mobilesdk_app_id": "1:1021524163770:android:222154c1d6921aa4e39683",
         "android_client_info": {
           "package_name": "agency.bravery.zoomer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "901564405559-0b421q4h8th1d1nq5srjvo9bt9vt3jtk.apps.googleusercontent.com",
+          "client_id": "1021524163770-hie9sh3lm3s6q5e2rguffrgksuum7c1c.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCpiVhrVfny6VDoBacVXam98ZeuveEMx1g"
+          "current_key": "AIzaSyBuT4fEEkzTi61ux35y_pvZMNu1wYaZ_VU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "901564405559-0b421q4h8th1d1nq5srjvo9bt9vt3jtk.apps.googleusercontent.com",
+              "client_id": "1021524163770-hie9sh3lm3s6q5e2rguffrgksuum7c1c.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1021524163770-dj7u8f4ufvk3itdudo164d7jren84qpf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "agency.bravery.zoomer"
+              }
             }
           ]
         }
