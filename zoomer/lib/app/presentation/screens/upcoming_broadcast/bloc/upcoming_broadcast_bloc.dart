@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
@@ -41,10 +42,13 @@ class UpcomingBroadcastBloc extends Bloc<UpcomingBroadcastEvent, UpcomingBroadca
 
   Stream<UpcomingBroadcastState> _init() async* {
     yield* _fetchBroadcast(needShowLoader: true);
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      this.add(UpcomingBroadcastEvent.screenOpened());
+      });
   }
 
   Stream<UpcomingBroadcastState> _screenOpened() async* {
-    yield* _fetchBroadcast(needShowLoader: true);
+    yield* _fetchBroadcast();
   }
 
   Stream<UpcomingBroadcastState> _fetchBroadcast({bool needShowLoader = false}) async* {
