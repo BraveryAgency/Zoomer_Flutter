@@ -28,17 +28,14 @@ class DefaultButton extends StatelessWidget {
           }
         },
         child: SizedBox(
-          height: 50,
+          // height: 50,
           child: Container(
-
             alignment: Alignment.center,
             decoration: BoxDecoration(
-
-              borderRadius: BorderRadius.circular(8),
-              border: borderColor != null ? Border.all(color: borderColor!) : null,
-              color: AppColors.accent
-            ),
-            padding: const EdgeInsets.only(top:17,bottom: 14,left: 17,right: 17),
+                borderRadius: BorderRadius.circular(8),
+                border: borderColor != null ? Border.all(color: borderColor!) : null,
+                color: AppColors.accent),
+            padding: const EdgeInsets.only(top: 16, bottom: 16, left: 17, right: 17),
             width: double.maxFinite,
             child: text != null
                 ? Row(
@@ -54,8 +51,8 @@ class DefaultButton extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
-                          height: 19.2/16,
-                          color: textColor ,
+                          height: 19.2 / 16,
+                          color: textColor,
                         ),
                       ),
                     ],

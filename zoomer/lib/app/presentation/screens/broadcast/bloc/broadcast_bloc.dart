@@ -32,6 +32,7 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
     state.participants.forEach((participant) {
       participant.renderer.dispose();
     });
+    _timer?.cancel();
     await super.close();
   }
 
@@ -177,14 +178,22 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
   }
 
   Stream<BroadcastState> _participantMicroClicked(RemoteParticipantEntity participant) async* {
-    List<RemoteParticipantEntity> participants = List.from(state.participants);
-    RemoteParticipantEntity? foundParticipant = participants.firstWhereOrNull(
-      (element) => element.participant.id == participant.participant.id,
-    );
+    try {
+      List<RemoteParticipantEntity> participants = List.of(state.participants);
+      RemoteParticipantEntity? foundParticipant = participants.firstWhereOrNull(
+        (element) => element.participant.id == participant.participant.id,
+      );
 
-    if (foundParticipant != null) {
-      foundParticipant.microEnabled = !foundParticipant.microEnabled;
-      yield state.copyWith(participants: participants);
-    }
+      if (foundParticipant != null) {
+        RemoteParticipantEntity? updatedParticipant = RemoteParticipantEntity(
+          participant: foundParticipant.participant,
+          renderer: foundParticipant.renderer,
+          microEnabled: !foundParticipant.microEnabled,
+        );
+        updatedParticipant.participant.mediaStream!.getAudioTracks()[0].enabled = updatedParticipant.microEnabled;
+        participants[participants.indexOf(foundParticipant)] = updatedParticipant;
+        yield state.copyWith(participants: participants);
+      }
+    } catch (e) {}
   }
 }

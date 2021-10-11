@@ -12,12 +12,13 @@ import 'package:zoomer/core/bloc/bloc_action.dart';
 import 'package:zoomer/core/ui/widgets/base_bloc_stateless_widget.dart';
 import 'package:zoomer/core/ui/widgets/dialogs.dart';
 import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
+import 'package:zoomer/domain/entities/remote_participant_entity.dart';
 import 'package:zoomer/gen/assets.gen.dart';
 
 import 'bloc/broadcast_bloc.dart';
 
 class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
-  PageController _pageController = PageController(viewportFraction: 0.9);
+  final PageController _pageController = PageController(viewportFraction: 0.9);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -276,6 +277,9 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
           child: ParticipantsList(
             participants: state.participants,
             pageController: _pageController,
+            onMicroClicked: (RemoteParticipantEntity participant) {
+              getBloc(context).add(BroadcastEvent.participantMicroClicked(participant));
+            },
           ),
         );
       });

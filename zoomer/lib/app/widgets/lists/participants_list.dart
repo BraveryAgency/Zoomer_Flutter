@@ -58,8 +58,6 @@ class _ParticipantsListState extends State<ParticipantsList> {
           children: [
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.surface),
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.black.withOpacity(0.07),
@@ -68,10 +66,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
                   ),
                 ],
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: _buildParticipants(),
-              ),
+              child: _buildParticipants(),
             ),
             const SizedBox(height: 10),
             _buildPageIndicator(),
@@ -96,7 +91,11 @@ class _ParticipantsListState extends State<ParticipantsList> {
       );
 
   Widget _buildParticipant(RemoteParticipantEntity remoteParticipant) => Container(
-        color: AppColors.surface,
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        margin: EdgeInsets.only(left: 10, right: 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -141,7 +140,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
           widget.onMicroClicked?.call(participant);
         },
         child: SvgPicture.asset(
-          participant.microEnabled ? Assets.images.microphoneOff : Assets.images.microphoneOn,
+          participant.microEnabled ? Assets.images.microphoneOn : Assets.images.microphoneOff,
           height: 40,
           width: 40,
         ),
