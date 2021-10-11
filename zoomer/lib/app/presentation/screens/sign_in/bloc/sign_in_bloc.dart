@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
@@ -73,10 +74,20 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   Stream<SignInState> _signInSuccess(SignInSuccess value) async* {
-    yield state.copyWith(action: HideLoader());
     await preferencesLocalGateway.setToken(value.login.apiToken);
     await preferencesLocalGateway.setRememberMeStatus(state.rememberMeChecked);
-    yield state.copyWith(action: NavigateToUpcomingBroadcast());
+    FirebaseMessaging.instance.getToken().then((firebaseToken) async {
+      var newTokenResponse = await authorizationRepository.sendDeviceToken(
+        token: value.login.apiToken,
+        deviceToken: firebaseToken ?? '',
+      );
+    });
+    yield* await Future.delayed(Duration(seconds: 3), () {
+      return Stream.fromIterable([
+        state.copyWith(action: HideLoader()),
+        state.copyWith(action: NavigateToUpcomingBroadcast()),
+      ]);
+    });
   }
 
   Stream<SignInState> _signInFailure(SignInFailure value) async* {

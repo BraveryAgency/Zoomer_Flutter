@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +23,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   PreferencesLocalGateway preferencesLocalGateway = injection();
 
   AuthorizationRemoteGateway authorizationRemoteGateway = injection();
@@ -47,17 +44,29 @@ class _AppState extends State<App> {
       }
     });
     messaging = FirebaseMessaging.instance;
+    messaging.onTokenRefresh.listen((String firebaseToken) async {
+      String? token = await preferencesLocalGateway.getToken();
+      if (token != null) {
+        var newTokenResponse = await authorizationRemoteGateway.sendDeviceToken(
+          token: token,
+          body: DeviceTokenBody(
+            deviceToken: firebaseToken ?? '',
+          ),
+        );
+      }
+    });
     messaging.getToken().then((value) async {
       String? token = await preferencesLocalGateway.getToken();
       if (token != null) {
         var newTokenResponse = await authorizationRemoteGateway.sendDeviceToken(
           token: token,
           body: DeviceTokenBody(
-              deviceToken:  value ?? '' ,
+            deviceToken: value ?? '',
           ),
         );
-      print(value);
-    }});
+        print(value);
+      }
+    });
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print("message recieved");
       if (event.notification != null && event.data.isNotEmpty)
