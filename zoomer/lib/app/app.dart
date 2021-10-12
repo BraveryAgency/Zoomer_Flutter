@@ -7,7 +7,6 @@ import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:zoomer/app/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:zoomer/app/presentation/screens/splash/splash_screen.dart';
-import 'package:zoomer/app/presentation/screens/upcoming_broadcast/bloc/upcoming_broadcast_bloc.dart';
 import 'package:zoomer/app/widgets/toasts/notification_toast.dart';
 import 'package:zoomer/core/ui/widgets/close_keyboard_by_tap.dart';
 import 'package:zoomer/data/gateways/local/preferences_local_gateway.dart';
@@ -49,6 +48,7 @@ class _AppState extends State<App> {
 
   void _setupNotifications() {
     messaging = FirebaseMessaging.instance;
+
     messaging.onTokenRefresh.listen((String firebaseToken) async {
       String? token = await preferencesLocalGateway.getToken();
       if (token != null) {
@@ -74,7 +74,7 @@ class _AppState extends State<App> {
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       print("message recieved");
-      if (event.notification != null && event.data.isNotEmpty){
+      if (event.notification != null && event.data.isNotEmpty) {
         showOverlayNotification(
           (context) {
             return SafeArea(
