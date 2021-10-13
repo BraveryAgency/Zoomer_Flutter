@@ -3,6 +3,7 @@ part of 'broadcast_bloc.dart';
 @freezed
 class BroadcastEvent with _$BroadcastEvent {
   factory BroadcastEvent.init() = Init;
+  factory BroadcastEvent.screenOpened() = ScreenOpened;
   factory BroadcastEvent.leaveClicked() = LeaveClicked;
   factory BroadcastEvent.microClicked() = MicroClicked;
   factory BroadcastEvent.expandClicked() = ExpandClicked;

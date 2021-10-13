@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zoomer/app/navigation/app_navigator.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
 import 'package:zoomer/app/widgets/buttons/default_button.dart';
@@ -80,7 +81,7 @@ class SignInScreen extends BaseBlocStatelessWidget<SignInBloc> {
         ),
       );
 
-  Widget _buildLogo() => Assets.images.logo.image(height: 37, width: 158);
+  Widget _buildLogo() => SvgPicture.asset(Assets.images.logo, height: 37, width: 158);
 
   Widget _buildEmailInput() => BlocBuilder<SignInBloc, SignInState>(
       buildWhen: (previousState, currentState) => previousState.email != currentState.email,

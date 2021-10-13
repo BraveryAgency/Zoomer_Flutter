@@ -31,8 +31,17 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
   BroadcastEntity broadcast;
   late Signaling _signaling;
 
+  StreamSubscription? _localStreamSubjectAddSubscription;
+  StreamSubscription? _participantRemoveSubscription;
+  StreamSubscription? _participantJoinedSubscription;
+  StreamSubscription? _participantStreamUpdateSubscription;
+
   @override
   Future<void> close() async {
+    _localStreamSubjectAddSubscription?.cancel();
+    _participantRemoveSubscription?.cancel();
+    _participantJoinedSubscription?.cancel();
+    _participantStreamUpdateSubscription?.cancel();
     state.broadcast.renderer?.dispose();
     _signaling.close();
     state.participants.forEach((participant) {
@@ -46,6 +55,7 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
   Stream<BroadcastState> mapEventToState(BroadcastEvent event) async* {
     yield* event.when(
       init: _init,
+      screenOpened: _screenOpened,
       leaveClicked: _leaveClicked,
       cameraSwitchClicked: _cameraSwitchClicked,
       cameraClicked: _cameraClicked,
@@ -66,28 +76,47 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
       userName: broadcast.streamName,
       iceServer: 'stun.l.google.com:19302',
     );
-    RTCVideoRenderer localRenderer = RTCVideoRenderer();
-    localRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
-    await localRenderer.initialize();
 
     await _signaling.connect(sessionId: broadcast.sessionId);
 
-    _signaling.onParticipantsJoined = (RemoteParticipant remoteParticipant) async {
-      this.add(BroadcastEvent.participantJoined(remoteParticipant));
-    };
-    _signaling.onParticipantsRemove = (RemoteParticipant remoteParticipant) {
-      this.add(BroadcastEvent.participantRemoved(remoteParticipant));
-    };
-    _signaling.onParticipantsStreamUpdate = (RemoteParticipant remoteParticipant) {
-      this.add(BroadcastEvent.participantStreamUpdate(remoteParticipant));
-    };
-    _signaling.onLocalStream = (MediaStream stream) {
+    yield* _setUpStreams();
+    _startBroadcastTimer();
+  }
+
+  Stream<BroadcastState> _screenOpened() async* {
+    yield* _setUpStreams();
+  }
+
+  Stream<BroadcastState> _setUpStreams() async* {
+    _localStreamSubjectAddSubscription?.cancel();
+    _participantRemoveSubscription?.cancel();
+    _participantJoinedSubscription?.cancel();
+    _participantStreamUpdateSubscription?.cancel();
+    RTCVideoRenderer localRenderer = RTCVideoRenderer();
+    localRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
+    await localRenderer.initialize();
+    _localStreamSubjectAddSubscription?.cancel();
+    _localStreamSubjectAddSubscription = _signaling.onLocalStreamAddStream.listen((stream) {
       localRenderer.srcObject = stream;
-    };
+    });
+    _participantJoinedSubscription = _signaling.onParticipantJoinedStream.listen((remoteParticipant) {
+      if (remoteParticipant != null) {
+        this.add(BroadcastEvent.participantJoined(remoteParticipant));
+      }
+    });
+    _participantRemoveSubscription = _signaling.onParticipantRemoveStream.listen((remoteParticipant) {
+      if (remoteParticipant != null) {
+        this.add(BroadcastEvent.participantRemoved(remoteParticipant));
+      }
+    });
+    _participantStreamUpdateSubscription = _signaling.onParticipantStreamUpdateStream.listen((remoteParticipant) {
+      if (remoteParticipant != null) {
+        this.add(BroadcastEvent.participantStreamUpdate(remoteParticipant));
+      }
+    });
 
     broadcast = broadcast.copyWith(renderer: localRenderer);
     yield state.copyWith(broadcast: broadcast);
-    _startBroadcastTimer();
   }
 
   Stream<BroadcastState> _leaveClicked() async* {

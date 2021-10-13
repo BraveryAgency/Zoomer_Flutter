@@ -67,7 +67,10 @@ class _UpcomingBroadcastScreenState extends BaseBlocState<UpcomingBroadcastScree
         body: SafeArea(
           //top: false,
           child: Scaffold(
-              backgroundColor: AppColors.background1, appBar: _buildAppBar(context), body: _buildBody(context)),
+            backgroundColor: AppColors.background1,
+            appBar: _buildAppBar(context),
+            body: _buildBody(context),
+          ),
         ),
       );
 
@@ -85,6 +88,9 @@ class _UpcomingBroadcastScreenState extends BaseBlocState<UpcomingBroadcastScree
           }
           if (action is ShowLoader) {
             LoaderDialog.show(context: context);
+          }
+          if (action is NavigateToSignIn) {
+            AppNavigator.navigateToSignIn(context, removeUntil: true);
           }
 
           if (action is HideLoader) {
@@ -121,14 +127,18 @@ class _UpcomingBroadcastScreenState extends BaseBlocState<UpcomingBroadcastScree
       );
 
   PreferredSizeWidget _buildAppBar(context) => DefaultAppBar(
-      // firstIcon: SvgPicture.asset(Assets.images.person, height: 20, width: 20),
-      // onFirstButtonPressed: (){
-      //   getBloc(context).add(UpcomingBroadcastEvent.profileClicked());
-      // },
-      // secondIcon: SvgPicture.asset(Assets.images.details, height: 20, width: 20),
-      // onSecondButtonPressed:(){
-      //   getBloc(context).add(UpcomingBroadcastEvent.detailsClicked());
-      // },
+        firstButton: SvgPicture.asset(Assets.images.logout, height: 20, width: 20),
+        onFirstButtonPressed: () {
+          getBloc(context).add(UpcomingBroadcastEvent.logoutClicked());
+        },
+        // firstIcon: SvgPicture.asset(Assets.images.person, height: 20, width: 20),
+        // onFirstButtonPressed: (){
+        //   getBloc(context).add(UpcomingBroadcastEvent.profileClicked());
+        // },
+        // secondIcon: SvgPicture.asset(Assets.images.details, height: 20, width: 20),
+        // onSecondButtonPressed:(){
+        //   getBloc(context).add(UpcomingBroadcastEvent.detailsClicked());
+        // },
       );
 
   Widget _buildTitle(context) => Center(

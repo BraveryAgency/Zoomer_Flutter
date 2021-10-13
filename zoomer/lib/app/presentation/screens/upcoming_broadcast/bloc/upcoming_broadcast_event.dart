@@ -7,4 +7,5 @@ class UpcomingBroadcastEvent with _$UpcomingBroadcastEvent {
   factory UpcomingBroadcastEvent.profileClicked() = ProfileClicked;
   factory UpcomingBroadcastEvent.detailsClicked() = DetailsClicked;
   factory UpcomingBroadcastEvent.streamNowClicked() = StreamNowClicked;
+  factory UpcomingBroadcastEvent.logoutClicked() = LogoutClicked;
 }

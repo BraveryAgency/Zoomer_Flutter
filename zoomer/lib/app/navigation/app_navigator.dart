@@ -43,7 +43,7 @@ class AppNavigator {
         child: UpcomingBroadcastScreen(),
       ),
     );
-    Navigator.push(context, route);
+    Navigator.pushReplacement(context, route);
   }
 
   static Future<void> navigateToBroadcast(BuildContext context, {required BroadcastEntity broadcast}) async {

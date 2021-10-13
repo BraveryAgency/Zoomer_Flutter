@@ -20,6 +20,10 @@ class _$BroadcastEventTearOff {
     return Init();
   }
 
+  ScreenOpened screenOpened() {
+    return ScreenOpened();
+  }
+
   LeaveClicked leaveClicked() {
     return LeaveClicked();
   }
@@ -81,6 +85,7 @@ mixin _$BroadcastEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -98,6 +103,7 @@ mixin _$BroadcastEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -115,6 +121,7 @@ mixin _$BroadcastEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -132,6 +139,7 @@ mixin _$BroadcastEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -202,6 +210,7 @@ class _$Init implements Init {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -222,6 +231,7 @@ class _$Init implements Init {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -245,6 +255,7 @@ class _$Init implements Init {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -265,6 +276,7 @@ class _$Init implements Init {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -286,6 +298,137 @@ class _$Init implements Init {
 
 abstract class Init implements BroadcastEvent {
   factory Init() = _$Init;
+}
+
+/// @nodoc
+abstract class $ScreenOpenedCopyWith<$Res> {
+  factory $ScreenOpenedCopyWith(
+          ScreenOpened value, $Res Function(ScreenOpened) then) =
+      _$ScreenOpenedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$ScreenOpenedCopyWithImpl<$Res>
+    extends _$BroadcastEventCopyWithImpl<$Res>
+    implements $ScreenOpenedCopyWith<$Res> {
+  _$ScreenOpenedCopyWithImpl(
+      ScreenOpened _value, $Res Function(ScreenOpened) _then)
+      : super(_value, (v) => _then(v as ScreenOpened));
+
+  @override
+  ScreenOpened get _value => super._value as ScreenOpened;
+}
+
+/// @nodoc
+
+class _$ScreenOpened implements ScreenOpened {
+  _$ScreenOpened();
+
+  @override
+  String toString() {
+    return 'BroadcastEvent.screenOpened()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is ScreenOpened);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() screenOpened,
+    required TResult Function() leaveClicked,
+    required TResult Function() microClicked,
+    required TResult Function() expandClicked,
+    required TResult Function() cameraClicked,
+    required TResult Function() cameraSwitchClicked,
+    required TResult Function(Duration countSeconds) countSecondsChanged,
+    required TResult Function(RemoteParticipant participant) participantJoined,
+    required TResult Function(RemoteParticipant participant) participantRemoved,
+    required TResult Function(RemoteParticipant participant)
+        participantStreamUpdate,
+    required TResult Function(RemoteParticipantEntity participant)
+        participantMicroClicked,
+  }) {
+    return screenOpened();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? screenOpened,
+    TResult Function()? leaveClicked,
+    TResult Function()? microClicked,
+    TResult Function()? expandClicked,
+    TResult Function()? cameraClicked,
+    TResult Function()? cameraSwitchClicked,
+    TResult Function(Duration countSeconds)? countSecondsChanged,
+    TResult Function(RemoteParticipant participant)? participantJoined,
+    TResult Function(RemoteParticipant participant)? participantRemoved,
+    TResult Function(RemoteParticipant participant)? participantStreamUpdate,
+    TResult Function(RemoteParticipantEntity participant)?
+        participantMicroClicked,
+    required TResult orElse(),
+  }) {
+    if (screenOpened != null) {
+      return screenOpened();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
+    required TResult Function(LeaveClicked value) leaveClicked,
+    required TResult Function(MicroClicked value) microClicked,
+    required TResult Function(ExpandClicked value) expandClicked,
+    required TResult Function(CameraClicked value) cameraClicked,
+    required TResult Function(CameraSwitchClicked value) cameraSwitchClicked,
+    required TResult Function(CountSecondsChanged value) countSecondsChanged,
+    required TResult Function(ParticipantJoined value) participantJoined,
+    required TResult Function(ParticipantRemoved value) participantRemoved,
+    required TResult Function(ParticipantStreamUpdate value)
+        participantStreamUpdate,
+    required TResult Function(ParticipantMicroClicked value)
+        participantMicroClicked,
+  }) {
+    return screenOpened(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
+    TResult Function(LeaveClicked value)? leaveClicked,
+    TResult Function(MicroClicked value)? microClicked,
+    TResult Function(ExpandClicked value)? expandClicked,
+    TResult Function(CameraClicked value)? cameraClicked,
+    TResult Function(CameraSwitchClicked value)? cameraSwitchClicked,
+    TResult Function(CountSecondsChanged value)? countSecondsChanged,
+    TResult Function(ParticipantJoined value)? participantJoined,
+    TResult Function(ParticipantRemoved value)? participantRemoved,
+    TResult Function(ParticipantStreamUpdate value)? participantStreamUpdate,
+    TResult Function(ParticipantMicroClicked value)? participantMicroClicked,
+    required TResult orElse(),
+  }) {
+    if (screenOpened != null) {
+      return screenOpened(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ScreenOpened implements BroadcastEvent {
+  factory ScreenOpened() = _$ScreenOpened;
 }
 
 /// @nodoc
@@ -329,6 +472,7 @@ class _$LeaveClicked implements LeaveClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -349,6 +493,7 @@ class _$LeaveClicked implements LeaveClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -372,6 +517,7 @@ class _$LeaveClicked implements LeaveClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -392,6 +538,7 @@ class _$LeaveClicked implements LeaveClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -456,6 +603,7 @@ class _$MicroClicked implements MicroClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -476,6 +624,7 @@ class _$MicroClicked implements MicroClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -499,6 +648,7 @@ class _$MicroClicked implements MicroClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -519,6 +669,7 @@ class _$MicroClicked implements MicroClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -583,6 +734,7 @@ class _$ExpandClicked implements ExpandClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -603,6 +755,7 @@ class _$ExpandClicked implements ExpandClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -626,6 +779,7 @@ class _$ExpandClicked implements ExpandClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -646,6 +800,7 @@ class _$ExpandClicked implements ExpandClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -710,6 +865,7 @@ class _$CameraClicked implements CameraClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -730,6 +886,7 @@ class _$CameraClicked implements CameraClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -753,6 +910,7 @@ class _$CameraClicked implements CameraClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -773,6 +931,7 @@ class _$CameraClicked implements CameraClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -837,6 +996,7 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -857,6 +1017,7 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -880,6 +1041,7 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -900,6 +1062,7 @@ class _$CameraSwitchClicked implements CameraSwitchClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -990,6 +1153,7 @@ class _$CountSecondsChanged implements CountSecondsChanged {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -1010,6 +1174,7 @@ class _$CountSecondsChanged implements CountSecondsChanged {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -1033,6 +1198,7 @@ class _$CountSecondsChanged implements CountSecondsChanged {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -1053,6 +1219,7 @@ class _$CountSecondsChanged implements CountSecondsChanged {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -1148,6 +1315,7 @@ class _$ParticipantJoined implements ParticipantJoined {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -1168,6 +1336,7 @@ class _$ParticipantJoined implements ParticipantJoined {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -1191,6 +1360,7 @@ class _$ParticipantJoined implements ParticipantJoined {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -1211,6 +1381,7 @@ class _$ParticipantJoined implements ParticipantJoined {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -1307,6 +1478,7 @@ class _$ParticipantRemoved implements ParticipantRemoved {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -1327,6 +1499,7 @@ class _$ParticipantRemoved implements ParticipantRemoved {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -1350,6 +1523,7 @@ class _$ParticipantRemoved implements ParticipantRemoved {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -1370,6 +1544,7 @@ class _$ParticipantRemoved implements ParticipantRemoved {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -1467,6 +1642,7 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -1487,6 +1663,7 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -1510,6 +1687,7 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -1530,6 +1708,7 @@ class _$ParticipantStreamUpdate implements ParticipantStreamUpdate {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,
@@ -1627,6 +1806,7 @@ class _$ParticipantMicroClicked implements ParticipantMicroClicked {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
+    required TResult Function() screenOpened,
     required TResult Function() leaveClicked,
     required TResult Function() microClicked,
     required TResult Function() expandClicked,
@@ -1647,6 +1827,7 @@ class _$ParticipantMicroClicked implements ParticipantMicroClicked {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
+    TResult Function()? screenOpened,
     TResult Function()? leaveClicked,
     TResult Function()? microClicked,
     TResult Function()? expandClicked,
@@ -1670,6 +1851,7 @@ class _$ParticipantMicroClicked implements ParticipantMicroClicked {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
     required TResult Function(LeaveClicked value) leaveClicked,
     required TResult Function(MicroClicked value) microClicked,
     required TResult Function(ExpandClicked value) expandClicked,
@@ -1690,6 +1872,7 @@ class _$ParticipantMicroClicked implements ParticipantMicroClicked {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
     TResult Function(LeaveClicked value)? leaveClicked,
     TResult Function(MicroClicked value)? microClicked,
     TResult Function(ExpandClicked value)? expandClicked,

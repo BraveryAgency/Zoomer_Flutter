@@ -37,6 +37,7 @@ class UpcomingBroadcastBloc extends Bloc<UpcomingBroadcastEvent, UpcomingBroadca
       profileClicked: _profileClicked,
       detailsClicked: _detailsClicked,
       streamNowClicked: _streamNowClicked,
+      logoutClicked: _logoutClicked,
     );
   }
 
@@ -44,7 +45,7 @@ class UpcomingBroadcastBloc extends Bloc<UpcomingBroadcastEvent, UpcomingBroadca
     yield* _fetchBroadcast(needShowLoader: true);
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       this.add(UpcomingBroadcastEvent.screenOpened());
-      });
+    });
   }
 
   Stream<UpcomingBroadcastState> _screenOpened() async* {
@@ -93,6 +94,12 @@ class UpcomingBroadcastBloc extends Bloc<UpcomingBroadcastEvent, UpcomingBroadca
   Stream<UpcomingBroadcastState> _profileClicked() async* {}
 
   Stream<UpcomingBroadcastState> _detailsClicked() async* {}
+
+  Stream<UpcomingBroadcastState> _logoutClicked() async* {
+    await preferencesLocalGateway.setToken(null);
+    await preferencesLocalGateway.setRememberMeStatus(null);
+    yield state.copyWith(action: NavigateToSignIn());
+  }
 
   Stream<UpcomingBroadcastState> _streamNowClicked() async* {
     yield state.copyWith(action: NavigateToBroadcast());

@@ -26,7 +26,8 @@ class $AssetsImagesGen {
   String get exit => 'assets/images/exit.svg';
   String get leftArrow => 'assets/images/left_arrow.svg';
   String get location => 'assets/images/location.svg';
-  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+  String get logo => 'assets/images/logo.svg';
+  String get logout => 'assets/images/logout.svg';
   String get microphoneOff => 'assets/images/microphone_off.svg';
   String get microphoneOn => 'assets/images/microphone_on.svg';
   AssetGenImage get noBroadcast =>

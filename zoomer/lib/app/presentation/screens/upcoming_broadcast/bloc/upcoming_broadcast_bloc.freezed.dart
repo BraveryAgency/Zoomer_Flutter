@@ -35,6 +35,10 @@ class _$UpcomingBroadcastEventTearOff {
   StreamNowClicked streamNowClicked() {
     return StreamNowClicked();
   }
+
+  LogoutClicked logoutClicked() {
+    return LogoutClicked();
+  }
 }
 
 /// @nodoc
@@ -49,6 +53,7 @@ mixin _$UpcomingBroadcastEvent {
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
+    required TResult Function() logoutClicked,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -58,6 +63,7 @@ mixin _$UpcomingBroadcastEvent {
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
+    TResult Function()? logoutClicked,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -68,6 +74,7 @@ mixin _$UpcomingBroadcastEvent {
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
+    required TResult Function(LogoutClicked value) logoutClicked,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -77,6 +84,7 @@ mixin _$UpcomingBroadcastEvent {
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
+    TResult Function(LogoutClicked value)? logoutClicked,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -142,6 +150,7 @@ class _$Init implements Init {
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
+    required TResult Function() logoutClicked,
   }) {
     return init();
   }
@@ -154,6 +163,7 @@ class _$Init implements Init {
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
+    TResult Function()? logoutClicked,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -170,6 +180,7 @@ class _$Init implements Init {
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
+    required TResult Function(LogoutClicked value) logoutClicked,
   }) {
     return init(this);
   }
@@ -182,6 +193,7 @@ class _$Init implements Init {
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
+    TResult Function(LogoutClicked value)? logoutClicked,
     required TResult orElse(),
   }) {
     if (init != null) {
@@ -240,6 +252,7 @@ class _$ScreenOpened implements ScreenOpened {
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
+    required TResult Function() logoutClicked,
   }) {
     return screenOpened();
   }
@@ -252,6 +265,7 @@ class _$ScreenOpened implements ScreenOpened {
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
+    TResult Function()? logoutClicked,
     required TResult orElse(),
   }) {
     if (screenOpened != null) {
@@ -268,6 +282,7 @@ class _$ScreenOpened implements ScreenOpened {
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
+    required TResult Function(LogoutClicked value) logoutClicked,
   }) {
     return screenOpened(this);
   }
@@ -280,6 +295,7 @@ class _$ScreenOpened implements ScreenOpened {
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
+    TResult Function(LogoutClicked value)? logoutClicked,
     required TResult orElse(),
   }) {
     if (screenOpened != null) {
@@ -338,6 +354,7 @@ class _$ProfileClicked implements ProfileClicked {
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
+    required TResult Function() logoutClicked,
   }) {
     return profileClicked();
   }
@@ -350,6 +367,7 @@ class _$ProfileClicked implements ProfileClicked {
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
+    TResult Function()? logoutClicked,
     required TResult orElse(),
   }) {
     if (profileClicked != null) {
@@ -366,6 +384,7 @@ class _$ProfileClicked implements ProfileClicked {
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
+    required TResult Function(LogoutClicked value) logoutClicked,
   }) {
     return profileClicked(this);
   }
@@ -378,6 +397,7 @@ class _$ProfileClicked implements ProfileClicked {
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
+    TResult Function(LogoutClicked value)? logoutClicked,
     required TResult orElse(),
   }) {
     if (profileClicked != null) {
@@ -436,6 +456,7 @@ class _$DetailsClicked implements DetailsClicked {
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
+    required TResult Function() logoutClicked,
   }) {
     return detailsClicked();
   }
@@ -448,6 +469,7 @@ class _$DetailsClicked implements DetailsClicked {
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
+    TResult Function()? logoutClicked,
     required TResult orElse(),
   }) {
     if (detailsClicked != null) {
@@ -464,6 +486,7 @@ class _$DetailsClicked implements DetailsClicked {
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
+    required TResult Function(LogoutClicked value) logoutClicked,
   }) {
     return detailsClicked(this);
   }
@@ -476,6 +499,7 @@ class _$DetailsClicked implements DetailsClicked {
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
+    TResult Function(LogoutClicked value)? logoutClicked,
     required TResult orElse(),
   }) {
     if (detailsClicked != null) {
@@ -534,6 +558,7 @@ class _$StreamNowClicked implements StreamNowClicked {
     required TResult Function() profileClicked,
     required TResult Function() detailsClicked,
     required TResult Function() streamNowClicked,
+    required TResult Function() logoutClicked,
   }) {
     return streamNowClicked();
   }
@@ -546,6 +571,7 @@ class _$StreamNowClicked implements StreamNowClicked {
     TResult Function()? profileClicked,
     TResult Function()? detailsClicked,
     TResult Function()? streamNowClicked,
+    TResult Function()? logoutClicked,
     required TResult orElse(),
   }) {
     if (streamNowClicked != null) {
@@ -562,6 +588,7 @@ class _$StreamNowClicked implements StreamNowClicked {
     required TResult Function(ProfileClicked value) profileClicked,
     required TResult Function(DetailsClicked value) detailsClicked,
     required TResult Function(StreamNowClicked value) streamNowClicked,
+    required TResult Function(LogoutClicked value) logoutClicked,
   }) {
     return streamNowClicked(this);
   }
@@ -574,6 +601,7 @@ class _$StreamNowClicked implements StreamNowClicked {
     TResult Function(ProfileClicked value)? profileClicked,
     TResult Function(DetailsClicked value)? detailsClicked,
     TResult Function(StreamNowClicked value)? streamNowClicked,
+    TResult Function(LogoutClicked value)? logoutClicked,
     required TResult orElse(),
   }) {
     if (streamNowClicked != null) {
@@ -585,6 +613,108 @@ class _$StreamNowClicked implements StreamNowClicked {
 
 abstract class StreamNowClicked implements UpcomingBroadcastEvent {
   factory StreamNowClicked() = _$StreamNowClicked;
+}
+
+/// @nodoc
+abstract class $LogoutClickedCopyWith<$Res> {
+  factory $LogoutClickedCopyWith(
+          LogoutClicked value, $Res Function(LogoutClicked) then) =
+      _$LogoutClickedCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$LogoutClickedCopyWithImpl<$Res>
+    extends _$UpcomingBroadcastEventCopyWithImpl<$Res>
+    implements $LogoutClickedCopyWith<$Res> {
+  _$LogoutClickedCopyWithImpl(
+      LogoutClicked _value, $Res Function(LogoutClicked) _then)
+      : super(_value, (v) => _then(v as LogoutClicked));
+
+  @override
+  LogoutClicked get _value => super._value as LogoutClicked;
+}
+
+/// @nodoc
+
+class _$LogoutClicked implements LogoutClicked {
+  _$LogoutClicked();
+
+  @override
+  String toString() {
+    return 'UpcomingBroadcastEvent.logoutClicked()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is LogoutClicked);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() screenOpened,
+    required TResult Function() profileClicked,
+    required TResult Function() detailsClicked,
+    required TResult Function() streamNowClicked,
+    required TResult Function() logoutClicked,
+  }) {
+    return logoutClicked();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? screenOpened,
+    TResult Function()? profileClicked,
+    TResult Function()? detailsClicked,
+    TResult Function()? streamNowClicked,
+    TResult Function()? logoutClicked,
+    required TResult orElse(),
+  }) {
+    if (logoutClicked != null) {
+      return logoutClicked();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Init value) init,
+    required TResult Function(ScreenOpened value) screenOpened,
+    required TResult Function(ProfileClicked value) profileClicked,
+    required TResult Function(DetailsClicked value) detailsClicked,
+    required TResult Function(StreamNowClicked value) streamNowClicked,
+    required TResult Function(LogoutClicked value) logoutClicked,
+  }) {
+    return logoutClicked(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Init value)? init,
+    TResult Function(ScreenOpened value)? screenOpened,
+    TResult Function(ProfileClicked value)? profileClicked,
+    TResult Function(DetailsClicked value)? detailsClicked,
+    TResult Function(StreamNowClicked value)? streamNowClicked,
+    TResult Function(LogoutClicked value)? logoutClicked,
+    required TResult orElse(),
+  }) {
+    if (logoutClicked != null) {
+      return logoutClicked(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LogoutClicked implements UpcomingBroadcastEvent {
+  factory LogoutClicked() = _$LogoutClicked;
 }
 
 /// @nodoc

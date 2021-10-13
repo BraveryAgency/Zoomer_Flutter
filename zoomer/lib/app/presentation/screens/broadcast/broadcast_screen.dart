@@ -9,7 +9,7 @@ import 'package:zoomer/app/resources/app_colors.dart';
 import 'package:zoomer/app/widgets/app_bars/default_appbar.dart';
 import 'package:zoomer/app/widgets/lists/participants_list.dart';
 import 'package:zoomer/core/bloc/bloc_action.dart';
-import 'package:zoomer/core/ui/widgets/base_bloc_stateless_widget.dart';
+import 'package:zoomer/core/ui/widgets/base_bloc_state.dart';
 import 'package:zoomer/core/ui/widgets/dialogs.dart';
 import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
 import 'package:zoomer/domain/entities/remote_participant_entity.dart';
@@ -17,7 +17,46 @@ import 'package:zoomer/gen/assets.gen.dart';
 
 import 'bloc/broadcast_bloc.dart';
 
-class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
+class BroadcastScreen extends StatefulWidget {
+  @override
+  _BroadcastScreenState createState() => _BroadcastScreenState();
+}
+
+class _BroadcastScreenState extends BaseBlocState<BroadcastScreen, BroadcastBloc> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // These are the callbacks
+    switch (state) {
+      case AppLifecycleState.resumed:
+        getBloc(context).add(BroadcastEvent.screenOpened());
+        // widget is resumed
+        break;
+      case AppLifecycleState.inactive:
+        // widget is inactive
+        break;
+      case AppLifecycleState.paused:
+        // widget is paused
+        break;
+      case AppLifecycleState.detached:
+        // widget is detached
+        break;
+    }
+  }
+
   final PageController _pageController = PageController(viewportFraction: 0.9);
 
   @override
@@ -91,8 +130,7 @@ class BroadcastScreen extends BaseBlocStatelessWidget<BroadcastBloc> {
       });
 
   PreferredSizeWidget _buildAppBar(context) => DefaultAppBar(
-        firstIcon: SvgPicture.asset(Assets.images.exit, height: 35, width: 107),
-        firstIconPadding: EdgeInsets.symmetric(vertical: 18),
+        firstButton: SvgPicture.asset(Assets.images.exit, height: 35, width: 107),
         onFirstButtonPressed: () {
           getBloc(context).add(BroadcastEvent.leaveClicked());
         },

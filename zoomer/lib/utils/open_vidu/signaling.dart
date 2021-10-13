@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_webrtc/webrtc.dart';
+import 'package:rxdart/subjects.dart';
 
 import 'api_client.dart';
 import 'request_config.dart';
@@ -116,13 +117,18 @@ class Signaling {
   bool _localPeerConnectionHasRemoteDescription = false;
 
   SignalingStateCallback? onStateChange;
-  StreamStateCallback? onLocalStream;
   StreamStateCallback? onAddRemoteStream;
   StreamStateCallback? onRemoveRemoteStream;
 
-  void Function(RemoteParticipant participant)? onParticipantsRemove;
-  void Function(RemoteParticipant participant)? onParticipantsJoined;
-  void Function(RemoteParticipant participant)? onParticipantsStreamUpdate;
+  BehaviorSubject<MediaStream?> _onLocalStreamAddSubject = BehaviorSubject.seeded(null);
+  PublishSubject<RemoteParticipant?> _onParticipantRemoveSubject = PublishSubject();
+  BehaviorSubject<RemoteParticipant?> _onParticipantJoinedSubject = BehaviorSubject.seeded(null);
+  BehaviorSubject<RemoteParticipant?> _onParticipantsStreamUpdateSubject = BehaviorSubject.seeded(null);
+
+  Stream<MediaStream?> get onLocalStreamAddStream => _onLocalStreamAddSubject.stream;
+  Stream<RemoteParticipant?> get onParticipantRemoveStream => _onParticipantRemoveSubject.stream;
+  Stream<RemoteParticipant?> get onParticipantJoinedStream => _onParticipantJoinedSubject.stream;
+  Stream<RemoteParticipant?> get onParticipantStreamUpdateStream => _onParticipantsStreamUpdateSubject.stream;
 
   List<Map<String, dynamic>> _iceCandidatesParams = <Map<String, dynamic>>[];
   List _remoteAlreadyInRoomValues = [];
@@ -142,6 +148,7 @@ class Signaling {
   }
 
   void close() {
+    _onLocalStreamAddSubject?.close();
     _localStream?.dispose();
     _localStream = null;
     _timer?.cancel();
@@ -320,6 +327,7 @@ class Signaling {
           print('◤◢◤◢◤◢◤◢◤◢◤ participantPublished: $params ◤◢◤◢◤◢◤◢◤◢◤');
           break;
         case JsonConstants.participantLeft:
+          _participantLeftMethod(params);
           print('◤◢◤◢◤◢◤◢◤◢◤ participantLeft: $params ◤◢◤◢◤◢◤◢◤◢◤');
           break;
         case JsonConstants.participantEvicted:
@@ -361,7 +369,7 @@ class Signaling {
     RemoteParticipant remoteParticipant =
         RemoteParticipant(id: params[JsonConstants.id], metadata: params[JsonConstants.metadata]);
     _participants[remoteParticipant.id] = remoteParticipant;
-    this.onParticipantsJoined?.call(remoteParticipant);
+    _onParticipantJoinedSubject.add(remoteParticipant);
     _createRemotePeerConnection(remoteParticipant);
     if (this.onStateChange != null) {
       this.onStateChange?.call(SignalingState.CallStateConnected);
@@ -396,7 +404,7 @@ class Signaling {
     String participantId = params['connectionId'];
     if (participantId == _userId) {
     } else if (_participants.containsKey(participantId)) {
-      this.onParticipantsRemove?.call(_participants[participantId]!);
+      _onParticipantRemoveSubject.add(_participants[participantId]!);
       _participants[participantId]!.peerConnection?.close();
       _participants.remove(participantId);
       if (_participants.length == 0) {
@@ -453,7 +461,7 @@ class Signaling {
     };
     MediaStream stream = await navigator.getUserMedia(mediaConstraints);
     if (isLocalStream) {
-      this.onLocalStream?.call(stream);
+      _onLocalStreamAddSubject.add(stream);
     }
     return stream;
   }
@@ -505,7 +513,7 @@ class Signaling {
 
     remotePeerConnection.onAddStream = ((stream) {
       remoteParticipant.mediaStream = stream;
-      this.onParticipantsStreamUpdate?.call(remoteParticipant);
+      _onParticipantsStreamUpdateSubject.add(remoteParticipant);
       this.onAddRemoteStream?.call(stream);
     });
 
@@ -524,7 +532,7 @@ class Signaling {
 
     remotePeerConnection.onRemoveStream = (stream) {
       remoteParticipant.mediaStream = stream;
-      this.onParticipantsStreamUpdate?.call(remoteParticipant);
+      _onParticipantsStreamUpdateSubject.add(remoteParticipant);
       this.onRemoveRemoteStream?.call(stream);
     };
 
