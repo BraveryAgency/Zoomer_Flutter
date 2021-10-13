@@ -103,16 +103,10 @@ dependencies:
   #https://pub.dev/packages/country_pickers
   country_pickers: ^2.0.0
 
-  #https://pub.dev/packages/google_maps_flutter
-  google_maps_flutter: ^2.0.8
-
   flutter_masked_text: ^0.8.0
 
   #https://pub.dev/packages/mask_text_input_formatter
   mask_text_input_formatter: ^2.0.0
-
-  #https://pub.dev/packages/edit_distance
-  edit_distance: ^0.4.1
 
   #https://pub.dev/packages/tuple
   tuple: ^2.0.0
