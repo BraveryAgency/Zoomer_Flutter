@@ -124,7 +124,7 @@ class SignInScreen extends BaseBlocStatelessWidget<SignInBloc> {
         return PasswordInput(
             password: state.password.value,
             title: AppLocalizations.of(context).password,
-            error: error,
+            error: error ?? state.errorMessage,
             onChanged: (password) {
               getBloc(context).add(SignInEvent.passwordChanged(password));
             });
