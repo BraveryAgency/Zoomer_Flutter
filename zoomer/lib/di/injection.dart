@@ -14,6 +14,10 @@ import 'package:zoomer/localization/app_localizations.dart';
 
 GetIt injection = GetIt.I;
 
+Future<void> setUpLocatorWithContext(BuildContext context) async {
+  injection.registerSingleton<AppLocalizations>(AppLocalizations.of(context));
+}
+
 Future setUpLocator() async {
   injection.registerSingleton<Dio>(DioHelper.getDio());
   injection.registerSingleton<DataConnectionChecker>(DataConnectionChecker());
@@ -43,7 +47,3 @@ Future setUpLocator() async {
   ));
 }
 
-
-Future setUpLocatorWithContext(BuildContext context) async {
-  injection.registerSingleton<AppLocalizations>(AppLocalizations.of(context));
-}

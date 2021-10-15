@@ -5,6 +5,7 @@ import 'package:zoomer/app/navigation/app_navigator.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
 import 'package:zoomer/app/resources/app_colors.dart';
 import 'package:zoomer/core/ui/widgets/base_bloc_state.dart';
+import 'package:zoomer/di/injection.dart';
 
 import 'bloc/splash_bloc.dart';
 
@@ -20,6 +21,7 @@ class _SplashScreenState extends BaseBlocState<SplashScreen, SplashBloc> {
         listener: (context, state) async {
           var action = state.action;
           if (action is NavigateToSignIn) {
+            await setUpLocatorWithContext(context);
             AppNavigator.navigateToSignIn(context);
           }
           if (action is NavigateToUpcomingBroadcast) {

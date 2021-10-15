@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_webrtc/webrtc.dart';
+import 'package:zoomer/app/navigation/app_navigator.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
+import 'package:zoomer/app/presentation/screens/upcoming_broadcast/bloc/upcoming_broadcast_bloc.dart';
 import 'package:zoomer/app/resources/app_colors.dart';
 import 'package:zoomer/app/widgets/app_bars/default_appbar.dart';
 import 'package:zoomer/app/widgets/lists/participants_list.dart';
@@ -86,7 +88,7 @@ class _BroadcastScreenState extends BaseBlocState<BroadcastScreen, BroadcastBloc
             Navigator.pop(context);
           }
           if (action is NavigateBack) {
-            Navigator.pop(context);
+            AppNavigator.navigateToUpcomingBroadcast(context);
           }
         },
         child: BlocBuilder<BroadcastBloc, BroadcastState>(
