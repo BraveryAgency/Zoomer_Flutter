@@ -6,5 +6,8 @@
   "upcomingBroadcast": "Upcoming broadcast",
   "streamNow" : "Stream now",
   "noUpcomingBroadcastsFound" : "No upcoming broadcasts found",
-  "fillField" : "Fill field"
+  "fillField" : "Fill field",
+  "yes": "YES",
+  "no": "NO",
+  "wantToEndStream": "Want to end stream?"
 }

@@ -143,6 +143,12 @@ class AppLocalizations {
   String get invalidConfirmationCode => _localizedStrings['invalidConfirmationCode'] ?? '';
   String get fillField => _localizedStrings['fillField'] ?? '';
   String get incorrectData => _localizedStrings['incorrectData'] ?? '';
+
+  String get yes => _localizedStrings['yes'] ?? '';
+
+  String get no => _localizedStrings['no'] ?? '';
+
+  String get wantToEndStream => _localizedStrings['wantToEndStream'] ?? '';
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

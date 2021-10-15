@@ -14,6 +14,7 @@ import 'package:zoomer/core/ui/widgets/dialogs.dart';
 import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
 import 'package:zoomer/domain/entities/remote_participant_entity.dart';
 import 'package:zoomer/gen/assets.gen.dart';
+import 'package:zoomer/localization/app_localizations.dart';
 
 import 'bloc/broadcast_bloc.dart';
 
@@ -132,7 +133,7 @@ class _BroadcastScreenState extends BaseBlocState<BroadcastScreen, BroadcastBloc
   PreferredSizeWidget _buildAppBar(context) => DefaultAppBar(
         firstButton: SvgPicture.asset(Assets.images.exit, height: 35, width: 107),
         onFirstButtonPressed: () {
-          getBloc(context).add(BroadcastEvent.leaveClicked());
+          _showModalDialog(context);
         },
       );
 
@@ -321,4 +322,39 @@ class _BroadcastScreenState extends BaseBlocState<BroadcastScreen, BroadcastBloc
           ),
         );
       });
+
+  Future<void> _showModalDialog(BuildContext context) async => showDialog<void>(
+        context: context,
+        barrierDismissible: true, // user must tap button!
+        builder: (_) => AlertDialog(
+          titlePadding: const EdgeInsets.all(20),
+          actionsPadding: const EdgeInsets.only(right: 10, bottom: 10),
+          title: Text(
+            AppLocalizations.of(context).wantToEndStream,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                AppLocalizations.of(context).no,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+            ),
+            const SizedBox(width: 2),
+            GestureDetector(
+              onTap: () {
+                getBloc(context).add(BroadcastEvent.leaveClicked());
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                AppLocalizations.of(context).yes,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
+        ),
+      );
 }
