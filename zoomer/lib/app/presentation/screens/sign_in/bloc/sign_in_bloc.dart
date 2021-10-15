@@ -13,16 +13,19 @@ import 'package:zoomer/core/validation/password.dart';
 import 'package:zoomer/data/gateways/local/preferences_local_gateway.dart';
 import 'package:zoomer/data/repositories/authorization_repository.dart';
 import 'package:zoomer/domain/entities/login_entity.dart';
+import 'package:zoomer/localization/app_localizations.dart';
 
 part 'sign_in_bloc.freezed.dart';
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
-  SignInBloc({required this.authorizationRepository, required this.preferencesLocalGateway}) : super(SignInState());
+  SignInBloc({required this.authorizationRepository, required this.preferencesLocalGateway,
+  required this.localizations,}) : super(SignInState());
 
   PreferencesLocalGateway preferencesLocalGateway;
   AuthorizationRepository authorizationRepository;
+  AppLocalizations localizations;
 
   @override
   Stream<SignInState> mapEventToState(
@@ -97,16 +100,16 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   Stream<SignInState> _handleError(Failure? error) async* {
     if (error is RequestFailure) {
-      // switch (error.code) {
-      //   case 404:
-      //     yield state.copyWith(errorMessage: app.userDoesNotExist);
-      //     break;
-      //   case 403:
-      //     yield state.copyWith(errorMessage: localizations.invalidLoginOrPassword);
-      //     break;
-      //   default:
-      //     yield state.copyWith(action: ShowMessage(messageType: MessageType.serverError));
-      // }
+      switch (error.code) {
+        case 409:
+          yield state.copyWith(errorMessage: localizations.invalidLoginOrPassword);
+          break;
+        case 403:
+          yield state.copyWith(errorMessage: localizations.invalidLoginOrPassword);
+          break;
+        default:
+          yield state.copyWith(action: ShowMessage(messageType: MessageType.serverError));
+      }
     }
     if (error is NetworkFailure) {
       yield state.copyWith(action: ShowMessage(messageType: MessageType.noConnection));

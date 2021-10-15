@@ -21,6 +21,7 @@ class AppNavigator {
         create: (context) => SignInBloc(
           authorizationRepository: injection(),
           preferencesLocalGateway: injection(),
+          localizations: injection(),
         ),
         child: SignInScreen(),
       ),
