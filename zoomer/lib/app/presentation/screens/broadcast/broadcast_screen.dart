@@ -17,7 +17,7 @@ import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
 import 'package:zoomer/domain/entities/remote_participant_entity.dart';
 import 'package:zoomer/gen/assets.gen.dart';
 import 'package:zoomer/localization/app_localizations.dart';
-
+import 'dart:math';
 import 'bloc/broadcast_bloc.dart';
 
 class BroadcastScreen extends StatefulWidget {
@@ -142,7 +142,10 @@ class _BroadcastScreenState extends BaseBlocState<BroadcastScreen, BroadcastBloc
   Widget _buildBroadcastArea(context) => ClipRect(
         child: Stack(
           children: [
-            Positioned.fill(child: _buildBroadcastVideo()),
+            Positioned.fill(child: Transform(
+        alignment: Alignment.center,
+          transform: Matrix4.rotationY(pi),
+          child: _buildBroadcastVideo(),),),
             Positioned(
               left: 20,
               top: 20,

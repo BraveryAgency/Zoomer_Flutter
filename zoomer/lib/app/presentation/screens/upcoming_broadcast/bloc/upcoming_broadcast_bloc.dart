@@ -26,6 +26,7 @@ class UpcomingBroadcastBloc extends Bloc<UpcomingBroadcastEvent, UpcomingBroadca
 
   PreferencesLocalGateway preferencesLocalGateway;
   BroadcastRepository broadcastRepository;
+  StreamSubscription? notificationsSubscription;
 
   @override
   Stream<UpcomingBroadcastState> mapEventToState(
@@ -41,9 +42,17 @@ class UpcomingBroadcastBloc extends Bloc<UpcomingBroadcastEvent, UpcomingBroadca
     );
   }
 
+  @override
+  Future<void> close() async {
+    notificationsSubscription?.cancel();
+    return super.close();
+  }
+
+
   Stream<UpcomingBroadcastState> _init() async* {
     yield* _fetchBroadcast(needShowLoader: true);
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    notificationsSubscription?.cancel();
+    notificationsSubscription = FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       this.add(UpcomingBroadcastEvent.screenOpened());
     });
   }

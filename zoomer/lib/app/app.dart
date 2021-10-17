@@ -38,7 +38,8 @@ class _AppState extends State<App> {
     _keyboardListener.addNewListener(onChange: (bool visible) {
       if (!visible) {
         FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
           FocusManager.instance.primaryFocus?.unfocus();
         }
       }
@@ -46,12 +47,22 @@ class _AppState extends State<App> {
     _setupNotifications();
   }
 
-  void _setupNotifications() {
+  void _setupNotifications() async {
     messaging = FirebaseMessaging.instance;
-
+    await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
     messaging.onTokenRefresh.listen((String firebaseToken) async {
       String? token = await preferencesLocalGateway.getToken();
-      if (token != null) {
+      bool rememberMe = await preferencesLocalGateway.getRememberMeStatus();
+
+      if (token != null && rememberMe) {
         var newTokenResponse = await authorizationRemoteGateway.sendDeviceToken(
           token: token,
           body: DeviceTokenBody(
@@ -62,14 +73,15 @@ class _AppState extends State<App> {
     });
     messaging.getToken().then((value) async {
       String? token = await preferencesLocalGateway.getToken();
-      if (token != null) {
+      bool rememberMe = await preferencesLocalGateway.getRememberMeStatus();
+
+      if (token != null && rememberMe) {
         var newTokenResponse = await authorizationRemoteGateway.sendDeviceToken(
           token: token,
           body: DeviceTokenBody(
             deviceToken: value ?? '',
           ),
         );
-        print(value);
       }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {

@@ -166,11 +166,15 @@ class Signaling {
   }
 
   void setMicroEnabled(bool enabled) {
-    _localStream?.getVideoTracks()[0].setMicrophoneMute(!enabled);
+    _localStream?.getVideoTracks().forEach((element) {
+      element.setMicrophoneMute(!enabled);
+    });
   }
 
   void setCameraEnabled(bool enabled) {
-    _localStream?.getVideoTracks()[0].enabled = enabled;
+    _localStream?.getVideoTracks().forEach((element) {
+      element.enabled = enabled;
+    });
   }
 
   Future<void> createWebRtcSession({required String sessionId}) {
