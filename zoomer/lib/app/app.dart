@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:zoomer/app/presentation/screens/splash/bloc/splash_bloc.dart';
@@ -101,6 +102,7 @@ class _AppState extends State<App> {
           },
           duration: Duration(seconds: 2),
         );
+        FlutterRingtonePlayer.playNotification();
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
