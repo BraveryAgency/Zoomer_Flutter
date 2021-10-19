@@ -126,8 +126,11 @@ class Signaling {
   BehaviorSubject<RemoteParticipant?> _onParticipantsStreamUpdateSubject = BehaviorSubject.seeded(null);
 
   Stream<MediaStream?> get onLocalStreamAddStream => _onLocalStreamAddSubject.stream;
+
   Stream<RemoteParticipant?> get onParticipantRemoveStream => _onParticipantRemoveSubject.stream;
+
   Stream<RemoteParticipant?> get onParticipantJoinedStream => _onParticipantJoinedSubject.stream;
+
   Stream<RemoteParticipant?> get onParticipantStreamUpdateStream => _onParticipantsStreamUpdateSubject.stream;
 
   List<Map<String, dynamic>> _iceCandidatesParams = <Map<String, dynamic>>[];
@@ -141,6 +144,10 @@ class Signaling {
       'OfferToReceiveVideo': true,
     },
     'optional': [],
+    'video': {
+      'width': 1280,
+      'height': 720,
+    }
   };
 
   void updateInternalId() {
