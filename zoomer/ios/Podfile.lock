@@ -1,4 +1,6 @@
 PODS:
+  - camera (0.0.1):
+    - Flutter
   - Firebase/CoreOnly (8.6.0):
     - FirebaseCore (= 8.6.0)
   - Firebase/Messaging (8.6.0):
@@ -104,6 +106,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - camera (from `.symlinks/plugins/camera/ios`)
   - Firebase/Messaging
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -140,6 +143,8 @@ SPEC REPOS:
     - Reachability
 
 EXTERNAL SOURCES:
+  camera:
+    :path: ".symlinks/plugins/camera/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
@@ -174,6 +179,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
+  camera: 3164201dc344383e62282964016528c4f5a9ad50
   Firebase: 21ac9f28b09a8bdfc005f34c984fca84e7e8786d
   firebase_core: c21ac09a8d23afd3594b56ed786bad12e5266bba
   firebase_messaging: 0fddeca6fcfee0bed23c66210391d782af8f8d0e

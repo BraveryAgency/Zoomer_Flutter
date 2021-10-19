@@ -150,6 +150,8 @@ class Signaling {
     }
   };
 
+  bool microEnabled = true;
+
   void updateInternalId() {
     _internalId++;
   }
@@ -173,15 +175,16 @@ class Signaling {
   }
 
   void setMicroEnabled(bool enabled) {
+    microEnabled = enabled;
     _localStream?.getVideoTracks().forEach((element) {
-      element.setMicrophoneMute(!enabled);
+      element.setMicrophoneMute(!microEnabled);
     });
     _localStream?.getAudioTracks().forEach((element) {
-      element.setMicrophoneMute(!enabled);
+      element.setMicrophoneMute(!microEnabled);
     });
   }
 
-  void setCameraEnabled(bool enabled) {
+  void setCameraEnabled(bool enabled) async {
     _localStream?.getVideoTracks().forEach((element) {
       element.enabled = enabled;
     });
@@ -460,28 +463,26 @@ class Signaling {
     });
   }
 
-  Future<MediaStream> createStream({isLocalStream = false}) async {
+  Future<MediaStream> createStream({bool isLocalStream = false,bool audio = true,bool video = true,}) async {
     final Map<String, dynamic> mediaConstraints = {
-      'audio': true,
-      'video': {
+      'audio': audio,
+      if(video) 'video': {
         'mandatory': {
           'minWidth': '320',
           'minHeight': '240',
           'minFrameRate': '30',
         },
-        'facingMode': 'user',
+        if(video) 'facingMode': 'user',
         'optional': [],
       }
     };
     MediaStream stream = await navigator.getUserMedia(mediaConstraints);
-    if (isLocalStream) {
-      _onLocalStreamAddSubject.add(stream);
-    }
     return stream;
   }
 
   Future<void> _createLocalPeerConnection() async {
     _localStream = await createStream(isLocalStream: true);
+    _onLocalStreamAddSubject.add(_localStream);
     _localPeerConnection = await createPeerConnection(_iceServers, _constraints);
     _localPeerConnection!.onSignalingState = ((state) {
       if (state == RTCSignalingState.RTCSignalingStateStable) {}
@@ -508,7 +509,7 @@ class Signaling {
         _iceCandidatesParams.add(iceCandidateParams);
       }
     };
-    _localPeerConnection!.addStream(_localStream);
+    // _localPeerConnection!.addStream(_localStream);
   }
 
   Future<RTCPeerConnection> _createRemotePeerConnection(RemoteParticipant remoteParticipant) async {

@@ -4,6 +4,7 @@ part of 'broadcast_bloc.dart';
 class BroadcastEvent with _$BroadcastEvent {
   factory BroadcastEvent.init() = Init;
   factory BroadcastEvent.screenOpened() = ScreenOpened;
+  factory BroadcastEvent.cameraPrepared() = CameraPrepared;
   factory BroadcastEvent.leaveClicked() = LeaveClicked;
   factory BroadcastEvent.microClicked() = MicroClicked;
   factory BroadcastEvent.expandClicked() = ExpandClicked;
@@ -14,4 +15,5 @@ class BroadcastEvent with _$BroadcastEvent {
   factory BroadcastEvent.participantRemoved(RemoteParticipant participant) = ParticipantRemoved;
   factory BroadcastEvent.participantStreamUpdate(RemoteParticipant participant) = ParticipantStreamUpdate;
   factory BroadcastEvent.participantMicroClicked(RemoteParticipantEntity participant) = ParticipantMicroClicked;
+
 }
