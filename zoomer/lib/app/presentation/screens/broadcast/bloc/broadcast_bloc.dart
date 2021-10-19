@@ -195,6 +195,12 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
     videoRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
     await videoRenderer.initialize();
     List<RemoteParticipantEntity> participants = List.from(state.participants);
+    participant.mediaStream?.getVideoTracks().forEach((track) {
+      track.enableSpeakerphone(true);
+    });
+    participant.mediaStream?.getAudioTracks().forEach((track) {
+      track.enableSpeakerphone(true);
+    });
     participants.add(RemoteParticipantEntity(participant: participant, renderer: videoRenderer));
     yield state.copyWith(participants: participants);
   }
@@ -236,7 +242,27 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
           renderer: foundParticipant.renderer,
           microEnabled: !foundParticipant.microEnabled,
         );
-        updatedParticipant.participant.mediaStream!.getAudioTracks()[0].enabled = updatedParticipant.microEnabled;
+        await updatedParticipant.participant.mediaStream!.getMediaTracks();
+        updatedParticipant.participant.mediaStream!.getAudioTracks().forEach((track) {
+          track.enabled = updatedParticipant.microEnabled;
+          track.enableSpeakerphone(updatedParticipant.microEnabled);
+          track.setMicrophoneMute(!updatedParticipant.microEnabled);
+          if(updatedParticipant.microEnabled) {
+            track.setVolume(1);
+          } else {
+            track.setVolume(0);
+          }
+        });
+        updatedParticipant.participant.mediaStream!.getVideoTracks().forEach((track) {
+          // track.enabled = updatedParticipant.microEnabled;
+          track.enableSpeakerphone(updatedParticipant.microEnabled);
+          track.setMicrophoneMute(!updatedParticipant.microEnabled);
+          if(updatedParticipant.microEnabled) {
+            track.setVolume(1);
+          } else {
+            track.setVolume(0);
+          }
+        });
         participants[participants.indexOf(foundParticipant)] = updatedParticipant;
         yield state.copyWith(participants: participants);
       }

@@ -176,6 +176,9 @@ class Signaling {
     _localStream?.getVideoTracks().forEach((element) {
       element.setMicrophoneMute(!enabled);
     });
+    _localStream?.getAudioTracks().forEach((element) {
+      element.setMicrophoneMute(!enabled);
+    });
   }
 
   void setCameraEnabled(bool enabled) {
@@ -525,6 +528,7 @@ class Signaling {
     remotePeerConnection.onAddStream = ((stream) {
       remoteParticipant.mediaStream = stream;
       _onParticipantsStreamUpdateSubject.add(remoteParticipant);
+
       this.onAddRemoteStream?.call(stream);
     });
 
