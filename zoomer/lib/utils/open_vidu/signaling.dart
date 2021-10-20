@@ -145,8 +145,8 @@ class Signaling {
     },
     'optional': [],
     'video': {
-      'width': 1280,
-      'height': 720,
+      'width': 1920,
+      'height': 1080,
     }
   };
 
@@ -214,7 +214,11 @@ class Signaling {
     required String sessionId,
     String role = 'PUBLISHER',
   }) {
-    final Map<String, dynamic> bodyMap = <String, dynamic>{'session': sessionId, 'role': role, 'data': ''};
+    final Map<String, dynamic> bodyMap = <String, dynamic>{
+      'session': sessionId,
+      'role': role,
+      'data': '',
+    };
     final Map<String, dynamic> headersMap = <String, dynamic>{
       'Authorization': 'Basic ${base64Encode(utf8.encode('OPENVIDUAPP:$secret'))}'
     };
@@ -465,9 +469,10 @@ class Signaling {
       'audio': true,
       'video': {
         'mandatory': {
-          'minWidth': '320',
-          'minHeight': '240',
+          'minWidth': '1920',
+          'minHeight': '1080',
           'minFrameRate': '30',
+          'mirror': false,
         },
         'facingMode': 'user',
         'optional': [],
@@ -572,8 +577,9 @@ class Signaling {
         'videoActive': 'true',
         'typeOfVideo': 'CAMERA',
         'frameRate': '30',
-        'videoDimensions': '{\"width\": 320, \"height\": 240}',
-        'sdpOffer': s.sdp
+        'videoDimensions': '{\"width\": 1920, \"height\": 1080}',
+        'sdpOffer': s.sdp,
+        'mirror': false,
       });
     } catch (e) {
       print(e.toString());

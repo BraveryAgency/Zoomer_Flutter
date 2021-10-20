@@ -75,7 +75,7 @@ class _ParticipantsListState extends State<ParticipantsList> {
       );
 
   Widget _buildParticipants() => SizedBox(
-        height: 240,
+        height: 180,
         child: ScrollConfiguration(
           behavior: const DisableGrowEffectScrollBehavior(),
           child: PageView.builder(

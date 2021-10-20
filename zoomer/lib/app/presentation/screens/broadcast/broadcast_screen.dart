@@ -1,12 +1,13 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_webrtc/webrtc.dart';
 import 'package:zoomer/app/navigation/app_navigator.dart';
 import 'package:zoomer/app/navigation/navigation_actions.dart';
-import 'package:zoomer/app/presentation/screens/upcoming_broadcast/bloc/upcoming_broadcast_bloc.dart';
 import 'package:zoomer/app/resources/app_colors.dart';
 import 'package:zoomer/app/widgets/app_bars/default_appbar.dart';
 import 'package:zoomer/app/widgets/lists/participants_list.dart';
@@ -17,7 +18,7 @@ import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
 import 'package:zoomer/domain/entities/remote_participant_entity.dart';
 import 'package:zoomer/gen/assets.gen.dart';
 import 'package:zoomer/localization/app_localizations.dart';
-import 'dart:math';
+
 import 'bloc/broadcast_bloc.dart';
 
 class BroadcastScreen extends StatefulWidget {
@@ -30,12 +31,20 @@ class _BroadcastScreenState extends BaseBlocState<BroadcastScreen, BroadcastBloc
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
   @override
@@ -142,10 +151,14 @@ class _BroadcastScreenState extends BaseBlocState<BroadcastScreen, BroadcastBloc
   Widget _buildBroadcastArea(context) => ClipRect(
         child: Stack(
           children: [
-            Positioned.fill(child: Transform(
-        alignment: Alignment.center,
-          transform: Matrix4.rotationY(pi),
-          child: _buildBroadcastVideo(),),),
+            Positioned.fill(
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(pi),
+                child: _buildBroadcastVideo(),
+              ),
+              // _buildBroadcastVideo(),
+            ),
             Positioned(
               left: 20,
               top: 20,
