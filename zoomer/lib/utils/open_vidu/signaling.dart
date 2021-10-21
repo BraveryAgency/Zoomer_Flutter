@@ -169,7 +169,9 @@ class Signaling {
   }
 
   void switchCamera() {
-    _localStream?.getVideoTracks()[0].switchCamera();
+    _localStream?.getVideoTracks().forEach((track) {
+      track.switchCamera();
+    });
   }
 
   void setMicroEnabled(bool enabled) {
