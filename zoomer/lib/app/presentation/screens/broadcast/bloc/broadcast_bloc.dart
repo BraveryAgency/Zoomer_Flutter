@@ -133,7 +133,14 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
   }
 
   Stream<BroadcastState> _cameraSwitchClicked() async* {
-    _signaling.switchCamera();
+    CameraSide newCameraSide;
+    if (state.cameraSide == CameraSide.front) {
+      newCameraSide = CameraSide.back;
+    } else {
+      newCameraSide = CameraSide.front;
+    }
+    await _signaling.switchCamera(newCameraSide);
+    yield state.copyWith(cameraSide: newCameraSide);
   }
 
   Stream<BroadcastState> _cameraClicked() async* {
@@ -247,7 +254,7 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
           track.enabled = updatedParticipant.microEnabled;
           track.enableSpeakerphone(updatedParticipant.microEnabled);
           track.setMicrophoneMute(!updatedParticipant.microEnabled);
-          if(updatedParticipant.microEnabled) {
+          if (updatedParticipant.microEnabled) {
             track.setVolume(1);
           } else {
             track.setVolume(0);
@@ -257,7 +264,7 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
           // track.enabled = updatedParticipant.microEnabled;
           track.enableSpeakerphone(updatedParticipant.microEnabled);
           track.setMicrophoneMute(!updatedParticipant.microEnabled);
-          if(updatedParticipant.microEnabled) {
+          if (updatedParticipant.microEnabled) {
             track.setVolume(1);
           } else {
             track.setVolume(0);

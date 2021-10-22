@@ -1914,6 +1914,7 @@ class _$BroadcastStateTearOff {
       bool isMicrophoneEnabled = true,
       bool isCameraEnabled = true,
       bool isExpanded = false,
+      CameraSide cameraSide = CameraSide.front,
       List<RemoteParticipantEntity> participants = const []}) {
     return _BroadcastState(
       action: action,
@@ -1923,6 +1924,7 @@ class _$BroadcastStateTearOff {
       isMicrophoneEnabled: isMicrophoneEnabled,
       isCameraEnabled: isCameraEnabled,
       isExpanded: isExpanded,
+      cameraSide: cameraSide,
       participants: participants,
     );
   }
@@ -1940,6 +1942,7 @@ mixin _$BroadcastState {
   bool get isMicrophoneEnabled => throw _privateConstructorUsedError;
   bool get isCameraEnabled => throw _privateConstructorUsedError;
   bool get isExpanded => throw _privateConstructorUsedError;
+  CameraSide get cameraSide => throw _privateConstructorUsedError;
   List<RemoteParticipantEntity> get participants =>
       throw _privateConstructorUsedError;
 
@@ -1961,6 +1964,7 @@ abstract class $BroadcastStateCopyWith<$Res> {
       bool isMicrophoneEnabled,
       bool isCameraEnabled,
       bool isExpanded,
+      CameraSide cameraSide,
       List<RemoteParticipantEntity> participants});
 
   $BroadcastEntityCopyWith<$Res> get broadcast;
@@ -1984,6 +1988,7 @@ class _$BroadcastStateCopyWithImpl<$Res>
     Object? isMicrophoneEnabled = freezed,
     Object? isCameraEnabled = freezed,
     Object? isExpanded = freezed,
+    Object? cameraSide = freezed,
     Object? participants = freezed,
   }) {
     return _then(_value.copyWith(
@@ -2015,6 +2020,10 @@ class _$BroadcastStateCopyWithImpl<$Res>
           ? _value.isExpanded
           : isExpanded // ignore: cast_nullable_to_non_nullable
               as bool,
+      cameraSide: cameraSide == freezed
+          ? _value.cameraSide
+          : cameraSide // ignore: cast_nullable_to_non_nullable
+              as CameraSide,
       participants: participants == freezed
           ? _value.participants
           : participants // ignore: cast_nullable_to_non_nullable
@@ -2045,6 +2054,7 @@ abstract class _$BroadcastStateCopyWith<$Res>
       bool isMicrophoneEnabled,
       bool isCameraEnabled,
       bool isExpanded,
+      CameraSide cameraSide,
       List<RemoteParticipantEntity> participants});
 
   @override
@@ -2071,6 +2081,7 @@ class __$BroadcastStateCopyWithImpl<$Res>
     Object? isMicrophoneEnabled = freezed,
     Object? isCameraEnabled = freezed,
     Object? isExpanded = freezed,
+    Object? cameraSide = freezed,
     Object? participants = freezed,
   }) {
     return _then(_BroadcastState(
@@ -2102,6 +2113,10 @@ class __$BroadcastStateCopyWithImpl<$Res>
           ? _value.isExpanded
           : isExpanded // ignore: cast_nullable_to_non_nullable
               as bool,
+      cameraSide: cameraSide == freezed
+          ? _value.cameraSide
+          : cameraSide // ignore: cast_nullable_to_non_nullable
+              as CameraSide,
       participants: participants == freezed
           ? _value.participants
           : participants // ignore: cast_nullable_to_non_nullable
@@ -2121,6 +2136,7 @@ class _$_BroadcastState implements _BroadcastState {
       this.isMicrophoneEnabled = true,
       this.isCameraEnabled = true,
       this.isExpanded = false,
+      this.cameraSide = CameraSide.front,
       this.participants = const []});
 
   @override
@@ -2142,13 +2158,16 @@ class _$_BroadcastState implements _BroadcastState {
   @JsonKey(defaultValue: false)
   @override
   final bool isExpanded;
+  @JsonKey(defaultValue: CameraSide.front)
+  @override
+  final CameraSide cameraSide;
   @JsonKey(defaultValue: const [])
   @override
   final List<RemoteParticipantEntity> participants;
 
   @override
   String toString() {
-    return 'BroadcastState(action: $action, broadcast: $broadcast, viewers: $viewers, broadcastTimer: $broadcastTimer, isMicrophoneEnabled: $isMicrophoneEnabled, isCameraEnabled: $isCameraEnabled, isExpanded: $isExpanded, participants: $participants)';
+    return 'BroadcastState(action: $action, broadcast: $broadcast, viewers: $viewers, broadcastTimer: $broadcastTimer, isMicrophoneEnabled: $isMicrophoneEnabled, isCameraEnabled: $isCameraEnabled, isExpanded: $isExpanded, cameraSide: $cameraSide, participants: $participants)';
   }
 
   @override
@@ -2175,6 +2194,9 @@ class _$_BroadcastState implements _BroadcastState {
             (identical(other.isExpanded, isExpanded) ||
                 const DeepCollectionEquality()
                     .equals(other.isExpanded, isExpanded)) &&
+            (identical(other.cameraSide, cameraSide) ||
+                const DeepCollectionEquality()
+                    .equals(other.cameraSide, cameraSide)) &&
             (identical(other.participants, participants) ||
                 const DeepCollectionEquality()
                     .equals(other.participants, participants)));
@@ -2190,6 +2212,7 @@ class _$_BroadcastState implements _BroadcastState {
       const DeepCollectionEquality().hash(isMicrophoneEnabled) ^
       const DeepCollectionEquality().hash(isCameraEnabled) ^
       const DeepCollectionEquality().hash(isExpanded) ^
+      const DeepCollectionEquality().hash(cameraSide) ^
       const DeepCollectionEquality().hash(participants);
 
   @JsonKey(ignore: true)
@@ -2207,6 +2230,7 @@ abstract class _BroadcastState implements BroadcastState {
       bool isMicrophoneEnabled,
       bool isCameraEnabled,
       bool isExpanded,
+      CameraSide cameraSide,
       List<RemoteParticipantEntity> participants}) = _$_BroadcastState;
 
   @override
@@ -2223,6 +2247,8 @@ abstract class _BroadcastState implements BroadcastState {
   bool get isCameraEnabled => throw _privateConstructorUsedError;
   @override
   bool get isExpanded => throw _privateConstructorUsedError;
+  @override
+  CameraSide get cameraSide => throw _privateConstructorUsedError;
   @override
   List<RemoteParticipantEntity> get participants =>
       throw _privateConstructorUsedError;

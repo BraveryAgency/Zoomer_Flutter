@@ -149,6 +149,7 @@ class Signaling {
       'height': 1080,
     }
   };
+  bool _microEnabled = true;
 
   void updateInternalId() {
     _internalId++;
@@ -168,18 +169,22 @@ class Signaling {
     _socket?.close();
   }
 
-  void switchCamera() {
-    _localStream?.getVideoTracks().forEach((track) {
-      track.switchCamera();
-    });
+  Future<void> switchCamera(CameraSide cameraSide) async {
+    _localPeerConnection?.removeStream(_localStream);
+    await _localStream?.dispose();
+    _localStream = await createStream(isLocalStream: true, cameraSide: cameraSide);
+    setMicroEnabled(_microEnabled);
+    _localPeerConnection?.addStream(_localStream);
+    _onLocalStreamAddSubject.add(_localStream);
   }
 
   void setMicroEnabled(bool enabled) {
+    _microEnabled = enabled;
     _localStream?.getVideoTracks().forEach((element) {
-      element.setMicrophoneMute(!enabled);
+      element.setMicrophoneMute(!_microEnabled);
     });
     _localStream?.getAudioTracks().forEach((element) {
-      element.setMicrophoneMute(!enabled);
+      element.setMicrophoneMute(!_microEnabled);
     });
   }
 
@@ -466,7 +471,10 @@ class Signaling {
     });
   }
 
-  Future<MediaStream> createStream({isLocalStream = false}) async {
+  Future<MediaStream> createStream({
+    bool isLocalStream = false,
+    CameraSide cameraSide = CameraSide.front,
+  }) async {
     final Map<String, dynamic> mediaConstraints = {
       'audio': true,
       'video': {
@@ -476,7 +484,7 @@ class Signaling {
           'minFrameRate': '30',
           'mirror': false,
         },
-        'facingMode': 'user',
+        'facingMode': cameraSide == CameraSide.front ? 'user' : 'environment',
         'optional': [],
       }
     };
@@ -623,4 +631,9 @@ class Signaling {
     print('◤◢◤◢◤◢◤◢◤◢◤ send_json_to_socket ---> | $jsonString | ◤◢◤◢◤◢◤◢◤◢◤');
     return _internalId - 1;
   }
+}
+
+enum CameraSide {
+  front,
+  back,
 }

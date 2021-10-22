@@ -10,6 +10,7 @@ class BroadcastState with _$BroadcastState {
     @Default(true) bool isMicrophoneEnabled,
     @Default(true) bool isCameraEnabled,
     @Default(false) bool isExpanded,
+    @Default(CameraSide.front) CameraSide cameraSide,
     @Default([]) List<RemoteParticipantEntity> participants,
   }) = _BroadcastState;
 }

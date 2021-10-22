@@ -18,6 +18,7 @@ import 'package:zoomer/core/ui/widgets/loader_dialog.dart';
 import 'package:zoomer/domain/entities/remote_participant_entity.dart';
 import 'package:zoomer/gen/assets.gen.dart';
 import 'package:zoomer/localization/app_localizations.dart';
+import 'package:zoomer/utils/open_vidu/signaling.dart';
 
 import 'bloc/broadcast_bloc.dart';
 
@@ -179,12 +180,21 @@ class _BroadcastScreenState extends BaseBlocState<BroadcastScreen, BroadcastBloc
       );
 
   Widget _buildBroadcastVideo() => BlocBuilder<BroadcastBloc, BroadcastState>(
-        buildWhen: (previous, current) => previous.broadcast.renderer != current.broadcast.renderer,
+        buildWhen: (previous, current) =>
+            previous.broadcast.renderer != current.broadcast.renderer || previous.cameraSide != current.cameraSide,
         builder: (context, state) {
           if (state.broadcast.renderer == null) {
             return Container();
           }
-          return RTCVideoView(state.broadcast.renderer!);
+          if (state.cameraSide == CameraSide.front) {
+            return RTCVideoView(state.broadcast.renderer!);
+          } else {
+            return Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(pi),
+              child: RTCVideoView(state.broadcast.renderer!),
+            );
+          }
         },
       );
 
