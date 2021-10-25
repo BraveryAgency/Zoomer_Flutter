@@ -96,10 +96,10 @@ class Signaling {
   String userName;
   String iceServer;
   WebSocket? _socket;
-  String token = '';
-  String session = '';
+  String? token;
+  String? session;
   String? _userId;
-  String _endpointName = '';
+  String? _endpointName;
 
   Map<String, dynamic> _iceServers = <String, dynamic>{};
   Map<String, RemoteParticipant> _participants = <String, RemoteParticipant>{};
@@ -116,6 +116,9 @@ class Signaling {
   RTCPeerConnection? _localPeerConnection;
   bool _localPeerConnectionHasRemoteDescription = false;
 
+  CameraSide _cameraSide = CameraSide.front;
+  String? _sessionId;
+
   SignalingStateCallback? onStateChange;
   StreamStateCallback? onAddRemoteStream;
   StreamStateCallback? onRemoveRemoteStream;
@@ -124,6 +127,7 @@ class Signaling {
   PublishSubject<RemoteParticipant?> _onParticipantRemoveSubject = PublishSubject();
   BehaviorSubject<RemoteParticipant?> _onParticipantJoinedSubject = BehaviorSubject.seeded(null);
   BehaviorSubject<RemoteParticipant?> _onParticipantsStreamUpdateSubject = BehaviorSubject.seeded(null);
+  StreamSubscription? _socketEventsSubscription;
 
   Stream<MediaStream?> get onLocalStreamAddStream => _onLocalStreamAddSubject.stream;
 
@@ -134,9 +138,6 @@ class Signaling {
   Stream<RemoteParticipant?> get onParticipantStreamUpdateStream => _onParticipantsStreamUpdateSubject.stream;
 
   List<Map<String, dynamic>> _iceCandidatesParams = <Map<String, dynamic>>[];
-  List _remoteAlreadyInRoomValues = [];
-
-  bool _haveRemoteAlreadyInRoom = false;
 
   final Map<String, dynamic> _constraints = {
     'mandatory': {
@@ -155,27 +156,97 @@ class Signaling {
     _internalId++;
   }
 
-  void close() {
-    _onLocalStreamAddSubject?.close();
-    _localStream?.dispose();
-    _localStream = null;
-    _timer?.cancel();
+  void init() {
+    _onLocalStreamAddSubject = BehaviorSubject.seeded(null);
+    _onParticipantRemoveSubject = PublishSubject();
+    _onParticipantJoinedSubject = BehaviorSubject.seeded(null);
+    _onParticipantsStreamUpdateSubject = BehaviorSubject.seeded(null);
+  }
+
+  Future<void> connect({required String sessionId}) async {
+    try {
+      _sessionId = sessionId;
+      await createWebRtcSession(sessionId: sessionId);
+      _internalId = 1;
+      await createWebRtcToken(sessionId: sessionId);
+      _socket = await WebSocket.connect('wss://$url/openvidu');
+
+      if (this.onStateChange != null) {
+        this.onStateChange?.call(SignalingState.ConnectionOpen);
+        print('◤◢◤◢◤◢◤◢◤◢◤ Socket connected <----> ◤◢◤◢◤◢◤◢◤◢◤');
+      }
+
+      _socketEventsSubscription = _socket!.listen((data) {
+        this.onMessage(json.decode(data));
+      }, onDone: () {
+        if (this.onStateChange != null) {
+          this.onStateChange?.call(SignalingState.ConnectionClosed);
+          print('◤◢◤◢◤◢◤◢◤◢◤ Socket disconnected <-/--> ◤◢◤◢◤◢◤◢◤◢◤');
+        }
+      });
+
+      _createLocalPeerConnection().then((_) {
+        _idJoinRoom = _sendJson(JsonConstants.joinRoom, {
+          JsonConstants.metadata: '{\"clientData\": \"$userName\"}',
+          'secret': '',
+          'platform': Platform.isAndroid ? 'Android' : 'iOS',
+          // 'dataChannels': 'false',
+          'session': session,
+          'token': token,
+        });
+        _createLocalOffer();
+      });
+
+      _startPingTimer();
+    } catch (e) {
+      print('◤◢!◤◢◤!◢◤◢!◤◢◤ connect error: $e ◤◢!◤◢◤!◢◤◢!◤◢◤');
+      if (this.onStateChange != null) {
+        this.onStateChange?.call(SignalingState.ConnectionError);
+      }
+    }
+  }
+
+  Future<void> dispose({bool needDisposeSubjects = true}) async {
     _sendJson(JsonConstants.leaveRoom, null);
-    _localPeerConnection?.close();
-    _participants.forEach((String id, RemoteParticipant remoteParticipant) {
-      remoteParticipant.peerConnection?.close();
+    if (needDisposeSubjects) {
+      _onLocalStreamAddSubject.close();
+      _onParticipantRemoveSubject.close();
+      _onParticipantJoinedSubject.close();
+      _onParticipantsStreamUpdateSubject.close();
+    }
+    _timer?.cancel();
+    await _socket?.close();
+    _socketEventsSubscription?.cancel();
+    token = null;
+    session = null;
+    _userId = null;
+    _endpointName = null;
+    _idPublishVideo = null;
+    _idJoinRoom = null;
+    _localPeerConnectionHasRemoteDescription = false;
+    await _localStream?.dispose();
+    _localStream = null;
+    await _localPeerConnection?.close();
+    await Future.forEach(_participants.entries, (MapEntry<String, RemoteParticipant> entry) async {
+      await entry.value.peerConnection?.close();
     });
     _participants.clear();
-    _socket?.close();
   }
 
   Future<void> switchCamera(CameraSide cameraSide) async {
-    _localPeerConnection?.removeStream(_localStream);
-    await _localStream?.dispose();
-    _localStream = await createStream(isLocalStream: true, cameraSide: cameraSide);
-    setMicroEnabled(_microEnabled);
-    _localPeerConnection?.addStream(_localStream);
-    _onLocalStreamAddSubject.add(_localStream);
+    _cameraSide = cameraSide;
+    // _localPeerConnection?.removeStream(_localStream);
+    // await _localStream?.dispose();
+    //
+    // _localStream = await createStream(isLocalStream: true);
+    // _localPeerConnection?.addStream(_localStream);
+    // _onLocalStreamAddSubject.add(_localStream);
+    // await _createLocalOffer();
+    // setMicroEnabled(_microEnabled);
+    if (_sessionId != null) {
+      await dispose(needDisposeSubjects: false);
+      connect(sessionId: _sessionId!);
+    }
   }
 
   void setMicroEnabled(bool enabled) {
@@ -241,49 +312,6 @@ class Signaling {
       token = jsonResponse['token'];
       return token;
     });
-  }
-
-  Future<void> connect({required String sessionId}) async {
-    try {
-      await createWebRtcSession(sessionId: sessionId);
-      print('◤◢◤◢◤◢◤◢◤◢◤ sessionId: $sessionId  ◤◢◤◢◤◢◤◢◤◢◤ ');
-
-      await createWebRtcToken(sessionId: sessionId);
-      _socket = await WebSocket.connect('wss://$url/openvidu');
-
-      if (this.onStateChange != null) {
-        this.onStateChange?.call(SignalingState.ConnectionOpen);
-        print('◤◢◤◢◤◢◤◢◤◢◤ Socket connected <----> ◤◢◤◢◤◢◤◢◤◢◤');
-      }
-
-      _socket!.listen((data) {
-        this.onMessage(json.decode(data));
-      }, onDone: () {
-        if (this.onStateChange != null) {
-          this.onStateChange?.call(SignalingState.ConnectionClosed);
-          print('◤◢◤◢◤◢◤◢◤◢◤ Socket disconnected <-/--> ◤◢◤◢◤◢◤◢◤◢◤');
-        }
-      });
-
-      _createLocalPeerConnection().then((_) {
-        _idJoinRoom = _sendJson(JsonConstants.joinRoom, {
-          JsonConstants.metadata: '{\"clientData\": \"$userName\"}',
-          'secret': '',
-          'platform': Platform.isAndroid ? 'Android' : 'iOS',
-          // 'dataChannels': 'false',
-          'session': session,
-          'token': token,
-        });
-        _createLocalOffer();
-      });
-
-      _startPingTimer();
-    } catch (e) {
-      print('◤◢!◤◢◤!◢◤◢!◤◢◤ connect error: $e ◤◢!◤◢◤!◢◤◢!◤◢◤');
-      if (this.onStateChange != null) {
-        this.onStateChange?.call(SignalingState.ConnectionError);
-      }
-    }
   }
 
   Future<void> onMessage(message) async {
@@ -473,7 +501,6 @@ class Signaling {
 
   Future<MediaStream> createStream({
     bool isLocalStream = false,
-    CameraSide cameraSide = CameraSide.front,
   }) async {
     final Map<String, dynamic> mediaConstraints = {
       'audio': true,
@@ -482,9 +509,9 @@ class Signaling {
           'minWidth': '1920',
           'minHeight': '1080',
           'minFrameRate': '30',
-          'mirror': false,
+          'mirror': _cameraSide == CameraSide.front ? true : false,
         },
-        'facingMode': cameraSide == CameraSide.front ? 'user' : 'environment',
+        'facingMode': _cameraSide == CameraSide.front ? 'user' : 'environment',
         'optional': [],
       }
     };
@@ -502,13 +529,7 @@ class Signaling {
       if (state == RTCSignalingState.RTCSignalingStateStable) {}
     });
     _localPeerConnection!.onIceGatheringState = ((state) {
-      if (state == RTCIceGatheringState.RTCIceGatheringStateComplete) {
-        if (_haveRemoteAlreadyInRoom) {
-          _addParticipantsAlreadyInRoom(_remoteAlreadyInRoomValues);
-          _remoteAlreadyInRoomValues.clear();
-          _haveRemoteAlreadyInRoom = false;
-        }
-      }
+      if (state == RTCIceGatheringState.RTCIceGatheringStateComplete) {}
     });
     _localPeerConnection!.onIceCandidate = (candidate) {
       Map<String, dynamic> iceCandidateParams = {

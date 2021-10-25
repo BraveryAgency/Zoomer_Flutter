@@ -43,7 +43,7 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
     _participantJoinedSubscription?.cancel();
     _participantStreamUpdateSubscription?.cancel();
     state.broadcast.renderer?.dispose();
-    _signaling.close();
+    _signaling.dispose();
     state.participants.forEach((participant) {
       participant.renderer.dispose();
     });
@@ -95,6 +95,7 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
     RTCVideoRenderer localRenderer = RTCVideoRenderer();
     localRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
     await localRenderer.initialize();
+    localRenderer.mirror = false;
     _localStreamSubjectAddSubscription?.cancel();
     _localStreamSubjectAddSubscription = _signaling.onLocalStreamAddStream.listen((stream) {
       localRenderer.srcObject = stream;
