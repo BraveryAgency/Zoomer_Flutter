@@ -48,7 +48,6 @@ class UpcomingBroadcastBloc extends Bloc<UpcomingBroadcastEvent, UpcomingBroadca
     return super.close();
   }
 
-
   Stream<UpcomingBroadcastState> _init() async* {
     yield* _fetchBroadcast(needShowLoader: true);
     notificationsSubscription?.cancel();

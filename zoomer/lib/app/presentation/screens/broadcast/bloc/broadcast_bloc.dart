@@ -226,6 +226,24 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
     if (foundParticipant != null) {
       foundParticipant.participant = participant;
       foundParticipant.renderer.srcObject = participant.mediaStream;
+      foundParticipant.participant.mediaStream?.getVideoTracks().forEach((track) {
+        track.enableSpeakerphone(foundParticipant.microEnabled);
+        track.setMicrophoneMute(!foundParticipant.microEnabled);
+        if (foundParticipant.microEnabled) {
+          track.setVolume(1);
+        } else {
+          track.setVolume(0);
+        }
+      });
+      foundParticipant.participant.mediaStream?.getAudioTracks().forEach((track) {
+        track.enableSpeakerphone(foundParticipant.microEnabled);
+        track.setMicrophoneMute(!foundParticipant.microEnabled);
+        if (foundParticipant.microEnabled) {
+          track.setVolume(1);
+        } else {
+          track.setVolume(0);
+        }
+      });
     } else {
       RTCVideoRenderer videoRenderer = RTCVideoRenderer();
       videoRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
