@@ -249,6 +249,16 @@ class BroadcastBloc extends Bloc<BroadcastEvent, BroadcastState> {
       videoRenderer.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
       await videoRenderer.initialize();
       videoRenderer.srcObject = participant.mediaStream;
+      participant.mediaStream?.getVideoTracks().forEach((track) {
+        track.enableSpeakerphone(true);
+        track.setMicrophoneMute(false);
+        track.setVolume(1);
+      });
+      participant.mediaStream?.getAudioTracks().forEach((track) {
+        track.enableSpeakerphone(true);
+        track.setMicrophoneMute(false);
+        track.setVolume(1);
+      });
       participants.add(RemoteParticipantEntity(participant: participant, renderer: videoRenderer));
     }
 
